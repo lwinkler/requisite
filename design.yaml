@@ -1,0 +1,91 @@
+!Design
+definitions:
+  - !Definition
+    name: cs::structure
+    definition: a class that is aware of its members and can be used to store a set of attributes.
+
+  - !Definition
+    name: cs::attribute
+    definition: "this structure is composed of attributes. Each attribute has: a name, a description, a validity and a target variable of any **compatible variable type**"
+
+  - !Definition &json_format
+    name: json format
+    definition: JSON format
+
+  - !Definition &xml_format
+    name: xml format
+    definition: XML format
+
+  - !Definition &yaml_format
+    name: yaml format
+    definition: XML format
+
+  - !Definition &variable_type1
+    name: 
+    definition: "read from a subset of a **compatible text file type**"
+
+  - !Definition &variable_type2
+    name:
+    definition: validated against a range
+
+lists:
+  - !List
+    name: compatible file type
+    elements: 
+      - *json_format
+      - *xml_format
+      - *yaml_format
+  - !List
+    name: compatible variable type
+    elements: 
+      - *variable_type1
+      - *variable_type2
+
+requirements:
+#- general
+  - !Requirement
+    id: reqQQQ
+    text: A cs::structure can be read from an input file of any **compatible text file type**
+  - !Requirement
+    id: reqQQQ
+    text: A cs::structure can be written to an output file of any **compatible text file type**
+  - !Requirement
+    id: reqQQQ
+    text: A cs::structure can be reset to its default value
+
+  - !Requirement
+    id: reqQQQ
+    text: A cs::structure can be validated ; the validity criterion is given for each cs::attribute
+  - !Requirement
+    id: reqQQQ
+    text: A cs::structure can be documented
+#- inheritance
+  - !Requirement
+    id: reqQQQ
+    text: a child cs::structure shall inherit the list of cs::attribute of the parent cs::structure
+  - !Requirement
+    id: reqQQQ
+    text: a cs::structure can contain a child cs::attribute inside a parent cs::attribute type (abstract or concrete)
+#- compatible type
+  - !Requirement
+    id: reqQQQ
+    text: all fundamental type is a **compatible type**
+  - !Requirement
+    id: reqQQQ
+    text: std::string is a **compatible type**
+  - !Requirement
+    id: reqQQQ
+    text: a class enum is a **compatible type**
+  - !Requirement
+    id: reqQQQ
+    text: a std::list of any **compatible type** is a **compatible type**
+  - !Requirement
+    id: reqQQQ
+    text: a std::map of any **compatible type** is a **compatible type**
+  - !Requirement
+    id: reqQQQ
+    text: a class or structure containing classes of any **compatible type** is a **compatible type** (they must be objects and not references/pointers)
+  - !Requirement
+    id: reqQQQ
+    text: a custom class designed by the user can become a **compatible type**
+
