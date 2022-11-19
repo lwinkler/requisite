@@ -2,10 +2,10 @@
 
 import yaml
 
-from classes import *
+import design_util as du
 from pathlib import Path
 
-def read_design(path: Path) -> Design:
+def read_design(path: Path) -> du.Design:
 	"""Read a full design document in YAML format"""
 	with open(path) as fin:
 		return yaml.safe_load(fin.read())
