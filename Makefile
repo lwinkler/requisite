@@ -3,8 +3,8 @@ ALL_FILES=$(shell git ls-files | grep "\.py\>")
 
 all: run
 
-lint: pylint flake8 mypy 
-format: black
+lint: pylint flake8 mypy black
+format: black_format
 
 
 pylint:
@@ -17,7 +17,10 @@ mypy:
 	${PYTHON} -m mypy .
 
 black:
-	${PYTHON} -m black
+	${PYTHON} -m black --check .
+
+black_format:
+	${PYTHON} -m black .
 
 run:
 	${PYTHON} main.py

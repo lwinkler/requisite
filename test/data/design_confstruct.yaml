@@ -29,14 +29,14 @@ definitions:
     definition: validated against a range
 
 lists:
-  - !List
+  - !DefinitionList
     name: compatible file type
     elements: 
       - *json_format
       - *xml_format
       - *yaml_format
 
-  - !List
+  - !DefinitionList
     name: compatible variable type
     elements: 
       - *variable_type1
@@ -46,10 +46,10 @@ requirements:
 #- general
   - !Requirement
     id: reqQQQ
-    text: A cs::structure can be read from an input file of any **compatible text file type**
+    text: "A cs::structure can be read from an input file of any **compatible text file type**"
   - !Requirement
     id: reqQQQ
-    text: A cs::structure can be written to an output file of any **compatible text file type**
+    text: "A cs::structure can be written to an output file of any **compatible text file type**"
   - !Requirement
     id: reqQQQ
     text: A cs::structure can be reset to its default value
