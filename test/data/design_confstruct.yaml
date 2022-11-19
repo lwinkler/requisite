@@ -35,6 +35,7 @@ lists:
       - *json_format
       - *xml_format
       - *yaml_format
+
   - !List
     name: compatible variable type
     elements: 

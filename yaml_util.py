@@ -6,6 +6,7 @@ from classes import *
 from pathlib import Path
 
 def read_design(path: Path) -> Design:
+	"""Read a full design document in YAML format"""
 	with open(path) as fin:
 		return yaml.safe_load(fin.read())
 	
@@ -28,15 +29,3 @@ def read_design(path: Path) -> Design:
 # print("name: %s, vehicles: %s" % (deserialized_garage1.name, deserialized_garage1.vehicles))
 
 
-design = read_design(Path("design.yaml"))
-
-print(design.requirements)
-print(design.definitions)
-
-print(f"Read {len(design.requirements)} requirements and {len(design.definitions)} definitions")
-
-el = design.requirements[0]
-
-print(el)
-# print(el.to_yaml())
-print(el.yaml_tag)
