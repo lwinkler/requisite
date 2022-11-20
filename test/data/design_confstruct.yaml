@@ -21,11 +21,11 @@ definitions:
     definition: XML format
 
   - !Definition &variable_type1
-    name: 
+    name: ""
     definition: "read from a subset of a **compatible text file type**"
 
   - !Definition &variable_type2
-    name:
+    name: ""
     definition: validated against a range
 
 lists:
@@ -90,3 +90,4 @@ requirements:
     id: reqQQQ
     text: a custom class designed by the user can become a **compatible type**
 
+test_lists: []

@@ -11,6 +11,7 @@ import argparse
 from pathlib import Path
 
 import yaml_util as yu
+import design_util as du
 
 
 if sys.version_info[0] < 3:
@@ -27,30 +28,37 @@ def arguments_parser():
     )
 
     parser.add_argument(
-        "--debug",
-        action="store_true",
-        dest="debug",
-        default=False,
-        help="Run the application with faulthandler to debug crashes and segmentation faults. Installed with 'pip3 install faulthandler' ",
+        "input",
+        type= Path,
+        help="The input design in YAML format",
     )
     # arguments for QApplication
     parser.add_argument("--style", help="Passed to the constructor of QApplication")
 
     return parser.parse_args()
 
+def print_design(design: du.Design) -> None:
+    """Output the design"""
+    print(f"{len(design.definitions)} definitions: ")
+    print("\n".join([el.name for el in design.definitions]))
+    print()
+    print(f"{len(design.requirements)} requirements: ")
+    print("\n".join([el.id for el in design.requirements]))
+    print()
+    print(f"{len(design.test_lists)} tests: ")
+    print("\n".join([el.name for el in design.test_lists]))
+    print()
 
 if __name__ == "__main__":
 
-    options = arguments_parser()
+    args = arguments_parser()
 
-    design = yu.read_design(Path("test/data/design_confstruct.yaml"))
+    design = yu.read_design(args.input)
 
     print(design.requirements)
     print(design.definitions)
 
-    print(
-        f"Read {len(design.requirements)} requirements and {len(design.definitions)} definitions"
-    )
+    print_design(design)
 
     el = design.requirements[0]
 

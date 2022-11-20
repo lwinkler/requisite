@@ -1,0 +1,55 @@
+!Design
+definitions:
+- &yaml_format !Definition
+  name: yaml-format
+  definition: The YAML format, used for input and output.
+
+- &design !Definition
+  name: design
+  definition: The specific design of a product, it contains the definitions, requirements, ...
+
+- &design_parts !Definition
+  name: design-parts
+  definition: "The different parts of a design: requirements, definitions, tests, ..."
+# TODO: add the design parts
+
+lists:
+
+requirements:
+- !Requirement
+  id: req-design-review
+  text: A *design can be commited and reviewed as source code.
+
+- !Requirement
+  id: req-input-design
+  text: A *design can be read from the input format
+
+- !Requirement
+  id: req-output-requirements
+  text: All requirements can be written as output
+
+- !Requirement
+  id: req-output-tests
+  text: All tests matching a design can be written as output
+
+- !Requirement
+  id: req-extract-tests
+  text: Links between tests and requirements can be extracted from the sources of the tests (if properly annotated)
+
+- !Requirement
+  id: req-design-validity
+  text: The validity of a design can be checked according to rules
+
+test_lists:
+
+- !TestList
+  name: System tests
+  tests:
+
+  - !Test
+    id: test-design-review
+    requirement: req-design-review
+
+- !UnitTestList
+  name: Unit tests
+  path: test/

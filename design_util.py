@@ -3,6 +3,7 @@
 """Utilities"""
 
 import yaml
+from pathlib import Path
 
 
 class Definition(yaml.YAMLObject):
@@ -25,16 +26,6 @@ class DefinitionList(yaml.YAMLObject):
         self.elements = elements
 
 
-class Design(yaml.YAMLObject):
-    """Design value object, contains the full design"""
-    yaml_loader = yaml.SafeLoader
-    yaml_tag = "!Design"
-
-    def __init__(self, definitions, requirements):
-        self.definitions = definitions
-        self.requirements = requirements
-
-
 class Requirement(yaml.YAMLObject):
     """Requirement value object"""
     yaml_loader = yaml.SafeLoader
@@ -43,3 +34,42 @@ class Requirement(yaml.YAMLObject):
     def __init__(self, id, text):
         self.id = id
         self.text = text
+
+class Test(yaml.YAMLObject):
+    """Test value object"""
+    yaml_loader = yaml.SafeLoader
+    yaml_tag = "!Test"
+
+    def __init__(self, id, requirement):
+        self.id = id
+        self.requirement = requirement
+
+class TestList(yaml.YAMLObject):
+    """TestList value object"""
+    yaml_loader = yaml.SafeLoader
+    yaml_tag = "!TestList"
+
+    def __init__(self, name: str, tests: Test):
+        self.name = name
+        self.tests = tests
+
+class UnitTestList(TestList):
+    """UnitTestList value object"""
+    yaml_loader = yaml.SafeLoader
+    yaml_tag = "!UnitTestList"
+
+    def __init__(self, name: str, path: Path):
+        self.name = name
+        self.path = path
+
+class Design(yaml.YAMLObject):
+    """Design value object, contains the full design"""
+    yaml_loader = yaml.SafeLoader
+    yaml_tag = "!Design"
+
+    def __init__(self, definitions, requirements, test_lists):
+        self.definitions = definitions
+        self.requirements = requirements
+        self.test_lists = test_lists
+
+
