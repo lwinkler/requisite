@@ -45,9 +45,12 @@ def print_design(design: du.Design) -> None:
     print(f"{len(design.requirements)} requirements: ")
     print("\n".join([el.id for el in design.requirements]))
     print()
-    print(f"{len(design.test_lists)} tests: ")
+    print(f"{len(design.test_lists)} test lists: ")
     print("\n".join([el.name for el in design.test_lists]))
     print()
+    all_tests = design.list_tests()
+    print(f"{len(all_tests)} tests: ")
+    print("\n".join([el.id for el in all_tests]))
 
 if __name__ == "__main__":
 
@@ -55,13 +58,6 @@ if __name__ == "__main__":
 
     design = yu.read_design(args.input)
 
-    print(design.requirements)
-    print(design.definitions)
-
     print_design(design)
-
-    el = design.requirements[0]
-
-    print(el)
 
     yu.write_design(Path("out.yaml"), design)

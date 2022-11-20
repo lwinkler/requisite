@@ -53,7 +53,10 @@ class TestList(yaml.YAMLObject):
         self.name = name
         self.tests = tests
 
-class UnitTestList(TestList):
+    def list_tests(self):
+    	return self.tests
+
+class UnitTestList(yaml.YAMLObject):
     """UnitTestList value object"""
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!UnitTestList"
@@ -61,6 +64,9 @@ class UnitTestList(TestList):
     def __init__(self, name: str, path: Path):
         self.name = name
         self.path = path
+
+    def list_tests(self):
+    	return []
 
 class Design(yaml.YAMLObject):
     """Design value object, contains the full design"""
@@ -72,4 +78,8 @@ class Design(yaml.YAMLObject):
         self.requirements = requirements
         self.test_lists = test_lists
 
-
+    def list_tests(self):
+    	tests = []
+    	for l in self.test_lists:
+    		tests += l.list_tests()
+    	return tests
