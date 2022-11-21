@@ -48,6 +48,8 @@ test_lists:
 
   - !Test
     id: test-design-review
+    labels: non-functional
+    text: Verify that a design can be reviewed manually
     requirement: req-design-review
 
 - !UnitTestList
