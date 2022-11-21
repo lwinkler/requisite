@@ -57,7 +57,8 @@ class TestList(yaml.YAMLObject):
     	return self.tests
 
 import subprocess
-# import tempfile
+import tempfile
+import shutil
 import xml.etree.ElementTree as ET
 
 class DoxygenTestList(yaml.YAMLObject):
@@ -94,28 +95,39 @@ class DoxygenTestList(yaml.YAMLObject):
             for memberdef in root.iter("memberdef"):
                 if memberdef.attrib["kind"] == "function":
                     name = get_function_name(memberdef)
-                    for descr in memberdef.iter("detaileddescription"):
-                        for para1 in descr.iter("para"):
-                            print(888, para1.attrib, para1.text)
-                            for xrefsect in para1.iter("xrefsect"):
-                                print(999)
-                                for xrefdescription in xrefsect.iter("xrefdescription"):
-                                    print(9991)
-                                    for para2 in xrefdescription.iter("para"):
-                                        print(666, name, paraw)
-                                        res.append(Path(name.text))
+                    for descr in memberdef.iter("briefdescription"):
+                        for para in descr.iter("para"):
+                            print(888, name, para.text)
+                            # res.append(Path(name))
             return res
 
-        command = ["doxygen", "Doxyfile", self.path.as_posix()]
-        xml_dir = Path("xml")
-        subprocess.run(command)
-        all_files = get_all_xml_files(xml_dir)
+        tmp_dir = Path(tempfile.mkdtemp("reqdoxy"))
+        try:
+            # shutil.copy("Doxyfile", tmp_dir.as_posix())
+            doxyfile = tmp_dir / "Doxyfile"
+            with open(doxyfile, "w") as fout:
+                fout.write(
+                    f""""GENERATE_LATEX = NO
+GENERATE_HTML = NO
+GENERATE_XML = YES
+GENERATE_TESTLIST = YES
+OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
+INPUT = {self.path.resolve().as_posix()}
+""")
+            command = ["doxygen", doxyfile.as_posix()]
+            subprocess.run(command, cwd=tmp_dir.as_posix())
 
-        all_functions = []
-        for f in all_files:
-            all_functions += get_all_functions(f)
+            xml_dir = Path(tmp_dir / "xml")
+            all_files = get_all_xml_files(xml_dir)
 
-        print(all_functions)
+            all_functions = []
+            for f in all_files:
+                all_functions += get_all_functions(f)
+
+            print(all_functions)
+        finally:
+            print("Delete " + tmp_dir.as_posix())
+            shutil.rmtree(tmp_dir)
 
         return []
 
