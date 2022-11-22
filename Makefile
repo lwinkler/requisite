@@ -24,3 +24,6 @@ black_format:
 
 run:
 	${PYTHON} main.py requisite.yaml
+
+tests:
+	${PYTHON} -m unittest discover

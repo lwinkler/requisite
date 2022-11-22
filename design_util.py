@@ -37,7 +37,7 @@ class Requirement(yaml.YAMLObject):
     yaml_tag = "!Requirement"
 
     def __init__(self, id1, text):
-        self.id = id1
+        self.id = id1 # pylint: disable=C0103
         self.text = text
 
 
@@ -48,7 +48,7 @@ class Test(yaml.YAMLObject):
     yaml_tag = "!Test"
 
     def __init__(self, id1, requirement):
-        self.id = id1
+        self.id = id1 # pylint: disable=C0103
         self.requirement = requirement
 
 
