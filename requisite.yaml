@@ -52,6 +52,6 @@ test_lists:
     text: Verify that a design can be reviewed manually
     requirement: req-design-review
 
-- !DoxygenTestList
+- !TestListFromDoxygen
   name: Unit tests
   path: test/doxygen_test

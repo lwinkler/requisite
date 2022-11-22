@@ -83,11 +83,11 @@ class Function(yaml.YAMLObject):
         self.line = line
 
 
-class DoxygenTestList(yaml.YAMLObject):
-    """DoxygenTestList value object: can extract test information from doxygen tags"""
+class TestListFromDoxygen(yaml.YAMLObject):
+    """TestListFromDoxygen value object: can extract test information from doxygen tags"""
 
     yaml_loader = yaml.SafeLoader
-    yaml_tag = "!DoxygenTestList"
+    yaml_tag = "!TestListFromDoxygen"
 
     def __init__(self, name: str, path: str):
         self.name = name

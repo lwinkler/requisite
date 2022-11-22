@@ -2,7 +2,7 @@
 
 import unittest
 from typing import List
-from design_util import DoxygenTestList, Function
+from design_util import TestListFromDoxygen, Function
 
 
 def get_by_name(all_functions: List[Function], name: str) -> Function:
@@ -13,13 +13,13 @@ def get_by_name(all_functions: List[Function], name: str) -> Function:
     raise Exception(f"No function found with name {name}")
 
 
-class TestDoxygenTestList(unittest.TestCase):
+class TestTestListFromDoxygen(unittest.TestCase):
     """Test for class"""
 
     def test_doxygen_test_matching(self):
         """Test"""
 
-        test_list = DoxygenTestList("my_test_list", "test/doxy_tests")
+        test_list = TestListFromDoxygen("my_test_list", "test/doxy_tests")
         all_tests = test_list.list_tests()
 
         # for t in all_tests:
