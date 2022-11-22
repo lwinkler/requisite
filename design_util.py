@@ -14,9 +14,9 @@ class Definition(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Definition"
 
-    def __init__(self, name, definition):
+    def __init__(self, name, text: str):
         self.name = name
-        self.definition = definition
+        self.text = text
 
 
 class DefinitionList(yaml.YAMLObject):
@@ -25,7 +25,7 @@ class DefinitionList(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!DefinitionList"
 
-    def __init__(self, name, elements):
+    def __init__(self, name: str, elements: List[Definition]):
         self.name = name
         self.elements = elements
 
@@ -36,7 +36,7 @@ class Requirement(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Requirement"
 
-    def __init__(self, id1, text):
+    def __init__(self, id1: str, text: str):
         self.id = id1 # pylint: disable=C0103
         self.text = text
 
@@ -47,7 +47,7 @@ class Test(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Test"
 
-    def __init__(self, id1, requirement):
+    def __init__(self, id1: str, requirement: str):
         self.id = id1 # pylint: disable=C0103
         self.requirement = requirement
 
@@ -89,9 +89,9 @@ class DoxygenTestList(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!DoxygenTestList"
 
-    def __init__(self, name: str, path: Path):
+    def __init__(self, name: str, path_str: str):
         self.name = name
-        self.path = path
+        self.path = path_str
 
     def list_tests(self):
         """Generate the list of tests"""
@@ -105,7 +105,7 @@ class DoxygenTestList(yaml.YAMLObject):
                     res.append(path)
             return res
 
-        def get_child(node, attribute_name, check_unique: bool):
+        def get_child(node, attribute_name: str, check_unique: bool):
             children = []
             for child in node.iter(attribute_name):
                 children.append(child)
@@ -193,7 +193,7 @@ class Design(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
 
-    def __init__(self, definitions, requirements, test_lists):
+    def __init__(self, definitions: List[Definition], requirements: List[Requirement], test_lists: List[TestList]):
         self.definitions = definitions
         self.requirements = requirements
         self.test_lists = test_lists

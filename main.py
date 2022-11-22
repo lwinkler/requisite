@@ -57,9 +57,6 @@ def print_design(design: du.Design) -> None:
 if __name__ == "__main__":
 
     args = arguments_parser()
-
-    design = yu.read_design(args.input)
-
-    print_design(design)
-
-    yu.write_design(Path("out.yaml"), design)
+    product_design = yu.read_design(args.input)
+    print_design(product_design)
+    yu.write_design(Path("out.yaml"), product_design)

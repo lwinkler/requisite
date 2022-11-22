@@ -2,15 +2,15 @@
 definitions:
 - &yaml_format !Definition
   name: yaml-format
-  definition: The YAML format, used for input and output.
+  text: The YAML format, used for input and output.
 
 - &design !Definition
   name: design
-  definition: The specific design of a product, it contains the definitions, requirements, ...
+  text: The specific design of a product, it contains the definitions, requirements, ...
 
 - &design_parts !Definition
   name: design-parts
-  definition: "The different parts of a design: requirements, definitions, tests, ..."
+  text: "The different parts of a design: requirements, definitions, tests, ..."
 # TODO: add the design parts
 
 lists:

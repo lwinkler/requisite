@@ -20,7 +20,7 @@ class TestDoxygenTestList(unittest.TestCase):
     def test_doxygen_test_matching(self):
         """Test"""
 
-        test_list = DoxygenTestList("my_test_list", Path("test/doxy_tests"))
+        test_list = DoxygenTestList("my_test_list", "test/doxy_tests")
         all_tests = test_list.list_tests()
 
         # for t in all_tests:
