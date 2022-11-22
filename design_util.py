@@ -107,11 +107,12 @@ class DoxygenTestList(yaml.YAMLObject):
             doxyfile = tmp_dir / "Doxyfile"
             with open(doxyfile, "w") as fout:
                 fout.write(
-                    f""""GENERATE_LATEX = NO
+                    f"""GENERATE_LATEX = NO
 GENERATE_HTML = NO
 GENERATE_XML = YES
 GENERATE_TESTLIST = YES
-OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
+# OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
+RECURSIVE = YES
 INPUT = {self.path.resolve().as_posix()}
 """)
             command = ["doxygen", doxyfile.as_posix()]
@@ -127,7 +128,7 @@ INPUT = {self.path.resolve().as_posix()}
             print(all_functions)
         finally:
             print("Delete " + tmp_dir.as_posix())
-            shutil.rmtree(tmp_dir)
+            # shutil.rmtree(tmp_dir)
 
         return []
 
