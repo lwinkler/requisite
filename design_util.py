@@ -89,9 +89,12 @@ class DoxygenTestList(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!DoxygenTestList"
 
-    def __init__(self, name: str, path_str: str):
+    def __init__(self, name: str, path: str):
         self.name = name
-        self.path = path_str
+        self.path = path
+    
+    def get_path(self) -> Path:
+        return Path(self.path)
 
     def list_tests(self):
         """Generate the list of tests"""
@@ -164,7 +167,7 @@ GENERATE_XML = YES
 GENERATE_TESTLIST = YES
 # OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
 RECURSIVE = YES
-INPUT = {self.path.resolve().as_posix()}
+INPUT = {self.get_path().resolve().as_posix()}
 ALIASES =
 ALIASES += \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
 """

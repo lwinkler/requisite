@@ -1,7 +1,6 @@
 """Unit test for doxygen test extraction"""
 
 import unittest
-from pathlib import Path
 from typing import List
 from design_util import DoxygenTestList, Function
 
