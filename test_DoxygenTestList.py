@@ -2,10 +2,11 @@
 
 import unittest
 from pathlib import Path
+from typing import List
 from design_util import DoxygenTestList, Function
 
 
-def get_by_name(all_functions: Function, name: str) -> Function:
+def get_by_name(all_functions: List[Function], name: str) -> Function:
     """Search function by name"""
     for func in all_functions:
         if func.name == name:

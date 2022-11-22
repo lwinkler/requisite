@@ -18,7 +18,7 @@ if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")
     sys.exit(1)
 
-# --------------------------------------------------------------------------------
+
 def arguments_parser():
     """Define the parser and parse arguments"""
 

@@ -7,6 +7,7 @@ from typing import List
 
 import yaml
 
+
 class Definition(yaml.YAMLObject):
     """Definition value object"""
 
@@ -135,10 +136,10 @@ class DoxygenTestList(yaml.YAMLObject):
                     location.attrib["line"],
                 )
             return Function(
-                name.text, None, location.attrib["file"], location.attrib["line"]
+                name.text, "", location.attrib["file"], location.attrib["line"]
             )
 
-        def extract_all_functions(xml_file: Path) -> Function:
+        def extract_all_functions(xml_file: Path) -> List[Function]:
             tree = ET.parse(xml_file)
             root = tree.getroot()
             res: List[Function] = []
@@ -148,7 +149,7 @@ class DoxygenTestList(yaml.YAMLObject):
                     funct = extract_function(memberdef)
 
                     # only the functions associated with a requirement
-                    if funct.requirement is not None:
+                    if funct.requirement:
                         res.append(funct)
             return res
 
@@ -170,7 +171,7 @@ ALIASES += \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
                 )
 
             command = ["doxygen", doxyfile.as_posix()]
-            subprocess.run(command, cwd=tmp_dir.as_posix(), check = True)
+            subprocess.run(command, cwd=tmp_dir.as_posix(), check=True)
 
             xml_dir = Path(tmp_dir / "xml")
             all_files = get_all_xml_files(xml_dir)

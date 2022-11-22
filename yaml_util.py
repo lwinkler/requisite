@@ -1,10 +1,10 @@
-
 """Utilities for YAML file format"""
 
 from pathlib import Path
 
 import yaml
 import design_util as du
+
 
 def read_design(path: Path) -> du.Design:
     """Read a full design document in YAML format"""
