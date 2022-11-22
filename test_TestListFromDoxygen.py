@@ -1,8 +1,10 @@
 """Unit test for doxygen test extraction"""
 
 import unittest
+from pathlib import Path
 from typing import List
-from design_util import TestListFromDoxygen, Function
+
+from doxygen_util import extract_tests_from_functions, Function
 
 
 def get_by_name(all_functions: List[Function], name: str) -> Function:
@@ -19,18 +21,17 @@ class TestTestListFromDoxygen(unittest.TestCase):
     def test_doxygen_test_matching(self):
         """Test"""
 
-        test_list = TestListFromDoxygen("my_test_list", "test/doxy_tests")
-        all_tests = test_list.list_tests()
+        all_functions = extract_tests_from_functions(Path("test/doxy_tests"))
 
-        # for t in all_tests:
+        # for t in all_functions:
         # print(t.name, t.file, t.line, t.requirement)
 
-        self.assertEqual(len(all_tests), 8)
-        self.assertEqual(get_by_name(all_tests, "test1a").requirement, "req-1a")
-        self.assertEqual(get_by_name(all_tests, "test1b").requirement, "req-1b")
-        self.assertEqual(get_by_name(all_tests, "test2a").requirement, "req-2a")
-        self.assertEqual(get_by_name(all_tests, "test2b").requirement, "req-2b")
-        self.assertEqual(get_by_name(all_tests, "test3a").requirement, "req-3a")
-        self.assertEqual(get_by_name(all_tests, "test3b").requirement, "req-3b")
-        self.assertEqual(get_by_name(all_tests, "test4a").requirement, "req-4a")
-        self.assertEqual(get_by_name(all_tests, "test4b").requirement, "req-4b")
+        self.assertEqual(len(all_functions), 8)
+        self.assertEqual(get_by_name(all_functions, "test1a").requirement, "req-1a")
+        self.assertEqual(get_by_name(all_functions, "test1b").requirement, "req-1b")
+        self.assertEqual(get_by_name(all_functions, "test2a").requirement, "req-2a")
+        self.assertEqual(get_by_name(all_functions, "test2b").requirement, "req-2b")
+        self.assertEqual(get_by_name(all_functions, "test3a").requirement, "req-3a")
+        self.assertEqual(get_by_name(all_functions, "test3b").requirement, "req-3b")
+        self.assertEqual(get_by_name(all_functions, "test4a").requirement, "req-4a")
+        self.assertEqual(get_by_name(all_functions, "test4b").requirement, "req-4b")
