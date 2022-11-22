@@ -23,4 +23,4 @@ black_format:
 	${PYTHON} -m black .
 
 run:
-	${PYTHON} main.py
+	${PYTHON} main.py requisite.yaml

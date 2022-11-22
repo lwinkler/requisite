@@ -1,37 +1,20 @@
-#! env python3
 
-import yaml
+"""Utilities for YAML file format"""
 
-import design_util as du
 from pathlib import Path
 
+import yaml
+import design_util as du
 
 def read_design(path: Path) -> du.Design:
     """Read a full design document in YAML format"""
-    with open(path) as fin:
+    with open(path, encoding="utf-8") as fin:
         return yaml.safe_load(fin.read())
 
 
 def write_design(path: Path, design: du.Design) -> None:
     """Write a full design document in YAML format"""
 
-    with open(path, "w") as fout:
+    with open(path, "w", encoding="utf-8") as fout:
         # so far we set a very high line width
         fout.write(yaml.dump(design, width=1000))
-
-# garage1 = Garage("mygarage", [
-# Vehicle('spam1', 'eggs'),
-# Vehicle('spam2', 'eggs'),
-# Vehicle('adfasdf', 'eggs'),
-# Vehicle('spam', 'eggs'),
-# Vehicle('spam', 'eggs'),
-# Vehicle('AAA', 'eggs')
-# ])
-# serialized_garage1 = yaml.dump(garage1)
-#
-# with open("out.yaml", "w") as fout:
-# fout.write(serialized_garage1)
-#
-# print(serialized_garage1)
-# deserialized_garage1 = yaml.safe_load(serialized_garage1)
-# print("name: %s, vehicles: %s" % (deserialized_garage1.name, deserialized_garage1.vehicles))

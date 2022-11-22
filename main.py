@@ -16,7 +16,7 @@ import design_util as du
 
 if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")
-    exit(1)
+    sys.exit(1)
 
 # --------------------------------------------------------------------------------
 def arguments_parser():
@@ -29,13 +29,14 @@ def arguments_parser():
 
     parser.add_argument(
         "input",
-        type= Path,
+        type=Path,
         help="The input design in YAML format",
     )
     # arguments for QApplication
     parser.add_argument("--style", help="Passed to the constructor of QApplication")
 
     return parser.parse_args()
+
 
 def print_design(design: du.Design) -> None:
     """Output the design"""
@@ -51,6 +52,7 @@ def print_design(design: du.Design) -> None:
     all_tests = design.list_tests()
     print(f"{len(all_tests)} tests: ")
     print("\n".join([el.id for el in all_tests]))
+
 
 if __name__ == "__main__":
 
