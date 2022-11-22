@@ -61,6 +61,14 @@ import tempfile
 import shutil
 import xml.etree.ElementTree as ET
 
+class Function(yaml.YAMLObject):
+    """A function and the associated requirement"""
+    def __init__(self, name: str, requirement: str, file: Path, line: int):
+        self.name = name
+        self.requirement = requirement
+        self.file = file
+        self.line = line
+
 class DoxygenTestList(yaml.YAMLObject):
     """DoxygenTestList value object: can extract test information from doxygen tags"""
     yaml_loader = yaml.SafeLoader
@@ -76,34 +84,54 @@ class DoxygenTestList(yaml.YAMLObject):
         def get_all_xml_files(xml_dir: Path) -> List[Path]:
             res = []
             for p in xml_dir.iterdir():
-                if p.as_posix().endswith(".xml"):
+                if p.as_posix().endswith(".xml") and not p.as_posix().endswith("index.xml"):
                     res.append(p)
             return res
 
-        def get_function_name(node) -> str:
-            res = []
-            for name in node.iter("name"):
-                res.append(name.text)
-            assert(len(res) == 1)
-            return res[0]
+        def get_child(node, attribute_name, check_unique: bool):
+            children = []
+            for c in node.iter(attribute_name):
+                children.append(c)
+            if check_unique:
+                assert(len(children) == 1)
+            return children[0] if children else None
 
-        def get_all_functions(xml_file: Path):
+        def get_requirement_node(node):
+            descr = get_child(node, "detaileddescription", True)
+            xrefsect = get_child(descr, "xrefsect", False)
+            if xrefsect is None:
+                return None
+            xrefdescr = get_child(xrefsect, "xrefdescription", True)
+            return get_child(xrefdescr, "para", False)
+
+        def extract_function(node) -> Function:
+            """Extract function from xml node"""
+
+            name = get_child(node, "name", True)
+            location = get_child(node, "location", True)
+            requirement = get_requirement_node(node)
+
+            if requirement is not None and requirement.text:
+                return Function(name.text, requirement.text.strip(), location.attrib["file"], location.attrib["line"])
+            return Function(name.text, None, location.attrib["file"], location.attrib["line"])
+
+
+        def extract_all_functions(xml_file: Path) -> Function:
             tree = ET.parse(xml_file)
             root = tree.getroot()
-            res = []
-            print(xml_file.as_posix())
+            res : List[Function] = []
+            # print(xml_file.as_posix())
             for memberdef in root.iter("memberdef"):
                 if memberdef.attrib["kind"] == "function":
-                    name = get_function_name(memberdef)
-                    for descr in memberdef.iter("briefdescription"):
-                        for para in descr.iter("para"):
-                            print(888, name, para.text)
-                            # res.append(Path(name))
+                    funct = extract_function(memberdef)
+
+                    # only the functions associated with a requirement
+                    if funct.requirement is not None:
+                        res.append(funct)
             return res
 
         tmp_dir = Path(tempfile.mkdtemp("reqdoxy"))
         try:
-            # shutil.copy("Doxyfile", tmp_dir.as_posix())
             doxyfile = tmp_dir / "Doxyfile"
             with open(doxyfile, "w") as fout:
                 fout.write(
@@ -114,8 +142,10 @@ GENERATE_TESTLIST = YES
 # OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
 RECURSIVE = YES
 INPUT = {self.path.resolve().as_posix()}
-ALIASES += 'req=\\xrefitem req "Requirement" "Requirements"'
+ALIASES =
+ALIASES += \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
 """)
+            
             command = ["doxygen", doxyfile.as_posix()]
             subprocess.run(command, cwd=tmp_dir.as_posix())
 
@@ -124,14 +154,14 @@ ALIASES += 'req=\\xrefitem req "Requirement" "Requirements"'
 
             all_functions = []
             for f in all_files:
-                all_functions += get_all_functions(f)
+                all_functions += extract_all_functions(f)
 
-            print(all_functions)
+            return all_functions
+
         finally:
             print("Delete " + tmp_dir.as_posix())
             shutil.rmtree(tmp_dir)
 
-        return []
 
 class Design(yaml.YAMLObject):
     """Design value object, contains the full design"""

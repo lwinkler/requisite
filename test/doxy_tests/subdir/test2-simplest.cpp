@@ -1,10 +1,9 @@
 #define BOOST_TEST_MODULE Test2
 #include <boost/test/included/unit_test.hpp>
 
-/** @file test2-simplest.cpp */
+/** \file subdir/test2-simplest.cpp */
 
-/// @def test3a
-/// @req req-3a
+/// \req req-3a
 void test3a();
 BOOST_AUTO_TEST_CASE(test3a)
 {
@@ -14,8 +13,7 @@ BOOST_AUTO_TEST_CASE(test3a)
 }
 
 
-//! @def test3b
-//! @req req-3b
+//! \req req-3b
 void test3b();
 BOOST_AUTO_TEST_CASE(test3b)
 {
@@ -25,9 +23,8 @@ BOOST_AUTO_TEST_CASE(test3b)
 }
 
 /*! 
- * @def test4a
- * @req req-4a */
-void test3b();
+ * \req req-4a */
+void test4a();
 BOOST_AUTO_TEST_CASE(test4a)
 {
 	int i = 5;
@@ -36,9 +33,8 @@ BOOST_AUTO_TEST_CASE(test4a)
 }
 
 /** 
- * @def test4b
- * @req req-4b */
-void test3b();
+ * \req req-4b */
+void test4b();
 BOOST_AUTO_TEST_CASE(test4b)
 {
 	int i = 5;
