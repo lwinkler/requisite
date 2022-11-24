@@ -88,8 +88,8 @@ GENERATE_TESTLIST = YES
 # OUTPUT_DIRECTORY = {tmp_dir.as_posix()}
 RECURSIVE = YES
 INPUT = {path.resolve().as_posix()}
-ALIASES =
-ALIASES += \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
+HAVE_DOT = NO
+ALIASES = \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
 """
                 )
 
