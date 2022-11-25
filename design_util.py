@@ -9,58 +9,66 @@ import yaml
 import doxygen_util as du
 
 
-class Definition(yaml.YAMLObject):
+class Statement(yaml.YAMLObject):
+    """Any statement: this is the parent class for all other. Virtual."""
+
+    # yaml_loader = yaml.SafeLoader
+    # yaml_tag = "!Statement"
+
+    def __init__(self, id1: str, name: str, text: str):
+        self.id = id1 # pylint: disable=C0103
+        self.name = name
+        self.text = text
+
+class Definition(Statement):
     """Definition value object"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Definition"
 
-    def __init__(self, name, text: str):
-        self.name = name
-        self.text = text
+    def __init__(self, id1: str, name: str, text: str):
+        super().__init__(id1, name, text)
 
 
-class DefinitionList(yaml.YAMLObject):
+class DefinitionList(Statement):
     """TODO keep"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!DefinitionList"
 
-    def __init__(self, name: str, elements: List[Definition]):
-        self.name = name
+    def __init__(self, id1: str, name: str, text: str, elements: List[Definition]):
+        super().__init__(id1, name, text)
         self.elements = elements
 
 
-class Requirement(yaml.YAMLObject):
+class Requirement(Statement):
     """Requirement value object"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Requirement"
 
-    def __init__(self, id1: str, text: str):
-        self.id = id1 # pylint: disable=C0103
-        self.text = text
+    def __init__(self, id1: str, name: str, text: str):
+        super().__init__(id1, name, text)
 
 
-class Test(yaml.YAMLObject):
+class Test(Statement):
     """Test value object"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Test"
 
-    def __init__(self, id1: str, requirement: str):
-        self.id = id1 # pylint: disable=C0103
-        self.requirement = requirement
+    def __init__(self, id1: str, name: str, text: str, requirement: str):
+        super().__init__(id1, name, text)
 
 
-class TestList(yaml.YAMLObject):
+class TestList(Statement):
     """TestList value object"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!TestList"
 
-    def __init__(self, name: str, tests: Test):
-        self.name = name
+    def __init__(self, id1: str, name: str, text: str, tests: Test):
+        super().__init__(id1, name, text)
         self.tests = tests
 
     def list_tests(self):
@@ -68,14 +76,14 @@ class TestList(yaml.YAMLObject):
         return self.tests
 
 
-class TestListFromDoxygen(yaml.YAMLObject):
+class TestListFromDoxygen(Statement):
     """TestListFromDoxygen value object: can extract test information from doxygen tags"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!TestListFromDoxygen"
 
-    def __init__(self, name: str, path: str):
-        self.name = name
+    def __init__(self, id1: str, name: str, text: str, path: Path):
+        super().__init__(id1, name, text)
         self.path = path
 
     def get_path(self) -> Path:

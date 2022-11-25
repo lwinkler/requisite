@@ -40,6 +40,9 @@ def arguments_parser():
 
 def print_design(design: du.Design) -> None:
     """Output the design"""
+    print(777, type(design.definitions[0]))
+    print(777, design.definitions[0].id)
+    print(777, design.definitions[0].name)
     print(f"{len(design.definitions)} definitions: ")
     print("\n".join([el.name for el in design.definitions]))
     print()
