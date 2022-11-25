@@ -5,18 +5,30 @@ children:
 
 # Definitions
 - &yaml_format !Definition
-  id: yaml-format
+  id: def-yaml-format
   text: The YAML format, used for input and output.
 
 - &design !Definition
-  id: design
+  id: def-design
   text: The specific design of a product, it contains the definitions, requirements, ...
 
 - &design_parts !Definition
-  id: design-parts
+  id: def-statement
+  name: Statement
   text: "The different parts of a design: requirements, definitions, tests, ..."
-# TODO: add the design parts
-
+  children:
+  - !Definition
+    id: def-definition
+    name: Definition
+  - !Definition
+    id: def-requirement
+    name: Requirement
+  - !Definition
+    id: def-test
+    name: Test
+  - !Definition
+    id: def-test-list
+    name: Test list
 
 # Requirements
 - !Requirement

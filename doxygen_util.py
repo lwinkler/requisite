@@ -9,7 +9,7 @@ from typing import List
 from pathlib import Path
 
 
-class Function:  # TODO: Keep ?
+class Function:
     """A function and the associated requirement"""
 
     def __init__(self, name: str, requirement: str, file: Path, line: int):
@@ -62,6 +62,7 @@ def extract_tests_from_functions(path) -> List[Function]:
         return Function(name.text, "", location.attrib["file"], location.attrib["line"])
 
     def extract_all_functions(xml_file: Path) -> List[Function]:
+
         tree = ET.parse(xml_file)
         root = tree.getroot()
         res: List[Function] = []
@@ -75,6 +76,8 @@ def extract_tests_from_functions(path) -> List[Function]:
                     res.append(funct)
         return res
 
+    if not path.is_dir():
+        raise Exception(f"Directory not found: {path.as_posix()}")
     tmp_dir = Path(tempfile.mkdtemp("reqdoxy"))
     try:
         doxyfile = tmp_dir / "Doxyfile"

@@ -21,7 +21,7 @@ class TestTestListFromDoxygen(unittest.TestCase):
     def test_doxygen_test_matching(self):
         """Test"""
 
-        all_functions = extract_tests_from_functions(Path("test/doxy_tests"))
+        all_functions = extract_tests_from_functions(Path("test/doxygen_tests"))
 
         # for t in all_functions:
         # print(t.name, t.file, t.line, t.requirement)

@@ -40,6 +40,12 @@ class Statement(yaml.YAMLObject):
         if children is not None:
             self.children = children
 
+    def process(self):
+        """Processing: Nothing to do by default but call on children"""
+        if hasattr(self, "children"):
+            for child in self.children:
+                child.process()
+
     def print(self, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
         name_str = f", name: {self.name}" if hasattr(self, "name") else ""
@@ -114,15 +120,17 @@ class TestListFromDoxygen(TestList):
         super().__init__(id1, name, text, children)
         self.path = path
 
+    def process(self):
+        """Processing: extract child tests"""
+        if hasattr(self, "children"):
+            raise Exception("TestListFromDoxygen children should not be defined manually")
+        all_functions = du.extract_tests_from_functions(self.get_path())
+        self.children = [Test(f"{self.id}-{index}", func.name, None, None, func.requirement) for index, func in enumerate(all_functions)]
+        super().process()
+
     def get_path(self) -> Path:
         """Return a Path object"""
         return Path(self.path)
-
-    def list_tests(self) -> List[Test]:
-        """Generate the list of tests"""
-        all_functions = du.extract_tests_from_functions(self.get_path())
-        return [Test(self.id + "-" + index, func.name, None, None, func.requirement) for index, func in enumerate(all_functions)]
-
 
 class Design(Statement):
     """Design value object, contains the full design"""
