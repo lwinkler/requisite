@@ -2,7 +2,8 @@
 
 """Utilities"""
 
-# needed until python 3.10: https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
+# needed until python 3.10:
+# https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
 from pathlib import Path
 from typing import List, Type
@@ -17,11 +18,11 @@ def check_is_instance(statement: Statement, parent_class: Type) -> None:
     if not isinstance(statement, parent_class):
         raise Exception(f"{statement.id} is not an instance of {parent_class.__name__}")
 
+
 def check_are_instances(statements: List[Statement], parent_class: Type) -> None:
     """Check if the objects inherit from type (exception raised)"""
     for statement in statements:
         check_is_instance(statement, parent_class)
-
 
 
 class Statement(yaml.YAMLObject):
@@ -31,7 +32,7 @@ class Statement(yaml.YAMLObject):
     yaml_tag = "!Statement"
 
     def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
-        self.id = id1 # pylint: disable=C0103
+        self.id = id1  # pylint: disable=C0103
         if name is not None:
             self.name = name
         if text is not None:
@@ -42,8 +43,11 @@ class Statement(yaml.YAMLObject):
     def __str__(self):
         name_str = f", name: {self.name}" if hasattr(self, "name") else ""
         text_str = f", text: {self.text}" if hasattr(self, "text") else ""
-        children_str = f", nb_children: {len(self.children)}" if hasattr(self, "children") else ""
+        children_str = (
+            f", nb_children: {len(self.children)}" if hasattr(self, "children") else ""
+        )
         return f"id: {self.id}" + name_str + text_str + children_str
+
 
 class Definition(Statement):
     """Definition value object"""
@@ -52,6 +56,7 @@ class Definition(Statement):
 
     def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
         super().__init__(id1, name, text, children)
+
 
 class Requirement(Statement):
     """Requirement value object"""
@@ -67,7 +72,14 @@ class Test(Statement):
 
     yaml_tag = "!Test"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement], requirement: str):
+    def __init__(
+        self,
+        id1: str,
+        name: str,
+        text: str,
+        children: List[Statement],
+        requirement: str,
+    ):
         super().__init__(id1, name, text, children)
         self.requirement = requirement
 
@@ -91,7 +103,9 @@ class TestListFromDoxygen(TestList):
 
     yaml_tag = "!TestListFromDoxygen"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement], path: Path):
+    def __init__(
+        self, id1: str, name: str, text: str, children: List[Statement], path: Path
+    ):
         super().__init__(id1, name, text, children)
         self.path = path
 
@@ -102,7 +116,7 @@ class TestListFromDoxygen(TestList):
     def list_tests(self) -> List[Test]:
         """Generate the list of tests"""
         all_functions = du.extract_tests_from_functions(self.get_path())
-        return [Test(func.name, func.requirement, None, None) for func in all_functions]
+        return [Test(self.id + "-" + index, func.name, None, None, func.requirement) for index, func in enumerate(all_functions)]
 
 
 class Design(yaml.YAMLObject):
@@ -111,7 +125,12 @@ class Design(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
 
-    def __init__(self, definitions: List[Definition], requirements: List[Requirement], test_lists: List[TestList]):
+    def __init__(
+        self,
+        definitions: List[Definition],
+        requirements: List[Requirement],
+        test_lists: List[TestList],
+    ):
         self.definitions = definitions
         self.requirements = requirements
         self.test_lists = test_lists

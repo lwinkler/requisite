@@ -4,8 +4,7 @@ import unittest
 from pathlib import Path
 from typing import List
 
-from design_util import *
-
+import design_util as du
 
 
 class TestDesignUtil(unittest.TestCase):
@@ -14,10 +13,9 @@ class TestDesignUtil(unittest.TestCase):
     def test_creation(self):
         """Test"""
 
-        statement = Statement("id1", "name1", "Some text", None)
-        requirement = Requirement("id2", "name2", "Some text", None)
-        definition = Definition("id3", "name3", "Some text", None)
-
+        # statement = du.Statement("id1", "name1", "Some text", None)
+        requirement = du.Requirement("id2", "name2", "Some text", None)
+        definition = du.Definition("id3", "name3", "Some text", None)
 
         self.assertEqual(requirement.id, "id2")
         self.assertEqual(requirement.name, "name2")
