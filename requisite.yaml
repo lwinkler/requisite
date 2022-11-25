@@ -1,5 +1,7 @@
 !Design
-definitions:
+statements:
+
+# Definitions
 - &yaml_format !Definition
   id: yaml-format
   text: The YAML format, used for input and output.
@@ -13,9 +15,8 @@ definitions:
   text: "The different parts of a design: requirements, definitions, tests, ..."
 # TODO: add the design parts
 
-lists:
 
-requirements:
+# Requirements
 - !Requirement
   id: req-design-review
   text: A *design can be commited and reviewed as source code.
@@ -40,9 +41,10 @@ requirements:
   id: req-design-validity
   text: The validity of a design can be checked according to rules
 
-test_lists:
 
+# Test lists
 - !TestList
+  id: tests-system
   name: System tests
   children:
 
@@ -53,5 +55,6 @@ test_lists:
     requirement: req-design-review
 
 - !TestListFromDoxygen
+  id: tests-unit
   name: Unit tests
   path: test/doxygen_tests

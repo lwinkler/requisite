@@ -127,17 +127,14 @@ class Design(yaml.YAMLObject):
 
     def __init__(
         self,
-        definitions: List[Definition],
-        requirements: List[Requirement],
-        test_lists: List[TestList],
+        statements: List[Statement]
     ):
-        self.definitions = definitions
-        self.requirements = requirements
-        self.test_lists = test_lists
+        self.statements = statements
 
     def list_tests(self):
         """Generate the test list"""
         tests = []
-        for list1 in self.test_lists:
-            tests += list1.list_tests()
+        for list1 in self.statements:
+            if isinstance(list1, TestList):
+                tests += list1.list_tests()
         return tests

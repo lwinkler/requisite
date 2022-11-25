@@ -6,17 +6,15 @@ from yaml_util import *
 import design_util as du
 
 DESIGN_STR1 = """!Design
-definitions:
+statements:
 - !Definition
   id: id3
   name: name3
   text: Some text
-requirements:
 - !Requirement
   id: id2
   name: name2
   text: Some text
-test_lists: []
 """
 
 
@@ -68,7 +66,7 @@ class TestDesignUtil(unittest.TestCase):
 
         requirement = du.Requirement("id2", "name2", "Some text", None)
         definition = du.Definition("id3", "name3", "Some text", None)
-        design = du.Design([definition], [requirement], [])
+        design = du.Design([definition] + [requirement])
 
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)
 
@@ -77,12 +75,12 @@ class TestDesignUtil(unittest.TestCase):
 
         design = yaml.safe_load(DESIGN_STR1)
 
-        self.assertTrue(isinstance(design.requirements[0], du.Requirement))
-        self.assertEqual(design.requirements[0].id, "id2")
-        self.assertEqual(design.requirements[0].name, "name2")
+        self.assertTrue(isinstance(design.statements[1], du.Requirement))
+        self.assertEqual(design.statements[1].id, "id2")
+        self.assertEqual(design.statements[1].name, "name2")
 
-        self.assertTrue(isinstance(design.definitions[0], du.Definition))
-        self.assertEqual(design.definitions[0].id, "id3")
-        self.assertEqual(design.definitions[0].name, "name3")
+        self.assertTrue(isinstance(design.statements[0], du.Definition))
+        self.assertEqual(design.statements[0].id, "id3")
+        self.assertEqual(design.statements[0].name, "name3")
 
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)

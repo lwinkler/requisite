@@ -41,8 +41,8 @@ def arguments_parser():
 def print_design(design: du.Design) -> None:
     """Output the design"""
     print("design:")
-    print("  definitions:")
-    for element in design.definitions:
+    print("  statements:")
+    for element in design.statements:
         print("    " + str(element))
     all_tests = design.list_tests()
     # print(f"{len(all_tests)} tests: ")
