@@ -14,9 +14,9 @@ class TestDesignUtil(unittest.TestCase):
     def test_creation(self):
         """Test"""
 
-        statement = Statement("id1", "name1", "Some text")
-        requirement = Requirement("id2", "name2", "Some text")
-        definition = Definition("id3", "name3", "Some text")
+        statement = Statement("id1", "name1", "Some text", None)
+        requirement = Requirement("id2", "name2", "Some text", None)
+        definition = Definition("id3", "name3", "Some text", None)
 
 
         self.assertEqual(requirement.id, "id2")

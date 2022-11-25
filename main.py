@@ -42,11 +42,11 @@ def print_design(design: du.Design) -> None:
     """Output the design"""
     print("design:")
     print("  definitions:")
-    for el in design.definitions:
-        print("    " + str(el))
+    for element in design.definitions:
+        print("    " + str(element))
     all_tests = design.list_tests()
     # print(f"{len(all_tests)} tests: ")
-    # print("\n".join([el.id for el in all_tests]))
+    # print("\n".join([element.id for element in all_tests]))
 
 
 if __name__ == "__main__":

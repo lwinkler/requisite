@@ -44,7 +44,7 @@ test_lists:
 
 - !TestList
   name: System tests
-  tests:
+  children:
 
   - !Test
     id: test-design-review

@@ -29,8 +29,8 @@ class TestDesignUtil(unittest.TestCase):
         """Test"""
 
         # statement = Statement("id1", "name1", "Some text")
-        requirement = Requirement("id2", "name2", "Some text")
-        definition = Definition("id3", "name3", "Some text")
+        requirement = Requirement("id2", "name2", "Some text", None)
+        definition = Definition("id3", "name3", "Some text", None)
 
         # self.assertEqual(yaml.dump(statement, width=1000), '!Statement\nid: id1\nname: name1\ntext: Some text\n')
         self.assertEqual(yaml.dump(requirement, width=1000), '!Requirement\nid: id2\nname: name2\ntext: Some text\n')
@@ -55,8 +55,8 @@ class TestDesignUtil(unittest.TestCase):
     def test_serialize_design(self):
         """Test"""
 
-        requirement = Requirement("id2", "name2", "Some text")
-        definition = Definition("id3", "name3", "Some text")
+        requirement = Requirement("id2", "name2", "Some text", None)
+        definition = Definition("id3", "name3", "Some text", None)
         design = Design([definition], [requirement], [])
 
         self.assertEqual(yaml.dump(design, width=1000), design_str1)
