@@ -40,21 +40,13 @@ def arguments_parser():
 
 def print_design(design: du.Design) -> None:
     """Output the design"""
-    print(777, type(design.definitions[0]))
-    print(777, design.definitions[0].id)
-    print(777, design.definitions[0].name)
-    print(f"{len(design.definitions)} definitions: ")
-    print("\n".join([el.name for el in design.definitions]))
-    print()
-    print(f"{len(design.requirements)} requirements: ")
-    print("\n".join([el.id for el in design.requirements]))
-    print()
-    print(f"{len(design.test_lists)} test lists: ")
-    print("\n".join([el.name for el in design.test_lists]))
-    print()
+    print("design:")
+    print("  definitions:")
+    for el in design.definitions:
+        print("    " + str(el))
     all_tests = design.list_tests()
-    print(f"{len(all_tests)} tests: ")
-    print("\n".join([el.id for el in all_tests]))
+    # print(f"{len(all_tests)} tests: ")
+    # print("\n".join([el.id for el in all_tests]))
 
 
 if __name__ == "__main__":

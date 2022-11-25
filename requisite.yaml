@@ -54,4 +54,4 @@ test_lists:
 
 - !TestListFromDoxygen
   name: Unit tests
-  path: test/doxygen_test
+  path: test/doxygen_tests

@@ -20,6 +20,11 @@ class Statement(yaml.YAMLObject):
         self.name = name
         self.text = text
 
+    def __str__(self):
+        name_str = f", name: {self.name}" if hasattr(self, "name") else ""
+        text_str = f", text: {self.text}" if hasattr(self, "text") else ""
+        return f"id: {self.id}" + name_str + text_str
+
 class Definition(Statement):
     """Definition value object"""
 
