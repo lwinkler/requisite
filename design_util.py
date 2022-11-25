@@ -40,13 +40,18 @@ class Statement(yaml.YAMLObject):
         if children is not None:
             self.children = children
 
-    def __str__(self):
+    def print(self, indent: int = 0) -> None:
+        """Print to stdout (for debug)"""
         name_str = f", name: {self.name}" if hasattr(self, "name") else ""
         text_str = f", text: {self.text}" if hasattr(self, "text") else ""
         children_str = (
-            f", nb_children: {len(self.children)}" if hasattr(self, "children") else ""
+            f", (nb_children: {len(self.children)})" if hasattr(self, "children") else ""
         )
-        return f"id: {self.id}" + name_str + text_str + children_str
+        print(f"{indent * 2 * ' '}id: {self.id}" + name_str + text_str + children_str)
+
+        if hasattr(self, "children"):
+            for child in self.children:
+                child.print(indent + 1)
 
 
 class Definition(Statement):
@@ -119,22 +124,19 @@ class TestListFromDoxygen(TestList):
         return [Test(self.id + "-" + index, func.name, None, None, func.requirement) for index, func in enumerate(all_functions)]
 
 
-class Design(yaml.YAMLObject):
+class Design(Statement):
     """Design value object, contains the full design"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
 
-    def __init__(
-        self,
-        statements: List[Statement]
-    ):
-        self.statements = statements
+    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+        super().__init__(id1, name, text, children)
 
     def list_tests(self):
         """Generate the test list"""
         tests = []
-        for list1 in self.statements:
+        for list1 in self.children:
             if isinstance(list1, TestList):
                 tests += list1.list_tests()
         return tests

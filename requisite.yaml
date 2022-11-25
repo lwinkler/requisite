@@ -1,5 +1,7 @@
 !Design
-statements:
+id: design-requisite
+name: The design statement of requisite
+children:
 
 # Definitions
 - &yaml_format !Definition

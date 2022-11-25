@@ -38,20 +38,9 @@ def arguments_parser():
     return parser.parse_args()
 
 
-def print_design(design: du.Design) -> None:
-    """Output the design"""
-    print("design:")
-    print("  statements:")
-    for element in design.statements:
-        print("    " + str(element))
-    all_tests = design.list_tests()
-    # print(f"{len(all_tests)} tests: ")
-    # print("\n".join([element.id for element in all_tests]))
-
-
 if __name__ == "__main__":
 
     args = arguments_parser()
     product_design = yu.read_design(args.input)
-    print_design(product_design)
+    product_design.print()
     yu.write_design(Path("out.yaml"), product_design)
