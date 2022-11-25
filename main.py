@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     args = arguments_parser()
     product_design = yu.read_design(args.input)
-    product_design.process()
+    product_design.expand()
     product_design.print()
     yu.write_design(Path("out.yaml"), product_design)
 
