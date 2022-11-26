@@ -1,8 +1,8 @@
 """Unit test for YAML serialization"""
 
 import unittest
+import yaml
 
-from yaml_util import *
 import design_util as du
 
 DESIGN_STR1 = """!Design

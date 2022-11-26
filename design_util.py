@@ -46,8 +46,8 @@ class Entry(yaml.YAMLObject):
             if hasattr(self, "children"):
                 for child in self.children:
                     child.expand()
-        except Exception as e:
-            print(f"Exception while expanding {self.id}:", e)
+        except Exception as exc:
+            print(f"Exception while expanding {self.id}:", exc)
             raise
 
     def print(self, indent: int = 0) -> None:
@@ -71,17 +71,13 @@ class Section(Entry):
 
     yaml_tag = "!Section"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
-
-
 class ExternalSection(Entry):
     """An external section: defined in another YAML file"""
 
     yaml_tag = "!ExternalSection"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
+    # def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
+        # super().__init__(id1, name, text, children)
 
 
 class Definition(Entry):
@@ -89,17 +85,11 @@ class Definition(Entry):
 
     yaml_tag = "!Definition"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
-
 
 class Statement(Entry):
     """Statement value object"""
 
     yaml_tag = "!Statement"
-
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
 
 
 class Test(Entry):
@@ -167,9 +157,6 @@ class Design(Entry):
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
-
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
 
     def list_tests(self):
         """Generate the test list"""

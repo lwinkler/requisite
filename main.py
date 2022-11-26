@@ -11,7 +11,6 @@ import argparse
 from pathlib import Path
 
 import yaml_util as yu
-import design_util as du
 
 
 if sys.version_info[0] < 3:

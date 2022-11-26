@@ -20,6 +20,7 @@ class Function:
 
 
 def extract_tests_from_functions(path) -> List[Function]:
+    """Parse the source code to extract the test information"""
     def get_all_xml_files(xml_dir: Path) -> List[Path]:
         res = []
         for path in xml_dir.iterdir():
