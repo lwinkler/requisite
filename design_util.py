@@ -42,9 +42,13 @@ class Entry(yaml.YAMLObject):
 
     def expand(self):
         """Processing: Nothing to do by default but call on children"""
-        if hasattr(self, "children"):
-            for child in self.children:
-                child.expand()
+        try:
+            if hasattr(self, "children"):
+                for child in self.children:
+                    child.expand()
+        except Exception as e:
+            print(f"Exception while expanding {self.id}:", e)
+            raise
 
     def print(self, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
@@ -85,10 +89,10 @@ class Definition(Entry):
         super().__init__(id1, name, text, children)
 
 
-class Requirement(Entry):
-    """Requirement value object"""
+class Statement(Entry):
+    """Statement value object"""
 
-    yaml_tag = "!Requirement"
+    yaml_tag = "!Statement"
 
     def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
@@ -105,13 +109,13 @@ class Test(Entry):
         name: str,
         text: str,
         children: List[Entry],
-        requirement: str,
+        statement: str,
     ):
         super().__init__(id1, name, text, children)
-        self.requirement = requirement
+        self.statement = statement
 
 
-class TestList(Entry):
+class TestList(Entry): # TODO Remove ??
     """TestList value object"""
 
     yaml_tag = "!TestList"
@@ -141,7 +145,7 @@ class TestListFromDoxygen(TestList):
         if hasattr(self, "children"):
             raise Exception("TestListFromDoxygen children should not be defined manually")
         all_functions = du.extract_tests_from_functions(self.get_path())
-        self.children = [Test(f"{self.id}-{index}", func.name, None, None, func.requirement) for index, func in enumerate(all_functions)]
+        self.children = [Test(f"{self.id}-{index}", func.name, None, None, func.statement) for index, func in enumerate(all_functions)]
         super().expand()
 
     def get_path(self) -> Path:

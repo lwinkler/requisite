@@ -24,14 +24,14 @@ class TestTestListFromDoxygen(unittest.TestCase):
         all_functions = extract_tests_from_functions(Path("test/doxygen_tests"))
 
         # for t in all_functions:
-        # print(t.name, t.file, t.line, t.requirement)
+        # print(t.name, t.file, t.line, t.statement)
 
         self.assertEqual(len(all_functions), 8)
-        self.assertEqual(get_by_name(all_functions, "test1a").requirement, "req-1a")
-        self.assertEqual(get_by_name(all_functions, "test1b").requirement, "req-1b")
-        self.assertEqual(get_by_name(all_functions, "test2a").requirement, "req-2a")
-        self.assertEqual(get_by_name(all_functions, "test2b").requirement, "req-2b")
-        self.assertEqual(get_by_name(all_functions, "test3a").requirement, "req-3a")
-        self.assertEqual(get_by_name(all_functions, "test3b").requirement, "req-3b")
-        self.assertEqual(get_by_name(all_functions, "test4a").requirement, "req-4a")
-        self.assertEqual(get_by_name(all_functions, "test4b").requirement, "req-4b")
+        self.assertEqual(get_by_name(all_functions, "test1a").statement, "req-1a")
+        self.assertEqual(get_by_name(all_functions, "test1b").statement, "req-1b")
+        self.assertEqual(get_by_name(all_functions, "test2a").statement, "req-2a")
+        self.assertEqual(get_by_name(all_functions, "test2b").statement, "req-2b")
+        self.assertEqual(get_by_name(all_functions, "test3a").statement, "req-3a")
+        self.assertEqual(get_by_name(all_functions, "test3b").statement, "req-3b")
+        self.assertEqual(get_by_name(all_functions, "test4a").statement, "req-4a")
+        self.assertEqual(get_by_name(all_functions, "test4b").statement, "req-4b")

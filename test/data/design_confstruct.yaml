@@ -47,52 +47,52 @@ children:
       text: validated against a range
 
 #- general
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: "A cs::structure can be read from an input file of any **compatible text file type**"
     multiply: file-types
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: "A cs::structure can be written to an output file of any **compatible text file type**"
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: A cs::structure can be reset to its default value
 
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: A cs::structure can be validated ; the validity criterion is given for each cs::attribute
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: A cs::structure can be documented
 
 #- inheritance
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a child cs::structure shall inherit the list of cs::attribute of the parent cs::structure
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a cs::structure can contain a child cs::attribute inside a parent cs::attribute type (abstract or concrete)
 
 #- compatible type
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: all fundamental type is a **compatible type**
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: std::string is a **compatible type**
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a class enum is a **compatible type**
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a std::list of any **compatible type** is a **compatible type**
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a std::map of any **compatible type** is a **compatible type**
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a class or structure containing classes of any **compatible type** is a **compatible type** (they must be objects and not references/pointers)
-  - !Requirement
+  - !Statement
     id: reqQQQ
     text: a custom class designed by the user can become a **compatible type**
 

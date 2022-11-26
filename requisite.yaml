@@ -5,36 +5,66 @@ children:
 
 # Definitions
 - !Definition
-  id: yaml-format
-  text: The YAML format, used for input and output.
+  id: design-document
+  text: The document that specifies the design
 
 - !Definition
-  id: design
-  text: The specific design of a product, it contains the definitions, requirements, ...
+  id: expanded-design
+  text: The full design, after entries have been expanded
 
 - !Definition
-  id: entry
-  name: Entry
-  text: "The different parts of a design: requirements, definitions, tests, ..."
+  id: formats
+  text: All file formats for input and output
   children:
+
+  - !Definition
+    id: yaml-format
+    text: The YAML format, used for input and output.
+
+  - !Definition
+    id: markdown-format
+    text: The Markdown format to generate documents, reports, ...
+
+- !Definition
+  id: entry-types
+  name: Type of entries
+  text: "A product design is composed of entries: specifications, requirements, definitions, tests, ..."
+  children:
+  - !Definition
+    id: entry
+    text: The parent type for any entry
+
+  - !Definition
+    id: design
+    text: The specific design of a product, it contains the definitions, specifications, requirements, ...
+
   - !Definition
     id: section
     name: Section
+    text: A section of the design. This is used purely to structure the design document
+
   - !Definition
     id: external-section
     name: ExternalSection
+
   - !Definition
     id: definition
     name: Definition
+
   - !Definition
-    id: requirement
-    name: Requirement
+    id: statement
+    name: Statement
+    text: A statement can be any assertion made in the *design-document. It can be a specification or a requirement
+
   - !Definition
     id: test
     name: Test
+    text: Information about a test. A test can verify a *statement
+
   - !Definition
     id: test-list
-    name: Test list
+    name: TestList
+    text: A list of tests
 
 - !Definition
   id: test-annotations
@@ -49,27 +79,51 @@ children:
     name: Pydoc documentation format
 
 # Requirements
-- !Requirement
+- !Statement
   id: req-design-review
-  text: A *design can be commited and reviewed as source code.
+  text: A *design-document consists of one or several text files
+  children:
 
-- !Requirement
-  id: req-input-design
-  text: A *design can be read from the *yaml-format
+  - !Statement
+    id: spec-input-design
+    text: A *design can be read from the *yaml-format
 
-- !Requirement
-  id: req-output-requirements
-  text: All requirements can be written to output
+  - !Statement
+    id: spec-design-split
+    text: A *design can be split into several files
 
-- !Requirement
-  id: req-output-tests
-  text: All tests matching a design can be written to output
+  - !Statement
+    id: spec-input-entries
+    text: Any *entry-type can be read from the *yaml-format
 
-- !Requirement
+- !Statement
+  id: req-design-output
+  text: After processing the *expanded-design is written to output for future use
+  children:
+
+  - !Statement
+    id: spec-design-output-yaml
+    text: The *expanded-design can be written to *yaml-format
+
+  - !Statement
+    id: spec-design-output-markdown
+    text: The *expanded-design can be written as a report to the *markdown-format
+
+  - !Statement
+    id: spec-output-tests
+    text: All tests required by a design can be written to output
+
+- !Statement
   id: req-extract-tests
-  text: Links between tests and requirements can be extracted from the sources of the tests (if properly annotated)
+  text: Links between tests and statements can be extracted from the sources of the tests (if properly annotated)
+  children:
 
-- !Requirement
+  - !Statement
+    id: spec-extract-tests
+    text: Links between tests and statements can be extracted from the sources of the tests in different *test-annotations
+    multiply: test-annotations
+
+- !Statement
   id: req-design-validity
   text: The validity of a design can be checked according to rules
 
@@ -84,7 +138,7 @@ children:
     id: test-design-review
     # labels: non-functional
     text: Verify that a design can be reviewed manually
-    requirement: req-design-review
+    statement: req-design-review
 
 - !TestListFromDoxygen
   id: tests-unit

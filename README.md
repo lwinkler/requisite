@@ -11,9 +11,6 @@ Installation
 pip install -r requirements.txt
 ```
 
-Actions
--------
-- Check that the requirements follow certain rules
-- Extract the list of tests that must be run to validate the requirements
-
-The test linked with a requirement can be either described in the design or extracted from the test sources (in diverse formats).
+Functionalities
+---------------
+The full design is documented in [](requisite.yaml)

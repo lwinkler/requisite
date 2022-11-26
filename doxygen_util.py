@@ -10,11 +10,11 @@ from pathlib import Path
 
 
 class Function:
-    """A function and the associated requirement"""
+    """A function and the associated statement"""
 
-    def __init__(self, name: str, requirement: str, file: Path, line: int):
+    def __init__(self, name: str, statement: str, file: Path, line: int):
         self.name = name
-        self.requirement = requirement
+        self.statement = statement
         self.file = file
         self.line = line
 
@@ -50,12 +50,12 @@ def extract_tests_from_functions(path) -> List[Function]:
 
         name = get_child(node, "name", True)
         location = get_child(node, "location", True)
-        requirement = get_requirement_node(node)
+        statement = get_requirement_node(node)
 
-        if requirement is not None and requirement.text:
+        if statement is not None and statement.text:
             return Function(
                 name.text,
-                requirement.text.strip(),
+                statement.text.strip(),
                 location.attrib["file"],
                 location.attrib["line"],
             )
@@ -71,8 +71,8 @@ def extract_tests_from_functions(path) -> List[Function]:
             if memberdef.attrib["kind"] == "function":
                 funct = extract_function(memberdef)
 
-                # only the functions associated with a requirement
-                if funct.requirement:
+                # only the functions associated with a statement
+                if funct.statement:
                     res.append(funct)
         return res
 
@@ -91,7 +91,7 @@ GENERATE_TESTLIST = YES
 RECURSIVE = YES
 INPUT = {path.resolve().as_posix()}
 HAVE_DOT = NO
-ALIASES = \"req=@xrefitem req \\\"Requirement\\\" \\\"Requirements\\\" \"
+ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
 """
             )
 

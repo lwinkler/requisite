@@ -3,7 +3,7 @@
 
 /** \file subdir/test2-simplest.cpp */
 
-/// \req req-3a
+/// \verify req-3a
 void test3a();
 BOOST_AUTO_TEST_CASE(test3a)
 {
@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(test3a)
 }
 
 
-//! \req req-3b
+//! \verify req-3b
 void test3b();
 BOOST_AUTO_TEST_CASE(test3b)
 {
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(test3b)
 }
 
 /*! 
- * \req req-4a */
+ * \verify req-4a */
 void test4a();
 BOOST_AUTO_TEST_CASE(test4a)
 {
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(test4a)
 }
 
 /** 
- * \req req-4b */
+ * \verify req-4b */
 void test4b();
 BOOST_AUTO_TEST_CASE(test4b)
 {
