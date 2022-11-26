@@ -45,4 +45,3 @@ if __name__ == "__main__":
     product_design.expand()
     product_design.print()
     yu.write_design(Path("out.yaml"), product_design)
-

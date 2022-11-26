@@ -55,13 +55,16 @@ class Entry(yaml.YAMLObject):
         name_str = f", name: {self.name}" if hasattr(self, "name") else ""
         text_str = f", text: {self.text}" if hasattr(self, "text") else ""
         children_str = (
-            f", (nb_children: {len(self.children)})" if hasattr(self, "children") else ""
+            f", (nb_children: {len(self.children)})"
+            if hasattr(self, "children")
+            else ""
         )
         print(f"{indent * 2 * ' '}id: {self.id}" + name_str + text_str + children_str)
 
         if hasattr(self, "children"):
             for child in self.children:
                 child.print(indent + 1)
+
 
 class Section(Entry):
     """A section: only to organize entries"""
@@ -70,6 +73,7 @@ class Section(Entry):
 
     def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
+
 
 class ExternalSection(Entry):
     """An external section: defined in another YAML file"""
@@ -115,7 +119,7 @@ class Test(Entry):
         self.statement = statement
 
 
-class TestList(Entry): # TODO Remove ??
+class TestList(Entry):  # TODO Remove ??
     """TestList value object"""
 
     yaml_tag = "!TestList"
@@ -143,14 +147,20 @@ class TestListFromDoxygen(TestList):
     def expand(self):
         """Processing: extract child tests"""
         if hasattr(self, "children"):
-            raise Exception("TestListFromDoxygen children should not be defined manually")
+            raise Exception(
+                "TestListFromDoxygen children should not be defined manually"
+            )
         all_functions = du.extract_tests_from_functions(self.get_path())
-        self.children = [Test(f"{self.id}-{index}", func.name, None, None, func.statement) for index, func in enumerate(all_functions)]
+        self.children = [
+            Test(f"{self.id}-{index}", func.name, None, None, func.statement)
+            for index, func in enumerate(all_functions)
+        ]
         super().expand()
 
     def get_path(self) -> Path:
         """Return a Path object"""
         return Path(self.path)
+
 
 class Design(Entry):
     """Design value object, contains the full design"""
