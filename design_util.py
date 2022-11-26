@@ -12,26 +12,26 @@ import yaml
 import doxygen_util as du
 
 
-def check_is_instance(statement: Statement, parent_class: Type) -> None:
+def check_is_instance(entry: Entry, parent_class: Type) -> None:
     """Check if the object inherits from type (exception raised)"""
 
-    if not isinstance(statement, parent_class):
-        raise Exception(f"{statement.id} is not an instance of {parent_class.__name__}")
+    if not isinstance(entry, parent_class):
+        raise Exception(f"{entry.id} is not an instance of {parent_class.__name__}")
 
 
-def check_are_instances(statements: List[Statement], parent_class: Type) -> None:
+def check_are_instances(entries: List[Entry], parent_class: Type) -> None:
     """Check if the objects inherit from type (exception raised)"""
-    for statement in statements:
-        check_is_instance(statement, parent_class)
+    for entry in entries:
+        check_is_instance(entry, parent_class)
 
 
-class Statement(yaml.YAMLObject):
-    """Any statement: this is the parent class for all other. Virtual."""
+class Entry(yaml.YAMLObject):
+    """Any entry: this is the parent class for all other. Virtual."""
 
     yaml_loader = yaml.SafeLoader
-    yaml_tag = "!Statement"
+    yaml_tag = "!Entry"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         self.id = id1  # pylint: disable=C0103
         if name is not None:
             self.name = name
@@ -59,42 +59,42 @@ class Statement(yaml.YAMLObject):
             for child in self.children:
                 child.print(indent + 1)
 
-class Section(Statement):
-    """A section: only to organize statements"""
+class Section(Entry):
+    """A section: only to organize entries"""
 
     yaml_tag = "!Section"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
-class ExternalSection(Statement):
+class ExternalSection(Entry):
     """An external section: defined in another YAML file"""
 
     yaml_tag = "!ExternalSection"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
 
-class Definition(Statement):
+class Definition(Entry):
     """Definition value object"""
 
     yaml_tag = "!Definition"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
 
-class Requirement(Statement):
+class Requirement(Entry):
     """Requirement value object"""
 
     yaml_tag = "!Requirement"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
 
-class Test(Statement):
+class Test(Entry):
     """Test value object"""
 
     yaml_tag = "!Test"
@@ -104,19 +104,19 @@ class Test(Statement):
         id1: str,
         name: str,
         text: str,
-        children: List[Statement],
+        children: List[Entry],
         requirement: str,
     ):
         super().__init__(id1, name, text, children)
         self.requirement = requirement
 
 
-class TestList(Statement):
+class TestList(Entry):
     """TestList value object"""
 
     yaml_tag = "!TestList"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
     def list_tests(self):
@@ -131,7 +131,7 @@ class TestListFromDoxygen(TestList):
     yaml_tag = "!TestListFromDoxygen"
 
     def __init__(
-        self, id1: str, name: str, text: str, children: List[Statement], path: Path
+        self, id1: str, name: str, text: str, children: List[Entry], path: Path
     ):
         super().__init__(id1, name, text, children)
         self.path = path
@@ -148,13 +148,13 @@ class TestListFromDoxygen(TestList):
         """Return a Path object"""
         return Path(self.path)
 
-class Design(Statement):
+class Design(Entry):
     """Design value object, contains the full design"""
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
     def list_tests(self):

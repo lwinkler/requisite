@@ -11,7 +11,7 @@ class TestDesignUtil(unittest.TestCase):
     def test_creation(self):
         """Test"""
 
-        # statement = du.Statement("id1", "name1", "Some text", None)
+        # entry = du.Entry("id1", "name1", "Some text", None)
         requirement = du.Requirement("id2", "name2", "Some text", None)
         definition = du.Definition("id3", "name3", "Some text", None)
 

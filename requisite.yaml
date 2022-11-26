@@ -1,6 +1,6 @@
 !Design
 id: design-requisite
-name: The design statement of requisite
+name: The design entry of requisite
 children:
 
 # Definitions
@@ -13,8 +13,8 @@ children:
   text: The specific design of a product, it contains the definitions, requirements, ...
 
 - !Definition
-  id: statement
-  name: Statement
+  id: entry
+  name: Entry
   text: "The different parts of a design: requirements, definitions, tests, ..."
   children:
   - !Definition
