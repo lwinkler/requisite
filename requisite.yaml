@@ -4,7 +4,7 @@ name: The design statement of requisite
 children:
 
 # Definitions
-- &yaml_format !Definition
+- !Definition
   id: yaml-format
   text: The YAML format, used for input and output.
 
@@ -12,11 +12,17 @@ children:
   id: design
   text: The specific design of a product, it contains the definitions, requirements, ...
 
-- &design_parts !Definition
+- !Definition
   id: statement
   name: Statement
   text: "The different parts of a design: requirements, definitions, tests, ..."
   children:
+  - !Definition
+    id: section
+    name: Section
+  - !Definition
+    id: external-section
+    name: ExternalSection
   - !Definition
     id: definition
     name: Definition
@@ -30,6 +36,18 @@ children:
     id: test-list
     name: Test list
 
+- !Definition
+  id: test-annotations
+  name: Supported source code annotations
+  test: The different source code annotations formats supported by our parser (to extract information about tests)
+  children:
+  - !Definition
+    id: doxygen
+    name: Doxygen documentation format
+  - !Definition
+    id: pydoc
+    name: Pydoc documentation format
+
 # Requirements
 - !Requirement
   id: req-design-review
@@ -41,11 +59,11 @@ children:
 
 - !Requirement
   id: req-output-requirements
-  text: All requirements can be written as output
+  text: All requirements can be written to output
 
 - !Requirement
   id: req-output-tests
-  text: All tests matching a design can be written as output
+  text: All tests matching a design can be written to output
 
 - !Requirement
   id: req-extract-tests

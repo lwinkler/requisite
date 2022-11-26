@@ -59,6 +59,22 @@ class Statement(yaml.YAMLObject):
             for child in self.children:
                 child.print(indent + 1)
 
+class Section(Statement):
+    """A section: only to organize statements"""
+
+    yaml_tag = "!Section"
+
+    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+        super().__init__(id1, name, text, children)
+
+class ExternalSection(Statement):
+    """An external section: defined in another YAML file"""
+
+    yaml_tag = "!ExternalSection"
+
+    def __init__(self, id1: str, name: str, text: str, children: List[Statement]):
+        super().__init__(id1, name, text, children)
+
 
 class Definition(Statement):
     """Definition value object"""
