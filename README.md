@@ -13,4 +13,4 @@ pip install -r requirements.txt
 
 Functionalities
 ---------------
-The full design is documented in [](requisite.yaml)
+The full design is documented in <requisite.yaml>
