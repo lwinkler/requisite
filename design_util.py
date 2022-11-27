@@ -12,19 +12,6 @@ import yaml
 import doxygen_util as du
 
 
-def check_is_instance(entry: Entry, parent_class: Type) -> None:
-    """Check if the object inherits from type (exception raised)"""
-
-    if not isinstance(entry, parent_class):
-        raise Exception(f"{entry.id} is not an instance of {parent_class.__name__}")
-
-
-def check_are_instances(entries: List[Entry], parent_class: Type) -> None:
-    """Check if the objects inherit from type (exception raised)"""
-    for entry in entries:
-        check_is_instance(entry, parent_class)
-
-
 class Entry(yaml.YAMLObject):
     """Any entry: this is the parent class for all other. Virtual."""
 
@@ -117,12 +104,6 @@ class TestList(Entry):  # TODO Remove ??
     def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
-    def list_tests(self):
-        """Generate the list of tests"""
-        check_are_instances(self.children, Test)
-        return self.children
-
-
 class TestListFromDoxygen(TestList):
     """TestListFromDoxygen value object: can extract test information from doxygen tags"""
 
@@ -157,11 +138,3 @@ class Design(Entry):
 
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"
-
-    def list_tests(self):
-        """Generate the test list"""
-        tests = []
-        for list1 in self.children:
-            if isinstance(list1, TestList):
-                tests += list1.list_tests()
-        return tests
