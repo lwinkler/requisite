@@ -98,7 +98,6 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
 
         command = ["doxygen", doxyfile.as_posix()]
         subprocess.run(command, cwd=tmp_dir.as_posix(), check=True)
-
         xml_dir = Path(tmp_dir / "xml")
         all_files = get_all_xml_files(xml_dir)
 
