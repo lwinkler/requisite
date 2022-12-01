@@ -7,16 +7,17 @@ import xml.etree.ElementTree as ET
 
 from typing import List
 from pathlib import Path
+from dataclasses import dataclass
 
 
+@dataclass
 class Function:
     """A function and the associated statement"""
 
-    def __init__(self, name: str, statement: str, file: Path, line: int):
-        self.name = name
-        self.statement = statement
-        self.file = file
-        self.line = line
+    name: str
+    statement: str
+    file: Path
+    line: int
 
 
 def extract_tests_from_functions(path) -> List[Function]:

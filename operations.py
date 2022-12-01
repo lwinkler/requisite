@@ -2,10 +2,8 @@
 
 """Operations on design and entries"""
 
-from pathlib import Path
 from typing import List, Type
 
-import yaml
 import design_util as du
 
 

@@ -6,7 +6,7 @@
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
 from pathlib import Path
-from typing import List, Type
+from typing import List
 
 import yaml
 import doxygen_util as du
@@ -85,7 +85,7 @@ class Test(Entry):
 
     yaml_tag = "!Test"
 
-    def __init__(
+    def __init__(  # pylint: disable=R0913
         self,
         id1: str,
         name: str,
@@ -97,13 +97,10 @@ class Test(Entry):
         self.statement = statement
 
 
-class TestList(Entry):  # TODO Remove ??
+class TestList(Entry):
     """TestList value object"""
 
     yaml_tag = "!TestList"
-
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        super().__init__(id1, name, text, children)
 
 
 class TestListFromDoxygen(TestList):
@@ -112,7 +109,7 @@ class TestListFromDoxygen(TestList):
 
     yaml_tag = "!TestListFromDoxygen"
 
-    def __init__(
+    def __init__(  # pylint: disable=R0913
         self, id1: str, name: str, text: str, children: List[Entry], path: Path
     ):
         super().__init__(id1, name, text, children)

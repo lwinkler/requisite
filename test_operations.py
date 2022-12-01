@@ -53,11 +53,8 @@ children:
 class TestOperations(unittest.TestCase):
     """Test operations"""
 
-    def test_check_are_instances(self):
-        """Test"""
-        # TODO: Remove ??
-
     def test_extract_entries_of_type(self):
+        """Test"""
         design1 = yaml.safe_load(DESIGN_STR1)
 
         designs = op.extract_entries_of_type(design1, du.Design)
