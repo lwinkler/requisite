@@ -58,13 +58,14 @@ class Section(Entry):
 
     yaml_tag = "!Section"
 
+
 class ExternalSection(Entry):
     """An external section: defined in another YAML file"""
 
     yaml_tag = "!ExternalSection"
 
     # def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-        # super().__init__(id1, name, text, children)
+    # super().__init__(id1, name, text, children)
 
 
 class Definition(Entry):
@@ -104,8 +105,10 @@ class TestList(Entry):  # TODO Remove ??
     def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
         super().__init__(id1, name, text, children)
 
+
 class TestListFromDoxygen(TestList):
-    """TestListFromDoxygen value object: can extract test information from doxygen tags"""
+    """TestListFromDoxygen value object:
+    can extract test information from doxygen tags"""
 
     yaml_tag = "!TestListFromDoxygen"
 

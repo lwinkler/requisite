@@ -6,7 +6,7 @@ import yaml
 import operations as op
 import design_util as du
 
-design_str1 = """
+DESIGN_STR1 = """
 !Design
 id: design-requisite
 children:
@@ -50,7 +50,6 @@ children:
 """
 
 
-
 class TestOperations(unittest.TestCase):
     """Test operations"""
 
@@ -59,14 +58,16 @@ class TestOperations(unittest.TestCase):
         # TODO: Remove ??
 
     def test_extract_entries_of_type(self):
-        design1 = yaml.safe_load(design_str1)
+        design1 = yaml.safe_load(DESIGN_STR1)
 
         designs = op.extract_entries_of_type(design1, du.Design)
         statements = op.extract_entries_of_type(design1, du.Statement)
         tests = op.extract_entries_of_type(design1, du.Test)
 
         self.assertEqual(len(designs), 1)
-        self.assertEqual(",".join([statement.id for statement in statements]), "req-design-review,spec-input-design,spec-design-split,req-design-output,spec-design-output-yaml,spec-design-output-markdown")
+        self.assertEqual(
+            ",".join([statement.id for statement in statements]),
+            "req-design-review,spec-input-design,spec-design-split,"
+            "req-design-output,spec-design-output-yaml,spec-design-output-markdown",
+        )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
-
-

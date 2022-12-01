@@ -19,7 +19,7 @@ id: design-id
 """
 
 
-class TestDesignUtil(unittest.TestCase):
+class TestYamlUtil(unittest.TestCase):
     """Test"""
 
     def test_serialize(self):
