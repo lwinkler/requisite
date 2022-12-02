@@ -1,5 +1,3 @@
-#! env python3
-
 """Utilities"""
 
 # needed until python 3.10:

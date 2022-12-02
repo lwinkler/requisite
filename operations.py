@@ -1,5 +1,3 @@
-#! env python3
-
 """Operations on design and entries"""
 
 from typing import List, Type
