@@ -2,38 +2,38 @@
 
 import unittest
 import subprocess
-import misc_util as mu
 from pathlib import Path
 from typing import List
+import misc_util as mu
 
 
 class TestMiscUtil(unittest.TestCase):
     """Test"""
 
-    def contain_path(self, paths: List[Path], path: Path) -> bool:
+    def contain_path(self, paths: List[Path], path_to_search: Path) -> bool:
         """Check if path is contained"""
-        for p in paths:
-            if p.as_posix() == path.as_posix():
+        for path in paths:
+            if path.as_posix() == path_to_search.as_posix():
                 return True
         return False
 
-    def test_get_python_executable_path(self) -> None:
+    def test_get_python_executable(self) -> None:
         """Test"""
-        exe = mu.get_python_executable_path()
+        exe = mu.get_python_executable()
 
         self.assertTrue(exe.is_file())
         self.assertTrue("python" in exe.as_posix())
-
 
     def test_generate_all_git_files_command(self) -> None:
         """Test"""
         command = mu.generate_all_git_files_command(Path("some/path"), [])
         self.assertEqual(command, "git ls-files some/path")
         command = mu.generate_all_git_files_command(Path("some/path"), ["ext"])
-        self.assertEqual(command, "git ls-files some/path | grep -e \"\\.ext$\"")
+        self.assertEqual(command, 'git ls-files some/path | grep -e "\\.ext$"')
         command = mu.generate_all_git_files_command(Path("some/path"), ["ext", "md"])
-        self.assertEqual(command, "git ls-files some/path | grep -e \"\\.ext$\" -e \"\\.md$\"")
-
+        self.assertEqual(
+            command, 'git ls-files some/path | grep -e "\\.ext$" -e "\\.md$"'
+        )
 
     def test_list_all_git_files(self) -> None:
         """Test"""
@@ -42,14 +42,22 @@ class TestMiscUtil(unittest.TestCase):
         all_files3 = mu.list_all_git_files(Path("."), ["myext"])
         all_files4 = mu.list_all_git_files(Path("."), ["py"])
 
-
-        self.assertTrue(self.contain_path(all_files1, Path("test_data/misc/myfile.myext")))
-        self.assertTrue(self.contain_path(all_files2, Path("test_data/misc/myfile.myext")))
-        self.assertTrue(self.contain_path(all_files3, Path("test_data/misc/myfile.myext")))
-        self.assertFalse(self.contain_path(all_files4, Path("test_data/misc/myfile.myext")))
+        self.assertTrue(
+            self.contain_path(all_files1, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files2, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files3, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertFalse(
+            self.contain_path(all_files4, Path("test_data/misc/myfile.myext"))
+        )
 
     def test_failing_command(self) -> None:
         """Test"""
+
         def failing() -> None:
             subprocess.run("false", check=True)
 
@@ -62,7 +70,7 @@ class TestMiscUtil(unittest.TestCase):
         mu.run_on_all_git_files("echo py files: ", Path("."), ["py"])
         mu.run_on_all_git_files("echo myext files: ", Path("."), ["myext"])
         mu.run_on_all_git_files("echo myext and md files: ", Path("."), ["md"])
-        #TODO mu.run_on_all_git_files("echo myext and md files: ", Path("."), ["md", "myext"])
+        mu.run_on_all_git_files("echo myext and md files: ", Path("."), ["md", "myext"])
 
         def failing() -> None:
             mu.run_on_all_git_files("false", Path("."), ["myext"])

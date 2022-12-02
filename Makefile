@@ -19,7 +19,7 @@ mypy:
 black:
 	${PYTHON} -m black --check .
 
-black_format:
+format_black:
 	${PYTHON} -m black .
 
 run:
