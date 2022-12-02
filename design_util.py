@@ -121,11 +121,7 @@ class TestListFromDoxygen(TestList):
             raise Exception(
                 "TestListFromDoxygen children should not be defined manually"
             )
-        all_functions = du.extract_tests_from_functions(self.get_path())
-        self.children = [
-            Test(f"{self.id}-{index}", func.name, None, None, func.statement)
-            for index, func in enumerate(all_functions)
-        ]
+        self.children = du.extract_tests_from_functions(self.get_path(), self.id)
         super().expand()
 
     def get_path(self) -> Path:

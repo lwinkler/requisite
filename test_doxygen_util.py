@@ -4,15 +4,16 @@ import unittest
 from pathlib import Path
 from typing import List
 
-from doxygen_util import extract_tests_from_functions, Function
+import design_util as du
+from doxygen_util import extract_tests_from_functions
 
 
-def get_by_name(all_functions: List[Function], name: str) -> Function:
+def get_by_name(all_tests: List[du.Test], name: str) -> du.Test:
     """Search function by name"""
-    for func in all_functions:
-        if func.name == name:
-            return func
-    raise Exception(f"No function found with name {name}")
+    for test in all_tests:
+        if test.name == name:
+            return test
+    raise Exception(f"No test found with name {name}")
 
 
 class TestTestListFromDoxygen(unittest.TestCase):
@@ -21,17 +22,26 @@ class TestTestListFromDoxygen(unittest.TestCase):
     def test_doxygen_test_matching(self):
         """Test"""
 
-        all_functions = extract_tests_from_functions(Path("test/doxygen_tests"))
+        all_tests = extract_tests_from_functions(Path("test/doxygen_tests"), "myid")
 
         # for t in all_functions:
         # print(t.name, t.file, t.line, t.statement)
 
-        self.assertEqual(len(all_functions), 8)
-        self.assertEqual(get_by_name(all_functions, "test1a").statement, "req-1a")
-        self.assertEqual(get_by_name(all_functions, "test1b").statement, "req-1b")
-        self.assertEqual(get_by_name(all_functions, "test2a").statement, "req-2a")
-        self.assertEqual(get_by_name(all_functions, "test2b").statement, "req-2b")
-        self.assertEqual(get_by_name(all_functions, "test3a").statement, "req-3a")
-        self.assertEqual(get_by_name(all_functions, "test3b").statement, "req-3b")
-        self.assertEqual(get_by_name(all_functions, "test4a").statement, "req-4a")
-        self.assertEqual(get_by_name(all_functions, "test4b").statement, "req-4b")
+        self.assertEqual(len(all_tests), 8)
+        self.assertEqual(get_by_name(all_tests, "test1a").statement, "req-1a")
+        self.assertEqual(get_by_name(all_tests, "test1b").statement, "req-1b")
+        self.assertEqual(get_by_name(all_tests, "test2a").statement, "req-2a")
+        self.assertEqual(get_by_name(all_tests, "test2b").statement, "req-2b")
+        self.assertEqual(get_by_name(all_tests, "test3a").statement, "req-3a")
+        self.assertEqual(get_by_name(all_tests, "test3b").statement, "req-3b")
+        self.assertEqual(get_by_name(all_tests, "test4a").statement, "req-4a")
+        self.assertEqual(get_by_name(all_tests, "test4b").statement, "req-4b")
+
+        self.assertEqual(get_by_name(all_tests, "test1a").id, "myid-0")
+        self.assertEqual(get_by_name(all_tests, "test1b").id, "myid-1")
+        self.assertEqual(get_by_name(all_tests, "test2a").id, "myid-2")
+        self.assertEqual(get_by_name(all_tests, "test2b").id, "myid-3")
+        self.assertEqual(get_by_name(all_tests, "test3a").id, "myid-4")
+        self.assertEqual(get_by_name(all_tests, "test3b").id, "myid-5")
+        self.assertEqual(get_by_name(all_tests, "test4a").id, "myid-6")
+        self.assertEqual(get_by_name(all_tests, "test4b").id, "myid-7")
