@@ -64,6 +64,20 @@ def extract_tests_from_functions(path) -> List[Function]:
             )
         return Function(name.text, "", location.attrib["file"], location.attrib["line"])
 
+    def execute(command: str, tmp_dir: Path) -> None:
+        ret = subprocess.run(
+            command,
+            cwd=tmp_dir.as_posix(),
+            check=True,
+            capture_output=True,
+            encoding="utf-8",
+        )
+        # print(ret.stdout)
+        if ret.stderr:
+            print(ret.stderr)
+        if ret.returncode != 0:
+            raise Exception(f"Command '{command}' failed with code {ret.returncode}")
+
     def extract_all_functions(xml_file: Path) -> List[Function]:
 
         tree = ET.parse(xml_file)
@@ -99,7 +113,8 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
             )
 
         command = ["doxygen", doxyfile.as_posix()]
-        subprocess.run(command, cwd=tmp_dir.as_posix(), check=True)
+        execute(command, tmp_dir)
+
         xml_dir = Path(tmp_dir / "xml")
         all_files = get_all_xml_files(xml_dir)
 

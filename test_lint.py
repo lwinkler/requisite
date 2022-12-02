@@ -14,19 +14,21 @@ class TestDesignUtil(unittest.TestCase):
 
     def test_pylint(self):
         """Test"""
-        mu.run_on_all_git_files(f"{PY} -m pylint", Path("."), ["py"])
+        self.assertEqual(
+            mu.run_on_all_git_files(f"{PY} -m pylint", Path("."), ["py"], False), 0
+        )
 
     def test_flake8(self):
         """Test"""
-        ret = subprocess.run(f"{PY} -m flake8 .", check=True)
+        ret = subprocess.run(f"{PY} -m flake8 .", check=False)
         self.assertEqual(ret.returncode, 0)
 
     def test_mypy(self):
         """Test"""
-        ret = subprocess.run(f"{PY} -m mypy .", check=True)
+        ret = subprocess.run(f"{PY} -m mypy .", check=False)
         self.assertEqual(ret.returncode, 0)
 
     def test_black(self):
         """Test"""
-        ret = subprocess.run(f"{PY} -m black --check .", check=True)
+        ret = subprocess.run(f"{PY} -m black --check .", check=False)
         self.assertEqual(ret.returncode, 0)

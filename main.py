@@ -8,7 +8,10 @@
 
 import sys
 import argparse
+import unittest
 from pathlib import Path
+
+from pprint import pprint
 
 import yaml_util as yu
 
@@ -37,6 +40,14 @@ def arguments_parser():
     return parser.parse_args()
 
 
+def print_suite(suite):
+    if hasattr(suite, "__iter__"):
+        for x in suite:
+            print_suite(x)
+        else:
+            print(suite)
+
+
 if __name__ == "__main__":
 
     args = arguments_parser()
@@ -44,3 +55,18 @@ if __name__ == "__main__":
     product_design.expand()
     product_design.print()
     yu.write_design(Path("out.yaml"), product_design)
+
+    test_loader = unittest.defaultTestLoader
+
+    print_suite(test_loader.discover("."))
+
+    print(" ------------------------ ")
+
+    for t in test_loader.discover("."):
+        print("-", t)
+        for tt in t._tests:
+            print("  - ", tt)
+            for ttt in tt._tests:
+                print("    - ", ttt._testMethodName, ttt)
+                pprint(vars(ttt))
+                print("...")

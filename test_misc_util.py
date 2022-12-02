@@ -41,6 +41,7 @@ class TestMiscUtil(unittest.TestCase):
         all_files2 = mu.list_all_git_files(Path("."), [])
         all_files3 = mu.list_all_git_files(Path("."), ["myext"])
         all_files4 = mu.list_all_git_files(Path("."), ["py"])
+        all_files5 = mu.list_all_git_files(Path("."), ["py", "myext"])
 
         self.assertTrue(
             self.contain_path(all_files1, Path("test_data/misc/myfile.myext"))
@@ -53,6 +54,9 @@ class TestMiscUtil(unittest.TestCase):
         )
         self.assertFalse(
             self.contain_path(all_files4, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files5, Path("test_data/misc/myfile.myext"))
         )
 
     def test_failing_command(self) -> None:

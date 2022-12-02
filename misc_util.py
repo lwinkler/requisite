@@ -31,10 +31,13 @@ def list_all_git_files(path: Path, extensions: List[str]) -> List[Path]:
     return [Path(path) for path in ret.stdout.splitlines()]
 
 
-def run_on_all_git_files(command: str, path: Path, extensions: List[str]) -> None:
+def run_on_all_git_files(
+    command: str, path: Path, extensions: List[str], check=True
+) -> int:
     """Execute a command on all files using git and xargs"""
 
     full_command = (
         generate_all_git_files_command(path, extensions) + " | xargs " + command
     )
-    subprocess.run(full_command, check=True, shell=True)
+    ret = subprocess.run(full_command, check=check, shell=True)
+    return ret.returncode
