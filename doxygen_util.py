@@ -64,7 +64,7 @@ def extract_tests_from_functions(path) -> List[Function]:
             )
         return Function(name.text, "", location.attrib["file"], location.attrib["line"])
 
-    def execute(command: str, tmp_dir: Path) -> None:
+    def execute(command: List[str], tmp_dir: Path) -> None:
         ret = subprocess.run(
             command,
             cwd=tmp_dir.as_posix(),
