@@ -77,6 +77,15 @@ class Statement(Entry):
 
     yaml_tag = "!Statement"
 
+class Requirement(Statement):
+    """Requirement value object"""
+
+    yaml_tag = "!Requirement"
+
+class Specification(Statement):
+    """Specification value object"""
+
+    yaml_tag = "!Specification"
 
 class Test(Entry):
     """Test value object"""
