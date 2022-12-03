@@ -49,9 +49,13 @@ children:
     text: A section of the design. This is used purely to structure the design document
 
   - !Definition
-    id: external-section
-    name: ExternalSection
-    text: A section defined in an outside *design-document
+    id: expander
+    name: Expander
+    text: A placeholder *entry that modifies its parent *entry
+      # - !Definition
+      # id: external-section
+      # name: ExternalSection
+      # text: A section defined in an outside *design-document
 
   - !Definition
     id: definition
@@ -108,6 +112,10 @@ children:
   - !Specification
     id: spec-syntax-check
     text: The *design-document is checked against a set of *syntax-rule.s
+    children:
+      - !ExpandFromInclude
+        path: specs/rules.yaml
+
 
   - !Specification
     id: spec-design-split

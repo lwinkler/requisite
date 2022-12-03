@@ -8,8 +8,11 @@ from typing import List
 
 import yaml
 import doxygen_util as du
-import yaml_util as yu
 
+def read_entries(path: Path) -> List[du.Entry]:
+    """Read a list of entries in YAML format"""
+    with open(path, encoding="utf-8") as fin:
+        return yaml.safe_load(fin.read())
 
 class Entry(yaml.YAMLObject):
     """Any entry: this is the parent class for all other. Virtual."""
@@ -26,12 +29,12 @@ class Entry(yaml.YAMLObject):
         if children is not None:
             self.children = children
 
-    def expand(self):
+    def expand(self, parent: Entry):
         """Processing: Nothing to do by default but call on children"""
         try:
             if hasattr(self, "children"):
                 for child in self.children:
-                    child.expand()
+                    child.expand(self)
         except Exception as exc:
             print(f"Exception while expanding {self.id}:", exc)
             raise
@@ -58,10 +61,10 @@ class Section(Entry):
     yaml_tag = "!Section"
 
 
-class ExternalSection(Entry):
-    """An external section: defined in another YAML file"""
+class Include(Entry):
+    """Placeholder class that expands its parent to include another YAML file"""
 
-    yaml_tag = "!ExternalSection"
+    yaml_tag = "!Include"
 
     def __init__(  # pylint: disable=R0913
         self, id1: str, name: str, text: str, children: List[Entry], path: Path
@@ -69,14 +72,15 @@ class ExternalSection(Entry):
         super().__init__(id1, name, text, children)
         self.path = path
 
-    def expand(self):
+    def expand(self, parent: Entry):
         """Processing: extract child tests"""
-        if hasattr(self, "children"):
+        if hasattr(self, "children"): # TODO: Remove children
             raise Exception(
-                "ExternalSection children should not be defined manually"
+                "Include children should not be defined manually"
             )
-        self.children = yu.read_design(self.get_path())
-        super().expand()
+        parent.children.remove(self)
+        parent.children += read_entries(self.get_path())
+        # super().expand(self)
 
     def get_path(self) -> Path:
         """Return a Path object"""

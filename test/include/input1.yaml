@@ -1,0 +1,15 @@
+- !Entry
+  id: id1
+
+- !Entry
+  id: id2
+
+- !Entry
+  id: id3
+  children:
+
+    - !Include
+      path: test/include/input1a.yaml
+
+- !Entry
+  id: id4
