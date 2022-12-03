@@ -75,6 +75,7 @@ def extract_tests_from_functions(path: Path, test_list_id: str) -> List[Function
         )
         # print(ret.stdout)
         if ret.stderr:
+            print("Warnings from doxygen documentation generation:")
             print(ret.stderr)
         if ret.returncode != 0:
             raise Exception(f"Command '{command}' failed with code {ret.returncode}")

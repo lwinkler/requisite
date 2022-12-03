@@ -8,6 +8,7 @@ from typing import List
 
 import yaml
 import doxygen_util as du
+import yaml_util as yu
 
 
 class Entry(yaml.YAMLObject):
@@ -62,8 +63,24 @@ class ExternalSection(Entry):
 
     yaml_tag = "!ExternalSection"
 
-    # def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
-    # super().__init__(id1, name, text, children)
+    def __init__(  # pylint: disable=R0913
+        self, id1: str, name: str, text: str, children: List[Entry], path: Path
+    ):
+        super().__init__(id1, name, text, children)
+        self.path = path
+
+    def expand(self):
+        """Processing: extract child tests"""
+        if hasattr(self, "children"):
+            raise Exception(
+                "ExternalSection children should not be defined manually"
+            )
+        self.children = yu.read_design(self.get_path())
+        super().expand()
+
+    def get_path(self) -> Path:
+        """Return a Path object"""
+        return Path(self.path)
 
 
 class Definition(Entry):

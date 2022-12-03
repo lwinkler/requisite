@@ -26,6 +26,11 @@ children:
     text: The Markdown format to generate documents, reports, ...
 
 - !Definition
+  id: syntax-rule
+  name: Syntax rule
+  text: A syntax rule for the *design read from the *design-document
+
+- !Definition
   id: entry-types
   name: Type of entries
   text: "A product design is composed of entries: specifications, requirements, definitions, tests, ..."
@@ -46,6 +51,7 @@ children:
   - !Definition
     id: external-section
     name: ExternalSection
+    text: A section defined in an outside *design-document
 
   - !Definition
     id: definition
@@ -79,7 +85,7 @@ children:
 - !Definition
   id: test-annotations
   name: Supported source code annotations
-  test: The different source code annotations formats supported by our parser (to extract information about tests)
+  text: The different source code annotations formats supported by our parser (to extract information about tests)
   children:
   - !Definition
     id: doxygen
@@ -88,15 +94,20 @@ children:
     id: pydoc
     name: Pydoc documentation format
 
+
 # Requirements
 - !Requirement
   id: req-design-review
-  text: A *design-document consists of one or several text files
+  text: A *design-document describe the software in a readable, flexible, and structured manner.
   children:
 
   - !Specification
-    id: spec-input-design
-    text: A *design can be read from the *yaml-format
+    id: spec-entry-types
+    text: A *design-document is composed of *entry-types
+
+  - !Specification
+    id: spec-syntax-check
+    text: The *design-document is checked against a set of *syntax-rule.s
 
   - !Specification
     id: spec-design-split
@@ -134,8 +145,8 @@ children:
     multiply: test-annotations
 
 - !Requirement
-  id: req-design-validity
-  text: The validity of a *design-document can be checked according to rules
+  id: req-syntax-check
+  text: The syntax of the *design-documents is checked
 
 
 # Test lists
