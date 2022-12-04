@@ -12,6 +12,8 @@ import unittest
 from pathlib import Path
 
 import yaml_util as yu
+import design_util
+import expanders
 
 
 if sys.version_info[0] < 3:
