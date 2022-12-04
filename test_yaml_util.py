@@ -38,12 +38,8 @@ class TestYamlUtil(unittest.TestCase):
     def test_unserialize(self):
         """Test"""
 
-        statement = yaml.safe_load(
-            "!Statement\nid: id2\ntext: Some text\n"
-        )
-        definition = yaml.safe_load(
-            "!Definition\nid: id3\ntext: Some text\n"
-        )
+        statement = yaml.safe_load("!Statement\nid: id2\ntext: Some text\n")
+        definition = yaml.safe_load("!Definition\nid: id3\ntext: Some text\n")
 
         self.assertEqual(statement.id, "id2")
 

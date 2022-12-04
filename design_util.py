@@ -3,10 +3,10 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
-from pathlib import Path
 from typing import List
 
 import yaml
+
 
 class Entry(yaml.YAMLObject):
     """Any entry: this is the parent class for all other. Virtual."""
@@ -51,6 +51,7 @@ class Section(Entry):
 
     yaml_tag = "!Section"
 
+
 class Definition(Entry):
     """Definition value object"""
 
@@ -62,15 +63,18 @@ class Statement(Entry):
 
     yaml_tag = "!Statement"
 
+
 class Requirement(Statement):
     """Requirement value object"""
 
     yaml_tag = "!Requirement"
 
+
 class Specification(Statement):
     """Specification value object"""
 
     yaml_tag = "!Specification"
+
 
 class Test(Entry):
     """Test value object"""
@@ -93,7 +97,8 @@ class TestList(Entry):
 
     yaml_tag = "!TestList"
 
-class Design(Entry): # TODO Remove
+
+class Design(Entry):  # TODO Remove
     """Design value object, contains the full design"""
 
     yaml_loader = yaml.SafeLoader

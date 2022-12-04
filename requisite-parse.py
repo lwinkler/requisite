@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     for test_suite in test_loader.discover(".", pattern="test_*"):
         print("-", test_suite.countTestCases(), test_suite)
-        #for test in test_loader.loadTestsFromTestSuite(test_suite):
+        # for test in test_loader.loadTestsFromTestSuite(test_suite):
         for test_case in test_suite._tests:
             print("  - ", test_case.countTestCases())
             print(890, test_loader.getTestCaseNames(test_case))

@@ -1,11 +1,8 @@
 """Unit test for doxygen test extraction"""
 
-import io
 import unittest
-from pathlib import Path
 
 import design_util as du
-import yaml_util as yu
 
 
 class TestDesignUtil(unittest.TestCase):
