@@ -143,14 +143,14 @@ class TestListFromDoxygen(TestList):
         super().__init__(id1, name, text, children)
         self.path = path
 
-    def expand(self):
+    def expand(self, parent: Entry):
         """Processing: extract child tests"""
         if hasattr(self, "children"):
             raise Exception(
                 "TestListFromDoxygen children should not be defined manually"
             )
         self.children = du.extract_tests_from_functions(self.get_path(), self.id)
-        super().expand()
+        super().expand(self)
 
     def get_path(self) -> Path:
         """Return a Path object"""
