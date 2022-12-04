@@ -40,7 +40,6 @@ children:
 
 - !TestList
   id: tests-system
-  name: System tests
   children:
 
   - !Test

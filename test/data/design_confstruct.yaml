@@ -1,41 +1,33 @@
 !Design
 id: id-design
-name: Confstruct library
 text: Confstruct C++ library for serialization of classes
 children:
   - !Definition
     id: cs::structure
-    name: cs::structure
     text: a class that is aware of its members and can be used to store a set of attributes.
 
   - !Definition
     id: cs::attribute
-    name: cs::attribute
     text: "this structure is composed of attributes. Each attribute has: a name, a description, a validity and a target variable of any **compatible variable type**"
 
   - !Definition
     id: file-types
-    name: compatible file type
     children:
 
     - !Definition &json_format
       id: json-format
-      name: JSON format
       text: JSON format
 
     - !Definition &xml_format
       id: xml-format
-      name: XML format
       text: XML format
 
     - !Definition &yaml_format
       id: yaml-format
-      name: YAML format
       text: XML format
 
   - !Definition
     id: variable-types
-    name: compatible variable type
     children:
 
     - !Definition &variable_type1

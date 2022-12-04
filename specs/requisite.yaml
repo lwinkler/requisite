@@ -1,6 +1,5 @@
 !Design
 id: design-requisite
-name: The design entry of requisite
 children:
 
 # Definitions
@@ -27,12 +26,10 @@ children:
 
 - !Definition
   id: syntax-rule
-  name: Syntax rule
   text: A syntax rule for the *design read from the *design-document
 
 - !Definition
   id: entry-types
-  name: Type of entries
   text: "A product design is composed of entries: specifications, requirements, definitions, tests, ..."
   children:
   - !Definition
@@ -45,58 +42,46 @@ children:
 
   - !Definition
     id: section
-    name: Section
     text: A section of the design. This is used purely to structure the design document
 
   - !Definition
     id: expander
-    name: Expander
     text: A placeholder *entry that modifies its parent *entry
       # - !Definition
       # id: external-section
-      # name: ExternalSection
       # text: A section defined in an outside *design-document
 
   - !Definition
     id: definition
-    name: Definition
 
   - !Definition
     id: statement
-    name: Statement
     text: A statement can be any assertion made in the *design-document. It can be a specification or a requirement
 
   - !Definition
     id: requirement
-    name: Requirement
     text: A statement that represents a requirement
 
   - !Definition
     id: specification
-    name: Specification
     text: A statement that represents a specification
 
   - !Definition
     id: test
-    name: Test
     text: Information about a test. A test can verify a *statement
 
   - !Definition
     id: test-list
-    name: TestList
     text: A list of tests
 
 - !Definition
-  id: test-annotations
-  name: Supported source code annotations
+  id: supported-code-annotations
   text: The different source code annotations formats supported by our parser (to extract information about tests)
   children:
   - !Definition
-    id: doxygen
-    name: Doxygen documentation format
+    id: doxygen-doc-format
   - !Definition
-    id: pydoc
-    name: Pydoc documentation format
+    id: pydoc-doc-format
 
 
 # Requirements
@@ -160,7 +145,6 @@ children:
 # Test lists
 - !TestList
   id: tests-system
-  name: System tests
   children:
 
   - !Test
@@ -171,5 +155,4 @@ children:
 
 - !TestListFromDoxygen
   id: tests-unit
-  name: Unit tests
   path: test/doxygen_tests

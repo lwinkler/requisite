@@ -20,10 +20,8 @@ class Entry(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Entry"
 
-    def __init__(self, id1: str, name: str, text: str, children: List[Entry]):
+    def __init__(self, id1: str, text: str, children: List[Entry]):
         self.id = id1  # pylint: disable=C0103
-        if name is not None:
-            self.name = name
         if text is not None:
             self.text = text
         if children is not None:
@@ -41,14 +39,13 @@ class Entry(yaml.YAMLObject):
 
     def print(self, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
-        name_str = f", name: {self.name}" if hasattr(self, "name") else ""
         text_str = f", text: {self.text}" if hasattr(self, "text") else ""
         children_str = (
             f", (nb_children: {len(self.children)})"
             if hasattr(self, "children")
             else ""
         )
-        print(f"{indent * 2 * ' '}id: {self.id}" + name_str + text_str + children_str)
+        print(f"{indent * 2 * ' '}id: {self.id}" + text_str + children_str)
 
         if hasattr(self, "children"):
             for child in self.children:
@@ -67,9 +64,9 @@ class Include(Entry):
     yaml_tag = "!Include"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, name: str, text: str, children: List[Entry], path: Path
+        self, id1: str, text: str, children: List[Entry], path: Path
     ):
-        super().__init__(id1, name, text, children)
+        super().__init__(id1, text, children)
         self.path = path
 
     def expand(self, parent: Entry):
@@ -116,12 +113,11 @@ class Test(Entry):
     def __init__(  # pylint: disable=R0913
         self,
         id1: str,
-        name: str,
         text: str,
         children: List[Entry],
         statement: str,
     ):
-        super().__init__(id1, name, text, children)
+        super().__init__(id1, text, children)
         self.statement = statement
 
 
@@ -138,9 +134,9 @@ class TestListFromDoxygen(TestList):
     yaml_tag = "!TestListFromDoxygen"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, name: str, text: str, children: List[Entry], path: Path
+        self, id1: str, text: str, children: List[Entry], path: Path
     ):
-        super().__init__(id1, name, text, children)
+        super().__init__(id1, text, children)
         self.path = path
 
     def expand(self, parent: Entry):
