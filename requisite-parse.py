@@ -11,8 +11,6 @@ import argparse
 import unittest
 from pathlib import Path
 
-from pprint import pprint
-
 import yaml_util as yu
 
 
@@ -40,15 +38,6 @@ def arguments_parser():
     return parser.parse_args()
 
 
-def print_suite(suite):
-    """TODO"""
-    if hasattr(suite, "__iter__"):
-        for x in suite:
-            print_suite(x)
-        else:
-            print(suite)
-
-
 if __name__ == "__main__":
 
     args = arguments_parser()
@@ -58,10 +47,6 @@ if __name__ == "__main__":
     yu.write_design(Path("out.yaml"), product_design)
 
     test_loader = unittest.defaultTestLoader
-
-    # print_suite(test_loader.discover(".", pattern="extra*"))
-    #modules = test_loader.loadTestsFromModule()
-    #print(modules)
 
     print(" ------------------------ ")
 

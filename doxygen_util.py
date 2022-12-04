@@ -21,7 +21,7 @@ class Function:
     line: int
 
 
-def extract_tests_from_functions(path: Path, test_list_id: str) -> List[Function]:
+def extract_tests_from_functions(path: Path, test_list_id: str) -> List[du.Test]:
     """Parse the source code to extract the test information"""
 
     def get_all_xml_files(xml_dir: Path) -> List[Path]:
@@ -115,8 +115,7 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
 """
             )
 
-        command = ["doxygen", doxyfile.as_posix()]
-        execute(command, tmp_dir)
+        execute(["doxygen", doxyfile.as_posix()], tmp_dir)
 
         xml_dir = Path(tmp_dir / "xml")
         all_files = get_all_xml_files(xml_dir)
@@ -125,12 +124,10 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
         for file in all_files:
             all_functions += extract_all_functions(file)
 
-        all_tests = [
-            du.Test(f"{test_list_id}-{index}", func.name, None, func.statement)
+        return [
+            du.Test(f"{test_list_id}-{index}", func.name, [], func.statement)
             for index, func in enumerate(all_functions)
         ]
-
-        return all_tests
 
     finally:
         print("Delete " + tmp_dir.as_posix())

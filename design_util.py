@@ -61,7 +61,10 @@ class Section(Entry):
 class Expander(Entry):
     """Parent class for all entries that add entries to their parent"""
 
-    yaml_tag = None
+    yaml_tag = "!Expander"
+
+    def create_entries(self) -> List[Entry]:
+        raise NotImplementedError()
 
     def expand(self, parent: Entry):
         """Processing: extract child tests"""
@@ -71,7 +74,7 @@ class Expander(Entry):
             )
         super().expand(self)
         parent.children.remove(self)
-        new_entries =  self.create_entries()
+        new_entries = self.create_entries()
         for entry in new_entries:
             entry.expand(self)
         parent.children += new_entries

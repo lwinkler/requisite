@@ -13,16 +13,17 @@ class TestDesignUtil(unittest.TestCase):
 
 
     def compare_text_files(self, path1: Path, path2: Path) -> None:
+        """Compare text files for tests"""
         # with open(io.open(path1.as_posix())) as f1, open(io.open(path2.as_posix())) as f2:
-        with io.open(path1.as_posix()) as f1, io.open(path2.as_posix()) as f2:
+        with io.open(path1.as_posix(), encoding="utf-8") as f1, io.open(path2.as_posix(), encoding="utf-8") as f2:
             self.assertListEqual(list(f1), list(f2))
 
     def test_creation(self) -> None:
         """Test"""
 
-        # entry = du.Entry("id1", "Some text", None)
-        statement = du.Statement("id2", "Some text", None)
-        definition = du.Definition("id3", "Some text", None)
+        # entry = du.Entry("id1", "Some text", [])
+        statement = du.Statement("id2", "Some text", [])
+        definition = du.Definition("id3", "Some text", [])
 
         self.assertEqual(statement.id, "id2")
 
