@@ -1,0 +1,12 @@
+
+- !Section
+  text: Test section
+  children:
+
+  - !TestList
+    id: my-doxy-test-list
+    text: Tests documented with Doxygen (C++)
+    children:
+    - !ExtractTestsFromDoxygen
+      id: tests-unit
+      path: test/doxygen_tests

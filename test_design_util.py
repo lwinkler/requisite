@@ -31,8 +31,19 @@ class TestDesignUtil(unittest.TestCase):
     def test_include(self) -> None:
         """Test"""
 
-        entries = yu.read_design(Path("test/include/input1.yaml"))
+        data_path = Path("test/include")
+        entries = yu.read_design(data_path / "input1.yaml")
         for entry in entries:
             entry.expand(None)
-        yu.write_design(Path("test/include/output1.yaml"), entries)
-        self.compare_text_files(Path("test/include/expected1.yaml"), Path("test/include/output1.yaml"))
+        yu.write_design(data_path / "output1.yaml", entries)
+        self.compare_text_files(data_path / "expected1.yaml", data_path / "output1.yaml")
+
+    def test_extract_tests_from_doxygen(self) -> None:
+        """Test"""
+
+        data_path = Path("test/doxygen_tests")
+        entries = yu.read_design(data_path / "input1.yaml")
+        for entry in entries:
+            entry.expand(None)
+        yu.write_design(data_path / "output1.yaml", entries)
+        self.compare_text_files(data_path / "expected1.yaml", data_path / "output1.yaml")

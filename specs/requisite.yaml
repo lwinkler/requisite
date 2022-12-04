@@ -152,7 +152,3 @@ children:
     # labels: non-functional
     text: Verify that a design can be reviewed manually
     statement: req-design-review
-
-- !TestListFromDoxygen
-  id: tests-unit
-  path: test/doxygen_tests

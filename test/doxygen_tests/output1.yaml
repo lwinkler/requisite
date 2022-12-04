@@ -1,0 +1,39 @@
+- !Section
+  children:
+  - !TestList
+    children:
+    - !Test
+      id: tests-unit-0
+      statement: req-3a
+      text: test3a
+    - !Test
+      id: tests-unit-1
+      statement: req-3b
+      text: test3b
+    - !Test
+      id: tests-unit-2
+      statement: req-4a
+      text: test4a
+    - !Test
+      id: tests-unit-3
+      statement: req-4b
+      text: test4b
+    - !Test
+      id: tests-unit-4
+      statement: req-1a
+      text: test1a
+    - !Test
+      id: tests-unit-5
+      statement: req-1b
+      text: test1b
+    - !Test
+      id: tests-unit-6
+      statement: req-2a
+      text: test2a
+    - !Test
+      id: tests-unit-7
+      statement: req-2b
+      text: test2b
+    id: my-doxy-test-list
+    text: Tests documented with Doxygen (C++)
+  text: Test section
