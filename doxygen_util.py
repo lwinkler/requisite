@@ -31,6 +31,7 @@ def extract_tests_from_functions(path: Path, test_list_id: str) -> List[Function
                 "index.xml"
             ):
                 res.append(path)
+        res.sort()
         return res
 
     def get_child(node, attribute_name: str, check_unique: bool):
