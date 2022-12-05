@@ -1,28 +1,28 @@
 # Rules
 - !Specification
   id: spec-definition-id-mandatory
-  text: Any *definitions must have an id.
+  text: Any <definition>s must have an id.
 
 - !Specification
   id: spec-statement-id-mandatory
-  text: Any *statement must have an id.
+  text: Any <statement> must have an id.
 
 - !Specification
   id: spec-unique-id
-  text: The id field of any *entry must be unique.
+  text: The id field of any <entry> must be unique.
 
 - !Specification
   id: spec-id-valid-chars
-  text: The id field of any *entry must constist of valid characters (a-z, A-Z, 0-9, -, _) and start with a letter.
+  text: The id field of any <entry> must constist of valid characters (a-z, A-Z, 0-9, -, _) and start with a letter.
 
 - !Specification
   id: spec-id-spec
-  text: The id field of any *specification must start with spec.
+  text: The id field of any <specification> must start with spec.
 
 - !Specification
   id: spec-id-req
-  text: The id field of any *requirement must start with req.
+  text: The id field of any <requirement> must start with req.
 
 - !Specification
   id: spec-valid-links
-  text: The links in any text field of any *entry must be an existing entry id.
+  text: The links in any text field of any <entry> must be an existing entry id.

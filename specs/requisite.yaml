@@ -5,15 +5,15 @@ children:
 # Definitions
 - !Definition
   id: design-document
-  text: The document that specifies the design
+  text: The document that specifies the design.
 
 - !Definition
   id: expanded-design
-  text: The full design, after entries have been expanded
+  text: The full design, after entries have been expanded.
 
 - !Definition
   id: formats
-  text: All file formats for input and output
+  text: All file formats for input and output.
   children:
 
   - !Definition
@@ -26,7 +26,7 @@ children:
 
 - !Definition
   id: syntax-rule
-  text: A syntax rule for the <design> read from the <design-document>
+  text: A syntax rule for the <design> read from the <design-document>.
 
 - !Definition
   id: entry-types
@@ -34,7 +34,7 @@ children:
   children:
   - !Definition
     id: entry
-    text: The parent type for any entry
+    text: The parent type for any entry.
 
   - !Definition
     id: design

@@ -1,9 +1,9 @@
 #! env python3
 
-""" Python main, instanciate all objects
+""" Requisite: Tools for the parsing and analysis of software specifications and requirements.
 @author: Laurent Winkler
-@date: March 2019
-@license: Boost
+@date: November 2022
+@license: MIT
 """
 
 import sys
@@ -15,6 +15,7 @@ import yaml_util as yu
 import entries  # pylint: disable=W0611
 import expanders  # pylint: disable=W0611
 import operations as op
+import report as rp
 
 
 if sys.version_info[0] < 3:
@@ -35,6 +36,18 @@ def arguments_parser():
         type=Path,
         help="The input design in YAML format",
     )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        help="Output the expanded design in YAML format.",
+    )
+    parser.add_argument(
+        "-O",
+        "--report",
+        type=Path,
+        help="Output the expanded design in a markdown format.",
+    )
 
     return parser.parse_args()
 
@@ -52,9 +65,15 @@ if __name__ == "__main__":
     if errors:
         exit(1)
 
-    yu.write_design(Path("out.yaml"), product_design)
+    if args.output:
+        print(f"Create {args.output.as_posix()}")
+        yu.write_design(args.output, product_design)
 
     test_loader = unittest.defaultTestLoader
+
+    if args.report:
+        print(f"Create {args.report.as_posix()}")
+        rp.write_report(args.report, product_design)
 
     print(" ------------------------ ")
 
