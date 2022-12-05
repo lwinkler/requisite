@@ -48,6 +48,32 @@ children:
     statement: req-design-review
 """
 
+TEST_SPEC_DEF_ID_MANDATORY = """
+!Design
+id: design-requisite
+children:
+
+# Definitions
+- !Definition
+  text: The document that specifies the design
+
+- !Definition
+  id: expanded-design
+  text: The full design, after entries have been expanded
+
+- !Definition
+  id: formats
+  text: All file formats for input and output
+  children:
+
+  - !Definition
+    text: The YAML format, used for input and output.
+
+  - !Definition
+    id: markdown-format
+    text: The Markdown format to generate documents, reports, ...
+"""
+
 
 class TestOperations(unittest.TestCase):
     """Test operations"""
@@ -67,3 +93,10 @@ class TestOperations(unittest.TestCase):
             "req-design-output,spec-design-output-yaml,spec-design-output-markdown",
         )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
+
+    def test_definition_id_mandatory(self) -> None:
+        """Test verify spec-definition-id-mandatory"""
+        design = yaml.safe_load(TEST_SPEC_DEF_ID_MANDATORY)
+        messages = op.check_definition_id_mandatory(design)
+        self.assertEqual(messages, [])
+

@@ -1,5 +1,6 @@
 """Operations on design and entries"""
 
+from dataclasses import dataclass
 from typing import List, Type
 
 import entries as en
@@ -18,6 +19,12 @@ import entries as en
 # check_is_instance(entry, parent_class)
 
 
+@dataclass
+class ErrorMessage:
+    level: str
+    message: str
+
+
 def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entry]:
     """Extract all instances that inherit from the type"""
 
@@ -31,3 +38,35 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
             res += extract_entries_of_type(child, parent_class)
 
     return res
+
+def check_definition_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-definition-id-mandatory"""
+    
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry, en.Definition):
+        if not hasattr(entry, "id") or entry.id is None or not entry.id:
+            messages.append(ErrorMessage("", "Id missing"))
+    return messages
+
+# - !Specification
+  # id: spec-statement-id-mandatory
+  # text: Any *statement must have an id.
+# 
+# - !Specification
+  # id: spec-unique-id
+  # text: The id field of any *entry must be unique.
+# 
+# - !Specification
+  # id: spec-id-valid-chars
+# 
+# - !Specification
+  # id: spec-id-spec
+  # text: The id field of any *specification must be start with spec.
+# 
+# - !Specification
+  # id: spec-id-spec
+  # text: The id field of any *specification must be start with req.
+# 
+# - !Specification
+  # id: spec-valid-links
+  # text: The links in any text field of any *entry must be an existing entry id.

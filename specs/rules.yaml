@@ -12,16 +12,16 @@
   text: The id field of any *entry must be unique.
 
 - !Specification
-  id: spec-id-lowercase
-  text: The id field of any *entry must be in lowercase.
+  id: spec-id-valid-chars
+  text: The id field of any *entry must constist of valid characters (a-z, A-Z, 0-9, -, _)
 
 - !Specification
   id: spec-id-spec
-  text: The id field of any *specification must be start with spec.
+  text: The id field of any *specification must start with spec.
 
 - !Specification
-  id: spec-id-spec
-  text: The id field of any *specification must be start with req.
+  id: spec-id-req
+  text: The id field of any *requirement must start with req.
 
 - !Specification
   id: spec-valid-links
