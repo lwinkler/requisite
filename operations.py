@@ -1,5 +1,6 @@
 """Operations on design and entries"""
 
+import re
 from dataclasses import dataclass
 from typing import List, Type
 
@@ -78,6 +79,17 @@ def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
                 messages.append(ErrorMessage(entry.id, "ID is duplicated"))
             else:
                 known_ids.append(entry.id)
+    return messages
+
+def check_id_valid(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-mandatory"""
+    
+    messages: List[ErrorMessage] = []
+
+    for entry in extract_entries_of_type(entry, en.Entry):
+        if hasattr(entry, "id") and entry.id is not None and entry.id:
+            if not re.fullmatch('[a-zA-Z_][a-zA-Z0-9_-]*', entry.id):
+                messages.append(ErrorMessage(entry.id, "ID contains invalid characters"))
     return messages
 
 # - !Specification

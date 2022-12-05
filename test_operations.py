@@ -108,7 +108,30 @@ children:
 - !Statement
   id: id-c
   text: Some statement
+"""
 
+TEST_ID_VALID = """
+!Design
+id: design-requisite1
+children:
+
+# Definitions
+- !Definition
+  id: id%
+- !Definition
+  id: expanded$-design
+
+- !Definition
+  id: MYID
+  children:
+  - !Definition
+    id: 44z
+  - !Definition
+    id: maRkdown-format
+- !Statement
+  id: пр44
+- !Statement
+  id: a
 """
 
 
@@ -131,7 +154,7 @@ class TestOperations(unittest.TestCase):
         )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
 
-    def test_definition_id_mandatory(self) -> None:
+    def test_check_definition_id_mandatory(self) -> None:
         """Test verify spec-definition-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
@@ -140,18 +163,25 @@ class TestOperations(unittest.TestCase):
             op.ErrorMessage(related_id='', text='Definition id is missing')
             ])
 
-    def test_statement_id_mandatory(self) -> None:
+    def test_check_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_statement_id_mandatory(design)
         self.assertEqual(messages, [op.ErrorMessage(related_id='', text='Statement id is missing')])
 
-    def test_id_unique(self) -> None:
+    def test_check_id_unique(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_UNIQUE)
         messages = op.check_id_unique(design)
         self.assertEqual(messages, [
             op.ErrorMessage(related_id='id-a', text='ID is duplicated'),
             op.ErrorMessage(related_id='id-b', text='ID is duplicated')
+            ])
+
+    def test_check_id_valid(self) -> None:
+        """Test verify spec-statement-id-mandatory"""
+        design = yaml.safe_load(TEST_ID_VALID)
+        messages = op.check_id_valid(design)
+        self.assertEqual(messages, [
             ])
 
