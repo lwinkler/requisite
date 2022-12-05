@@ -19,9 +19,10 @@ import entries as en
 # check_is_instance(entry, parent_class)
 
 
+
 @dataclass
 class ErrorMessage:
-    level: str
+    related_id: str
     message: str
 
 
@@ -45,7 +46,16 @@ def check_definition_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry, en.Definition):
         if not hasattr(entry, "id") or entry.id is None or not entry.id:
-            messages.append(ErrorMessage("", "Id missing"))
+            messages.append(ErrorMessage("", "Definition id is missing"))
+    return messages
+
+def check_statement_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-mandatory"""
+    
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry, en.Statement):
+        if not hasattr(entry, "id") or entry.id is None or not entry.id:
+            messages.append(ErrorMessage("", "Statement id is missing"))
     return messages
 
 # - !Specification

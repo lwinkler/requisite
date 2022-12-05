@@ -72,6 +72,10 @@ children:
   - !Definition
     id: markdown-format
     text: The Markdown format to generate documents, reports, ...
+
+- !Statement
+  text: Some statement
+
 """
 
 
@@ -98,5 +102,14 @@ class TestOperations(unittest.TestCase):
         """Test verify spec-definition-id-mandatory"""
         design = yaml.safe_load(TEST_SPEC_DEF_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
-        self.assertEqual(messages, [])
+        self.assertEqual(messages, [
+            op.ErrorMessage(related_id='', message='Definition id is missing'),
+            op.ErrorMessage(related_id='', message='Definition id is missing')
+            ])
+
+    def test_statement_id_mandatory(self) -> None:
+        """Test verify spec-statement-id-mandatory"""
+        design = yaml.safe_load(TEST_SPEC_DEF_ID_MANDATORY)
+        messages = op.check_statement_id_mandatory(design)
+        self.assertEqual(messages, [op.ErrorMessage(related_id='', message='Statement id is missing')])
 
