@@ -5,6 +5,7 @@
 from __future__ import annotations
 from typing import List
 
+import re
 import yaml
 
 
@@ -44,6 +45,14 @@ class Entry(yaml.YAMLObject):
         if hasattr(self, "children"):
             for child in self.children:
                 child.print(indent + 1)
+
+    def extract_links(self) -> List[str]:
+        """Extract all the links mentioned in the associated text"""
+        expression = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
+        results = expression.findall(self.text)
+        if not results:
+            return []
+        return [result for result in results]
 
 
 class Section(Entry):
