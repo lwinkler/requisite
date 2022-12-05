@@ -136,22 +136,22 @@ class TestOperations(unittest.TestCase):
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
         self.assertEqual(messages, [
-            op.ErrorMessage(related_id='', message='Definition id is missing'),
-            op.ErrorMessage(related_id='', message='Definition id is missing')
+            op.ErrorMessage(related_id='', text='Definition id is missing'),
+            op.ErrorMessage(related_id='', text='Definition id is missing')
             ])
 
     def test_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_statement_id_mandatory(design)
-        self.assertEqual(messages, [op.ErrorMessage(related_id='', message='Statement id is missing')])
+        self.assertEqual(messages, [op.ErrorMessage(related_id='', text='Statement id is missing')])
 
     def test_id_unique(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_UNIQUE)
         messages = op.check_id_unique(design)
         self.assertEqual(messages, [
-            op.ErrorMessage(related_id='id-a', message='ID is duplicated'),
-            op.ErrorMessage(related_id='id-b', message='ID is duplicated')
+            op.ErrorMessage(related_id='id-a', text='ID is duplicated'),
+            op.ErrorMessage(related_id='id-b', text='ID is duplicated')
             ])
 

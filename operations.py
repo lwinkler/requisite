@@ -23,7 +23,7 @@ import entries as en
 @dataclass
 class ErrorMessage:
     related_id: str
-    message: str
+    text: str
 
 
 def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entry]:
@@ -39,6 +39,14 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
             res += extract_entries_of_type(child, parent_class)
 
     return res
+
+def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
+    """Apply all existing rules to the entry and its children"""
+    messages: List[ErrorMessage] = []
+    messages += check_definition_id_mandatory(entry)
+    messages += check_statement_id_mandatory(entry)
+    messages += check_id_unique(entry)
+    return messages
 
 def check_definition_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-definition-id-mandatory"""
@@ -72,11 +80,6 @@ def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
                 known_ids.append(entry.id)
     return messages
 
-# 
-# - !Specification
-  # id: spec-unique-id
-  # text: The id field of any *entry must be unique.
-# 
 # - !Specification
   # id: spec-id-valid-chars
 # 

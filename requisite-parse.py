@@ -14,6 +14,7 @@ from pathlib import Path
 import yaml_util as yu
 import entries  # pylint: disable=W0611
 import expanders  # pylint: disable=W0611
+import operations as op
 
 
 if sys.version_info[0] < 3:
@@ -46,6 +47,14 @@ if __name__ == "__main__":
     product_design = yu.read_design(args.input)
     product_design.expand(None)
     product_design.print()
+
+    errors = op.check_all_rules(product_design)
+    
+    if errors:
+        for message in messages:
+            print("ERROR: ", message.related_id, message.text)
+        exit(1)
+
     yu.write_design(Path("out.yaml"), product_design)
 
     test_loader = unittest.defaultTestLoader
