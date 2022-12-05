@@ -3,7 +3,7 @@
 import unittest
 from pathlib import Path
 
-import expanders
+import expanders  # pylint: disable=W0611
 import yaml_util as yu
 
 
@@ -12,10 +12,10 @@ class TestExpanders(unittest.TestCase):
 
     def compare_text_files(self, path1: Path, path2: Path) -> None:
         """Compare text files for tests"""
-        with open(path1.as_posix(), encoding="utf-8") as f1, open(
+        with open(path1.as_posix(), encoding="utf-8") as file1, open(
             path2.as_posix(), encoding="utf-8"
-        ) as f2:
-            self.assertListEqual(list(f1), list(f2))
+        ) as file2:
+            self.assertListEqual(list(file1), list(file2))
 
     def test_include(self) -> None:
         """Test"""

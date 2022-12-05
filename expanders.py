@@ -1,3 +1,5 @@
+"""Expanders are entries that can modify their parent entry (then are removed)"""
+
 from pathlib import Path
 from typing import List
 
@@ -12,6 +14,7 @@ class Expander(Entry):
     yaml_tag = "!Expander"
 
     def create_entries(self) -> List[Entry]:
+        """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
     def expand(self, parent: Entry):

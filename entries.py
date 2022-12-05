@@ -21,7 +21,7 @@ class Entry(yaml.YAMLObject):
         if children is not None:
             self.children = children
 
-    def expand(self, parent: Entry):
+    def expand(self, _parent: Entry):
         """Processing: Nothing to do by default but call on children"""
         try:
             if hasattr(self, "children"):
@@ -98,7 +98,7 @@ class TestList(Entry):
     yaml_tag = "!TestList"
 
 
-class Design(Entry):  # TODO Remove
+class Design(Entry):
     """Design value object, contains the full design"""
 
     yaml_loader = yaml.SafeLoader

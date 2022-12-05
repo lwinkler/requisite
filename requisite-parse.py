@@ -12,8 +12,8 @@ import unittest
 from pathlib import Path
 
 import yaml_util as yu
-import entries
-import expanders
+import entries  # pylint: disable=W0611
+import expanders  # pylint: disable=W0611
 
 
 if sys.version_info[0] < 3:
@@ -55,12 +55,12 @@ if __name__ == "__main__":
     for test_suite in test_loader.discover(".", pattern="test_*"):
         print("-", test_suite.countTestCases(), test_suite)
         # for test in test_loader.loadTestsFromTestSuite(test_suite):
-        for test_case in test_suite._tests:
+        for test_case in test_suite._tests:  # pylint: disable=W0212
             print("  - ", test_case.countTestCases())
             print(890, test_loader.getTestCaseNames(test_case))
             print(890, test_loader.loadTestsFromModule(test_case))
             # for test_method in test_loader.loadTestsFromTestCase(test_case):
-            for test_method in test_case._tests:
+            for test_method in test_case._tests:  # pylint: disable=W0212
                 print("    - ", "id", test_method.id(), test_method._testMethodDoc)
                 # print(891, test_loader.getTestCaseNames(test_method))
                 # print(890, test_loader.loadTestsFromModule(test_method))
