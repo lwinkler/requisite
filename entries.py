@@ -49,6 +49,8 @@ class Entry(yaml.YAMLObject):
     def extract_links(self) -> List[str]:
         """Extract all the links mentioned in the associated text"""
         expression = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
+        if not hasattr(self, "text"):
+            return []
         results = expression.findall(self.text)
         if not results:
             return []

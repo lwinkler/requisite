@@ -50,6 +50,7 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_id_valid(entry)
     messages += check_id_spec(entry)
     messages += check_id_req(entry)
+    messages += check_links(entry)
     return messages
 
 
@@ -130,6 +131,21 @@ def check_id_req(entry: en.Entry) -> List[ErrorMessage]:
                 )
     return messages
 
+def check_links(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-req"""
+
+    all_ids = [entry.id for entry in extract_entries_of_type(entry, en.Entry)]
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry, en.Entry):
+        links = entry.extract_links()
+        for link in links:
+            if link not in all_ids:
+                messages.append(
+                    ErrorMessage(entry.id, f"Linked id '{link}' does not exist.")
+                )
+
+
+    return messages
 
 # - !Specification
 # id: spec-valid-links

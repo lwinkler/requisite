@@ -152,6 +152,27 @@ children:
   id: req_abc
 """
 
+TEST_LINKS = """
+!Design
+id: design-requisite1
+text: Link with <asdf>s
+children:
+
+- !Specification
+  id: asdf
+  children:
+  - !Requirement
+    id: 44z
+  - !Specification
+    id: req-format
+    text: <Text> with a failing link and a successful <one>
+- !Requirement
+  id: req-abc-asdf
+  text: <another> text with a failing link and a successful <one>
+- !Requirement
+  id: one
+"""
+
 
 class TestOperations(unittest.TestCase):
     """Test operations"""
@@ -256,3 +277,13 @@ class TestOperations(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_check_links(self) -> None:
+        """Test verify spec-valid-links"""
+        design = yaml.safe_load(TEST_LINKS)
+        messages = op.check_links(design)
+        self.assertEqual(
+            messages, [
+                op.ErrorMessage(related_id='req-format', text="Linked id 'Text' does not exist."),
+                op.ErrorMessage(related_id='req-abc-asdf', text="Linked id 'another' does not exist.")
+                ])

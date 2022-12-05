@@ -26,7 +26,7 @@ children:
 
 - !Definition
   id: syntax-rule
-  text: A syntax rule for the <design> read from the *design-document
+  text: A syntax rule for the <design> read from the <design-document>
 
 - !Definition
   id: entry-types
@@ -42,7 +42,7 @@ children:
 
   - !Definition
     id: section
-    text: A section of the design. This is used purely to structure the design document
+    text: A section of the design. This is used purely to structure the <design-document>
 
   - !Definition
     id: expander
@@ -108,7 +108,7 @@ children:
 
   - !Specification
     id: spec-input-entries
-    text: Any <entry-type> can be read from the <yaml-format>
+    text: Any <entry-types> can be read from the <yaml-format>
 
 - !Requirement
   id: req-design-output
@@ -134,12 +134,12 @@ children:
 
   - !Specification
     id: spec-extract-tests
-    text: Links between tests and statements can be extracted from the sources of the tests in different <test-annotations>
-    multiply: test-annotations
+    text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations>
+    multiply: supported-code-annotations
 
 - !Requirement
   id: req-syntax-check
-  text: The syntax of the <design-documents> is checked
+  text: The syntax of the <design-document> is checked
 
 
 # Test lists
