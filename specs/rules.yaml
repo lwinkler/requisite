@@ -13,7 +13,7 @@
 
 - !Specification
   id: spec-id-valid-chars
-  text: The id field of any *entry must constist of valid characters (a-z, A-Z, 0-9, -, _)
+  text: The id field of any *entry must constist of valid characters (a-z, A-Z, 0-9, -, _) and start with a letter.
 
 - !Specification
   id: spec-id-spec

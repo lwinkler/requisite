@@ -134,6 +134,24 @@ children:
   id: a
 """
 
+TEST_ID_PREF = """
+!Design
+id: design-requisite1
+children:
+
+- !Specification
+  id: spec-12aaa
+  children:
+  - !Requirement
+    id: 44z
+  - !Specification
+    id: req-format
+- !Requirement
+  id: req-abc-asdf
+- !Requirement
+  id: req_abc
+"""
+
 
 class TestOperations(unittest.TestCase):
     """Test operations"""
@@ -158,30 +176,83 @@ class TestOperations(unittest.TestCase):
         """Test verify spec-definition-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
-        self.assertEqual(messages, [
-            op.ErrorMessage(related_id='', text='Definition id is missing'),
-            op.ErrorMessage(related_id='', text='Definition id is missing')
-            ])
+        self.assertEqual(
+            messages,
+            [
+                op.ErrorMessage(related_id="", text="Definition id is missing"),
+                op.ErrorMessage(related_id="", text="Definition id is missing"),
+            ],
+        )
 
     def test_check_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_statement_id_mandatory(design)
-        self.assertEqual(messages, [op.ErrorMessage(related_id='', text='Statement id is missing')])
+        self.assertEqual(
+            messages, [op.ErrorMessage(related_id="", text="Statement id is missing")]
+        )
 
     def test_check_id_unique(self) -> None:
-        """Test verify spec-statement-id-mandatory"""
+        """Test verify spec-id-unique"""
         design = yaml.safe_load(TEST_ID_UNIQUE)
         messages = op.check_id_unique(design)
-        self.assertEqual(messages, [
-            op.ErrorMessage(related_id='id-a', text='ID is duplicated'),
-            op.ErrorMessage(related_id='id-b', text='ID is duplicated')
-            ])
+        self.assertEqual(
+            messages,
+            [
+                op.ErrorMessage(related_id="id-a", text="ID is duplicated"),
+                op.ErrorMessage(related_id="id-b", text="ID is duplicated"),
+            ],
+        )
 
     def test_check_id_valid(self) -> None:
-        """Test verify spec-statement-id-mandatory"""
+        """Test verify spec-id-valid"""
         design = yaml.safe_load(TEST_ID_VALID)
         messages = op.check_id_valid(design)
-        self.assertEqual(messages, [
-            ])
+        self.assertEqual(
+            messages,
+            [
+                op.ErrorMessage(
+                    related_id="id%", text="ID contains invalid characters"
+                ),
+                op.ErrorMessage(
+                    related_id="expanded$-design", text="ID contains invalid characters"
+                ),
+                op.ErrorMessage(
+                    related_id="44z", text="ID contains invalid characters"
+                ),
+                op.ErrorMessage(
+                    related_id="пр44", text="ID contains invalid characters"
+                ),
+            ],
+        )
 
+    def test_check_id_spec(self) -> None:
+        """Test verify spec-id-spec"""
+        design = yaml.safe_load(TEST_ID_PREF)
+        messages = op.check_id_spec(design)
+        self.assertEqual(
+            messages,
+            [
+                op.ErrorMessage(
+                    related_id="req-format",
+                    text="ID of specification must start with 'spec-'",
+                )
+            ],
+        )
+
+    def test_check_id_req(self) -> None:
+        """Test verify spec-id-req"""
+        design = yaml.safe_load(TEST_ID_PREF)
+        messages = op.check_id_req(design)
+        self.assertEqual(
+            messages,
+            [
+                op.ErrorMessage(
+                    related_id="44z", text="ID of requirement must start with 'req-'"
+                ),
+                op.ErrorMessage(
+                    related_id="req_abc",
+                    text="ID of requirement must start with 'req-'",
+                ),
+            ],
+        )

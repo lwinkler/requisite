@@ -20,7 +20,6 @@ import entries as en
 # check_is_instance(entry, parent_class)
 
 
-
 @dataclass
 class ErrorMessage:
     related_id: str
@@ -41,6 +40,7 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
     return res
 
+
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
     messages: List[ErrorMessage] = []
@@ -49,27 +49,30 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_id_unique(entry)
     return messages
 
+
 def check_definition_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-definition-id-mandatory"""
-    
+
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry, en.Definition):
         if not hasattr(entry, "id") or entry.id is None or not entry.id:
             messages.append(ErrorMessage("", "Definition id is missing"))
     return messages
 
+
 def check_statement_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-mandatory"""
-    
+
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry, en.Statement):
         if not hasattr(entry, "id") or entry.id is None or not entry.id:
             messages.append(ErrorMessage("", "Statement id is missing"))
     return messages
 
+
 def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
-    """Check rule spec-statement-id-mandatory"""
-    
+    """Check rule spec-statement-id-unique"""
+
     known_ids: List[str] = []
     messages: List[ErrorMessage] = []
 
@@ -81,28 +84,50 @@ def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
                 known_ids.append(entry.id)
     return messages
 
+
 def check_id_valid(entry: en.Entry) -> List[ErrorMessage]:
-    """Check rule spec-statement-id-mandatory"""
-    
+    """Check rule spec-statement-id-valid"""
+
     messages: List[ErrorMessage] = []
 
     for entry in extract_entries_of_type(entry, en.Entry):
         if hasattr(entry, "id") and entry.id is not None and entry.id:
-            if not re.fullmatch('[a-zA-Z_][a-zA-Z0-9_-]*', entry.id):
-                messages.append(ErrorMessage(entry.id, "ID contains invalid characters"))
+            if not re.fullmatch("[a-zA-Z_][a-zA-Z0-9_-]*", entry.id):
+                messages.append(
+                    ErrorMessage(entry.id, "ID contains invalid characters")
+                )
     return messages
 
+
+def check_id_spec(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-spec"""
+
+    messages: List[ErrorMessage] = []
+
+    for entry in extract_entries_of_type(entry, en.Specification):
+        if hasattr(entry, "id") and entry.id is not None and entry.id:
+            if not entry.id.startswith("spec-"):
+                messages.append(
+                    ErrorMessage(
+                        entry.id, "ID of specification must start with 'spec-'"
+                    )
+                )
+    return messages
+
+
+def check_id_req(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-req"""
+
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry, en.Requirement):
+        if hasattr(entry, "id") and entry.id is not None and entry.id:
+            if not entry.id.startswith("req-"):
+                messages.append(
+                    ErrorMessage(entry.id, "ID of requirement must start with 'req-'")
+                )
+    return messages
+
+
 # - !Specification
-  # id: spec-id-valid-chars
-# 
-# - !Specification
-  # id: spec-id-spec
-  # text: The id field of any *specification must be start with spec.
-# 
-# - !Specification
-  # id: spec-id-spec
-  # text: The id field of any *specification must be start with req.
-# 
-# - !Specification
-  # id: spec-valid-links
-  # text: The links in any text field of any *entry must be an existing entry id.
+# id: spec-valid-links
+# text: The links in any text field of any *entry must be an existing entry id.

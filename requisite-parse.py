@@ -35,8 +35,6 @@ def arguments_parser():
         type=Path,
         help="The input design in YAML format",
     )
-    # arguments for QApplication
-    parser.add_argument("--style", help="Passed to the constructor of QApplication")
 
     return parser.parse_args()
 
@@ -49,7 +47,7 @@ if __name__ == "__main__":
     product_design.print()
 
     errors = op.check_all_rules(product_design)
-    
+
     if errors:
         for message in messages:
             print("ERROR: ", message.related_id, message.text)
