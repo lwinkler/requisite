@@ -47,6 +47,9 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_definition_id_mandatory(entry)
     messages += check_statement_id_mandatory(entry)
     messages += check_id_unique(entry)
+    messages += check_id_valid(entry)
+    messages += check_id_spec(entry)
+    messages += check_id_req(entry)
     return messages
 
 

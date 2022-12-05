@@ -47,10 +47,9 @@ if __name__ == "__main__":
     product_design.print()
 
     errors = op.check_all_rules(product_design)
-
+    for error in errors:
+        print("ERROR: ", error.related_id, error.text)
     if errors:
-        for message in messages:
-            print("ERROR: ", message.related_id, message.text)
         exit(1)
 
     yu.write_design(Path("out.yaml"), product_design)
