@@ -2,26 +2,26 @@
 
 from typing import List, Type
 
-import design_util as du
+import entries as en
 
 
-# def check_is_instance(entry: du.Entry, parent_class: Type) -> None:
+# def check_is_instance(entry: en.Entry, parent_class: Type) -> None:
 # """Check if the object inherits from type (exception raised)"""
 #
 # if not isinstance(entry, parent_class):
 # raise Exception(f"{entry.id} is not an instance of {parent_class.__name__}")
 #
 #
-# def check_are_instances(entries: List[du.Entry], parent_class: Type) -> None:
+# def check_are_instances(entries: List[en.Entry], parent_class: Type) -> None:
 # """Check if the objects inherit from type (exception raised)"""
 # for entry in entries:
 # check_is_instance(entry, parent_class)
 
 
-def extract_entries_of_type(entry: du.Entry, parent_class: Type) -> List[du.Entry]:
+def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entry]:
     """Extract all instances that inherit from the type"""
 
-    res: List[du.Entry] = []
+    res: List[en.Entry] = []
 
     if isinstance(entry, parent_class):
         res.append(entry)

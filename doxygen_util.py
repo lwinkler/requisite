@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from typing import List
 from pathlib import Path
 from dataclasses import dataclass
-import design_util as du
+import entries as en
 
 
 @dataclass
@@ -21,7 +21,7 @@ class Function:
     line: int
 
 
-def extract_tests_from_functions(path: Path, test_list_id: str) -> List[du.Test]:
+def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Test]:
     """Parse the source code to extract the test information"""
 
     def get_all_xml_files(xml_dir: Path) -> List[Path]:
@@ -125,7 +125,7 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
             all_functions += extract_all_functions(file)
 
         return [
-            du.Test(f"{test_list_id}-{index}", func.name, None, func.statement)
+            en.Test(f"{test_list_id}-{index}", func.name, None, func.statement)
             for index, func in enumerate(all_functions)
         ]
 

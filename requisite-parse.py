@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 import yaml_util as yu
-import design_util
+import entries
 import expanders
 
 

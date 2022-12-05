@@ -2,7 +2,7 @@
 
 import unittest
 
-import design_util as du
+import entries as en
 
 
 class TestDesignUtil(unittest.TestCase):
@@ -11,9 +11,9 @@ class TestDesignUtil(unittest.TestCase):
     def test_creation(self) -> None:
         """Test"""
 
-        # entry = du.Entry("id1", "Some text", [])
-        statement = du.Statement("id2", "Some text", [])
-        definition = du.Definition("id3", "Some text", [])
+        # entry = en.Entry("id1", "Some text", [])
+        statement = en.Statement("id2", "Some text", [])
+        definition = en.Definition("id3", "Some text", [])
 
         self.assertEqual(statement.id, "id2")
 

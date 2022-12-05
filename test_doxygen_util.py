@@ -4,11 +4,11 @@ import unittest
 from pathlib import Path
 from typing import List
 
-import design_util as du
+import entries as en
 from doxygen_util import extract_tests_from_functions
 
 
-def get_by_text(all_tests: List[du.Test], name: str) -> du.Test:
+def get_by_text(all_tests: List[en.Test], name: str) -> en.Test:
     """Search function by name"""
     for test in all_tests:
         if test.text == name:

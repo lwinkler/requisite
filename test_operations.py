@@ -3,8 +3,8 @@
 import unittest
 import yaml
 
+import entries as en
 import operations as op
-import design_util as du
 
 DESIGN_STR1 = """
 !Design
@@ -56,9 +56,9 @@ class TestOperations(unittest.TestCase):
         """Test"""
         design1 = yaml.safe_load(DESIGN_STR1)
 
-        designs = op.extract_entries_of_type(design1, du.Design)
-        statements = op.extract_entries_of_type(design1, du.Statement)
-        tests = op.extract_entries_of_type(design1, du.Test)
+        designs = op.extract_entries_of_type(design1, en.Design)
+        statements = op.extract_entries_of_type(design1, en.Statement)
+        tests = op.extract_entries_of_type(design1, en.Test)
 
         self.assertEqual(len(designs), 1)
         self.assertEqual(

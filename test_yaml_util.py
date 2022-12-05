@@ -3,7 +3,7 @@
 import unittest
 import yaml
 
-import design_util as du
+import entries as en
 
 DESIGN_STR1 = """!Design
 children:
@@ -23,8 +23,8 @@ class TestYamlUtil(unittest.TestCase):
     def test_serialize(self):
         """Test"""
 
-        statement = du.Statement("id2", "Some text", None)
-        definition = du.Definition("id3", "Some text", None)
+        statement = en.Statement("id2", "Some text", None)
+        definition = en.Definition("id3", "Some text", None)
 
         self.assertEqual(
             yaml.dump(statement, width=1000),
@@ -57,9 +57,9 @@ class TestYamlUtil(unittest.TestCase):
     def test_serialize_design(self):
         """Test"""
 
-        statement = du.Statement("id2", "Some text", None)
-        definition = du.Definition("id3", "Some text", None)
-        design = du.Design("design-id", None, [definition] + [statement])
+        statement = en.Statement("id2", "Some text", None)
+        definition = en.Definition("id3", "Some text", None)
+        design = en.Design("design-id", None, [definition] + [statement])
 
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)
 
@@ -68,10 +68,10 @@ class TestYamlUtil(unittest.TestCase):
 
         design = yaml.safe_load(DESIGN_STR1)
 
-        self.assertTrue(isinstance(design.children[1], du.Statement))
+        self.assertTrue(isinstance(design.children[1], en.Statement))
         self.assertEqual(design.children[1].id, "id2")
 
-        self.assertTrue(isinstance(design.children[0], du.Definition))
+        self.assertTrue(isinstance(design.children[0], en.Definition))
         self.assertEqual(design.children[0].id, "id3")
 
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)

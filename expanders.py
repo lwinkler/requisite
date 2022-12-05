@@ -3,7 +3,7 @@ from typing import List
 
 import yaml_util as yu
 import doxygen_util as du
-from design_util import Entry
+from entries import Entry
 
 
 class Expander(Entry):

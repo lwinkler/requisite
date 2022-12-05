@@ -1,6 +1,5 @@
 """Unit test for doxygen test extraction"""
 
-import io
 import unittest
 from pathlib import Path
 
@@ -13,7 +12,7 @@ class TestExpanders(unittest.TestCase):
 
     def compare_text_files(self, path1: Path, path2: Path) -> None:
         """Compare text files for tests"""
-        with io.open(path1.as_posix(), encoding="utf-8") as f1, io.open(
+        with open(path1.as_posix(), encoding="utf-8") as f1, open(
             path2.as_posix(), encoding="utf-8"
         ) as f2:
             self.assertListEqual(list(f1), list(f2))
