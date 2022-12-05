@@ -48,7 +48,7 @@ children:
     statement: req-design-review
 """
 
-TEST_SPEC_DEF_ID_MANDATORY = """
+TEST_ID_MANDATORY = """
 !Design
 id: design-requisite
 children:
@@ -78,6 +78,39 @@ children:
 
 """
 
+TEST_ID_UNIQUE = """
+!Design
+id: design-requisite
+children:
+
+# Definitions
+- !Definition
+  id: id-a
+  text: The document that specifies the design
+
+- !Definition
+  id: id-b
+  text: The full design, after entries have been expanded
+
+- !Definition
+  id: id-a
+  text: All file formats for input and output
+  children:
+
+  - !Definition
+    id: id-B
+    text: The YAML format, used for input and output.
+
+  - !Definition
+    id: id-b
+    text: The Markdown format to generate documents, reports, ...
+
+- !Statement
+  id: id-c
+  text: Some statement
+
+"""
+
 
 class TestOperations(unittest.TestCase):
     """Test operations"""
@@ -100,7 +133,7 @@ class TestOperations(unittest.TestCase):
 
     def test_definition_id_mandatory(self) -> None:
         """Test verify spec-definition-id-mandatory"""
-        design = yaml.safe_load(TEST_SPEC_DEF_ID_MANDATORY)
+        design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
         self.assertEqual(messages, [
             op.ErrorMessage(related_id='', message='Definition id is missing'),
@@ -109,7 +142,16 @@ class TestOperations(unittest.TestCase):
 
     def test_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
-        design = yaml.safe_load(TEST_SPEC_DEF_ID_MANDATORY)
+        design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_statement_id_mandatory(design)
         self.assertEqual(messages, [op.ErrorMessage(related_id='', message='Statement id is missing')])
+
+    def test_id_unique(self) -> None:
+        """Test verify spec-statement-id-mandatory"""
+        design = yaml.safe_load(TEST_ID_UNIQUE)
+        messages = op.check_id_unique(design)
+        self.assertEqual(messages, [
+            op.ErrorMessage(related_id='id-a', message='ID is duplicated'),
+            op.ErrorMessage(related_id='id-b', message='ID is duplicated')
+            ])
 

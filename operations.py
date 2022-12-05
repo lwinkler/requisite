@@ -58,9 +58,20 @@ def check_statement_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
             messages.append(ErrorMessage("", "Statement id is missing"))
     return messages
 
-# - !Specification
-  # id: spec-statement-id-mandatory
-  # text: Any *statement must have an id.
+def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-statement-id-mandatory"""
+    
+    known_ids: List[str] = []
+    messages: List[ErrorMessage] = []
+
+    for entry in extract_entries_of_type(entry, en.Entry):
+        if hasattr(entry, "id") and entry.id is not None and entry.id:
+            if entry.id in known_ids:
+                messages.append(ErrorMessage(entry.id, "ID is duplicated"))
+            else:
+                known_ids.append(entry.id)
+    return messages
+
 # 
 # - !Specification
   # id: spec-unique-id
