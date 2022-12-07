@@ -26,3 +26,24 @@
 - !Specification
   id: spec-valid-links
   text: The links in any text field of any <entry> must be an existing entry id.
+
+- !Specification
+  id: spec-child-statement
+  text: A <statement> can only have <statement>s as children
+
+- !Specification
+  id: spec-child-definition
+  text: A <definition> can only have <definition>s as children
+
+- !Specification
+  id: spec-child-test-list
+  text: A <test-list> can only have <test>s as children
+
+- !Specification
+  id: spec-parent-test
+  text: A <test> can only have a <test-list> as parent
+
+- !Specification
+  id: spec-test-statement-id
+  text: A <test> must refer to a valid <statement>
+

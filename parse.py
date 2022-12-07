@@ -55,18 +55,23 @@ def arguments_parser():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
-
-    args = arguments_parser()
-    product_design = yu.read_design(args.input)
-    product_design.expand(None)
-    product_design.print()
+def check_for_errors(product_design):
+    """Check for all syntax errors in design and abort on error"""
 
     errors = op.check_all_rules(product_design)
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
         sys.exit(1)
+
+if __name__ == "__main__":
+
+    args = arguments_parser()
+    product_design = yu.read_design(args.input)
+    check_for_errors(product_design)
+    product_design.expand(None)
+    check_for_errors(product_design)
+    product_design.print()
 
     if args.output:
         print(f"Create {args.output.as_posix()}")
@@ -78,17 +83,23 @@ if __name__ == "__main__":
         print(f"Create {args.report.as_posix()}")
         rp.write_html_report(args.report, product_design)
 
+
     print(" ------------------------ ")
 
     for test_suite in test_loader.discover(".", pattern="test_*"):
         print("-", test_suite.countTestCases(), test_suite)
         # for test in test_loader.loadTestsFromTestSuite(test_suite):
+        if isinstance(test_suite, unittest.TestCase):
+            print(111)
+            continue
         for test_case in test_suite._tests:  # pylint: disable=W0212
             print("  - ", test_case.countTestCases())
-            print(890, test_loader.getTestCaseNames(test_case))
-            print(890, test_loader.loadTestsFromModule(test_case))
             # for test_method in test_loader.loadTestsFromTestCase(test_case):
+            if isinstance(test_case, unittest.TestCase):
+                print(222)
+                continue
             for test_method in test_case._tests:  # pylint: disable=W0212
+                assert isinstance(test_method, unittest.TestCase)
                 print("    - ", "id", test_method.id(), test_method._testMethodDoc)
                 # print(891, test_loader.getTestCaseNames(test_method))
                 # print(890, test_loader.loadTestsFromModule(test_method))

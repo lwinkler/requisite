@@ -38,14 +38,16 @@ children:
     id: spec-design-output-markdown
     text: The *expanded-design can be written as a report to the *markdown-format
 
-- !TestList
-  id: tests-system
+- !Section
   children:
-
-  - !Test
-    id: test-design-review
-    text: Verify that a design can be reviewed manually
-    statement: req-design-review
+  - !TestList
+    id: tests-system
+    children:
+  
+    - !Test
+      id: test-design-review
+      text: Verify that a design can be reviewed manually
+      statement: req-design-review
 """
 
 TEST_ID_MANDATORY = """
@@ -166,11 +168,13 @@ children:
   - !Specification
     id: req-format
     text: <Text> with a failing link and a successful <one>
-- !Requirement
-  id: req-abc-asdf
-  text: <another> text with a failing link and a successful <one>
-- !Requirement
-  id: one
+- !Section
+  children:
+  - !Requirement
+    id: req-abc-asdf
+    text: <another> text with a failing link and a successful <one>
+  - !Requirement
+    id: one
 """
 
 

@@ -136,7 +136,11 @@ def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
 def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    all_ids = [entry.id for entry in extract_entries_of_type(entry_to_check, en.Entry)]
+    all_ids:List[str] = []
+    for entry in extract_entries_of_type(entry_to_check, en.Entry):
+        if hasattr(entry, "id"):
+            all_ids.append(entry.id)
+
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
         links = entry.extract_links()
@@ -147,3 +151,20 @@ def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
                 )
 
     return messages
+
+# - !Specification
+  # id: spec-child-statement
+  # text: A <statement> can only have <statement>s as children
+# 
+# - !Specification
+  # id: spec-child-definition
+  # text: A <definition> can only have <definition>s as children
+# 
+# - !Specification
+  # id: spec-child-test-list
+  # text: A <test-list> can only have <test>s as children
+# 
+# - !Specification
+  # id: spec-parent-test
+  # text: A <test> can only have a <test-list> as parent
+# 
