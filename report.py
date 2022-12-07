@@ -44,6 +44,9 @@ def text_to_markdown(text: str) -> str:
     results = re.sub(LINK_EXPRESSION, "[\\1](#\\1)", text)
     return html.escape(results)
 
+def text_to_html(text: str) -> str:
+
+    return re.sub(LINK_EXPRESSION, "<a href=\"#\\1\">\\1</a>", entry.text) if hasattr(entry, "text") else ""
 
 def write_as_title_md(fout: io.TextIOWrapper, entry: en.Entry, level: int):
     fout.write("#" * level + " " + get_id(entry) + "\n")
@@ -53,28 +56,36 @@ def write_as_title_md(fout: io.TextIOWrapper, entry: en.Entry, level: int):
         for child in entry.children:
             write_as_title(fout, child, level + 1)
 
-def class_to_p(cl: Type) -> str:
+def class_to_tag(entry: en.Entry) -> str:
     """Write a class into a string"""
-    p = ET.Element('b') #TODO rename
-    p.text = cl.__name__.lower()[0:3]
-    return p
+    tag = ET.Element('b')
+    if type(entry) == en.Specification:
+        tag.text = "spec"
+    else:
+        tag.text = type(entry).__name__.lower()[0:3]
+    return tag
 
+def id_to_tag(entry: en.Entry, add_id: bool) -> str:
+    """Write a class into a string"""
+    id1 = get_id(entry)
+    tag = ET.Element('a', attrib={"id": id1}) if add_id else ET.Element('a')
+    tag.text = id1
+    return tag
 
-def entry_to_p(entry: en.Entry) -> str:
+def entry_to_tag(entry: en.Entry, add_id: bool) -> str:
     """Transform an entry into a string: for list"""
-    #p = ET.Element('p')
-    #p.append(class_to_p(type(entry)))
-    #p.append(wrap_id(entry))
-    id_str = f'<a id="{entry.id}">{entry.id}</a>' if hasattr(entry, "id") else ""
-    cl_str = type(entry).__name__.lower()[0:3]
+    tag = ET.Element('p')
+    tag.append(class_to_tag(entry))
+    tag.append(id_to_tag(entry, add_id))
     text = re.sub(LINK_EXPRESSION, "<a href=\"#\\1\">\\1</a>", entry.text) if hasattr(entry, "text") else ""
-    return ET.fromstring('<p>' + cl_str + id_str + text + '</p>')
+    tag.append(ET.fromstring('<a>' + text + '</a>'))
+    return tag
 
 def generate_list(entry: en.Entry, level: int) -> str:
     if not hasattr(entry, "children"):
-        return entry_to_p(entry)
+        return entry_to_tag(entry, True)
 
-    p = entry_to_p(entry)
+    p = entry_to_tag(entry, True)
     ul = ET.Element('ul')
     p.append(ul)
     for child in entry.children:
