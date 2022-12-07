@@ -11,6 +11,7 @@ import yaml
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 
+
 class Entry(yaml.YAMLObject):
     """Any entry: this is the parent class for all other. Virtual."""
 
@@ -18,13 +19,14 @@ class Entry(yaml.YAMLObject):
     yaml_tag = "!Entry"
 
     def __init__(self, id1: str, text: str, children: List[Entry]):
-        self.id = id1  # pylint: disable=C0103
+        if id1 is not None:
+            self.id = id1  # pylint: disable=C0103
         if text is not None:
             self.text = text
-        if children is not None:
+        if children:
             self.children = children
 
-    def expand(self, _parent: Entry):
+    def expand(self, _parent: Entry | None):
         """Processing: Nothing to do by default but call on children"""
         try:
             if hasattr(self, "children"):
@@ -93,7 +95,7 @@ class Test(Entry):
 
     yaml_tag = "!Test"
 
-    def __init__(  # pylint: disable=R0913
+    def __init__(
         self,
         id1: str,
         text: str,

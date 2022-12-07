@@ -283,7 +283,14 @@ class TestOperations(unittest.TestCase):
         design = yaml.safe_load(TEST_LINKS)
         messages = op.check_links(design)
         self.assertEqual(
-            messages, [
-                op.ErrorMessage(related_id='req-format', text="Linked id 'Text' does not exist."),
-                op.ErrorMessage(related_id='req-abc-asdf', text="Linked id 'another' does not exist.")
-                ])
+            messages,
+            [
+                op.ErrorMessage(
+                    related_id="req-format", text="Linked id 'Text' does not exist."
+                ),
+                op.ErrorMessage(
+                    related_id="req-abc-asdf",
+                    text="Linked id 'another' does not exist.",
+                ),
+            ],
+        )

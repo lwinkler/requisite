@@ -23,7 +23,7 @@ format_black:
 	${PYTHON} -m black .
 
 run:
-	${PYTHON} requisite-parse.py specs/requisite.yaml
+	${PYTHON} parse.py specs/requisite.yaml
 
 tests:
 	${PYTHON} -m unittest discover

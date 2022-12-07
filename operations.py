@@ -131,6 +131,7 @@ def check_id_req(entry: en.Entry) -> List[ErrorMessage]:
                 )
     return messages
 
+
 def check_links(entry: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
@@ -144,8 +145,8 @@ def check_links(entry: en.Entry) -> List[ErrorMessage]:
                     ErrorMessage(entry.id, f"Linked id '{link}' does not exist.")
                 )
 
-
     return messages
+
 
 # - !Specification
 # id: spec-valid-links

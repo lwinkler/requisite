@@ -21,12 +21,42 @@ class TestDesignUtil(unittest.TestCase):
 
     def test_extract_links(self):
         self.assertEqual(en.Entry("id", "My text without link", []).extract_links(), [])
-        self.assertEqual(en.Entry("id", "My text <without link", []).extract_links(), [])
-        self.assertEqual(en.Entry("id", "My text <without link<", []).extract_links(), [])
-        self.assertEqual(en.Entry("id", "My text with one <simple> link", []).extract_links(), ["simple"])
-        self.assertEqual(en.Entry("id", "My text with one <simple> link>", []).extract_links(), ["simple"])
-        self.assertEqual(en.Entry("id", "My text with one <rather-tricky> link", []).extract_links(), ["rather-tricky"])
-        self.assertEqual(en.Entry("id", "My text with one <fake fake> link", []).extract_links(), [])
-        self.assertEqual(en.Entry("id", "My text with one <totally-Correct> link", []).extract_links(), ["totally-Correct"])
-        self.assertEqual(en.Entry("id", "My text with <many><links> that are <totally-correct>", []).extract_links(), ["many", "links", "totally-correct"])
-        self.assertEqual(en.Entry("id", "<many><links> that are <totally-correct>", []).extract_links(), ["many", "links", "totally-correct"])
+        self.assertEqual(
+            en.Entry("id", "My text <without link", []).extract_links(), []
+        )
+        self.assertEqual(
+            en.Entry("id", "My text <without link<", []).extract_links(), []
+        )
+        self.assertEqual(
+            en.Entry("id", "My text with one <simple> link", []).extract_links(),
+            ["simple"],
+        )
+        self.assertEqual(
+            en.Entry("id", "My text with one <simple> link>", []).extract_links(),
+            ["simple"],
+        )
+        self.assertEqual(
+            en.Entry("id", "My text with one <rather-tricky> link", []).extract_links(),
+            ["rather-tricky"],
+        )
+        self.assertEqual(
+            en.Entry("id", "My text with one <fake fake> link", []).extract_links(), []
+        )
+        self.assertEqual(
+            en.Entry(
+                "id", "My text with one <totally-Correct> link", []
+            ).extract_links(),
+            ["totally-Correct"],
+        )
+        self.assertEqual(
+            en.Entry(
+                "id", "My text with <many><links> that are <totally-correct>", []
+            ).extract_links(),
+            ["many", "links", "totally-correct"],
+        )
+        self.assertEqual(
+            en.Entry(
+                "id", "<many><links> that are <totally-correct>", []
+            ).extract_links(),
+            ["many", "links", "totally-correct"],
+        )
