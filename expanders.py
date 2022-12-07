@@ -21,7 +21,7 @@ class Expander(Entry):
         """Processing: extract child tests"""
         if parent is None:
             raise Exception("Cannot use expanders at top level")
-        if hasattr(self, "children"):  # TODO: Remove children
+        if hasattr(self, "children"):
             raise Exception("Include children should not be defined manually")
         super().expand(self)
         parent.children.remove(self)

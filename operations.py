@@ -23,6 +23,7 @@ import entries as en
 @dataclass
 class ErrorMessage:
     """Error messages returned by checks"""
+
     related_id: str
     text: str
 
@@ -136,7 +137,7 @@ def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
 def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    all_ids:List[str] = []
+    all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
         if hasattr(entry, "id"):
             all_ids.append(entry.id)
@@ -152,19 +153,20 @@ def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     return messages
 
+
 # - !Specification
-  # id: spec-child-statement
-  # text: A <statement> can only have <statement>s as children
-# 
+# id: spec-child-statement
+# text: A <statement> can only have <statement>s as children
+#
 # - !Specification
-  # id: spec-child-definition
-  # text: A <definition> can only have <definition>s as children
-# 
+# id: spec-child-definition
+# text: A <definition> can only have <definition>s as children
+#
 # - !Specification
-  # id: spec-child-test-list
-  # text: A <test-list> can only have <test>s as children
-# 
+# id: spec-child-test-list
+# text: A <test-list> can only have <test>s as children
+#
 # - !Specification
-  # id: spec-parent-test
-  # text: A <test> can only have a <test-list> as parent
-# 
+# id: spec-parent-test
+# text: A <test> can only have a <test-list> as parent
+#

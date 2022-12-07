@@ -25,17 +25,17 @@ class TestTestListFromDoxygen(unittest.TestCase):
         all_tests = extract_tests_from_functions(Path("test/doxygen_tests"), "myid")
 
         # for t in all_functions:
-        # print(t.name, t.file, t.line, t.statement)
+        # print(t.name, t.file, t.line, t.verify_id)
 
         self.assertEqual(len(all_tests), 8)
-        self.assertEqual(get_by_text(all_tests, "test1a").statement, "req-1a")
-        self.assertEqual(get_by_text(all_tests, "test1b").statement, "req-1b")
-        self.assertEqual(get_by_text(all_tests, "test2a").statement, "req-2a")
-        self.assertEqual(get_by_text(all_tests, "test2b").statement, "req-2b")
-        self.assertEqual(get_by_text(all_tests, "test3a").statement, "req-3a")
-        self.assertEqual(get_by_text(all_tests, "test3b").statement, "req-3b")
-        self.assertEqual(get_by_text(all_tests, "test4a").statement, "req-4a")
-        self.assertEqual(get_by_text(all_tests, "test4b").statement, "req-4b")
+        self.assertEqual(get_by_text(all_tests, "test1a").verify_id, "req-1a")
+        self.assertEqual(get_by_text(all_tests, "test1b").verify_id, "req-1b")
+        self.assertEqual(get_by_text(all_tests, "test2a").verify_id, "req-2a")
+        self.assertEqual(get_by_text(all_tests, "test2b").verify_id, "req-2b")
+        self.assertEqual(get_by_text(all_tests, "test3a").verify_id, "req-3a")
+        self.assertEqual(get_by_text(all_tests, "test3b").verify_id, "req-3b")
+        self.assertEqual(get_by_text(all_tests, "test4a").verify_id, "req-4a")
+        self.assertEqual(get_by_text(all_tests, "test4b").verify_id, "req-4b")
 
         self.assertEqual(get_by_text(all_tests, "test1a").id, "myid-0")
         self.assertEqual(get_by_text(all_tests, "test1b").id, "myid-1")

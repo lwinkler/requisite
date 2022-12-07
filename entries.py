@@ -57,6 +57,7 @@ class Entry(yaml.YAMLObject):
             return []
         return LINK_EXPRESSION.findall(self.text)
 
+
 class Section(Entry):
     """A section: only to organize entries"""
 
@@ -86,11 +87,14 @@ class Specification(Statement):
 
     yaml_tag = "!Specification"
 
+
 class TestType(Enum):
     """The different types of tests"""
-    AUTOMATIC = "autmatic"
+
+    AUTOMATIC = "automatic"
     MANUAL = "manual"
     INSPECTION = "inspection"
+
 
 class Test(Entry):
     """Test value object"""
@@ -102,11 +106,11 @@ class Test(Entry):
         id1: str,
         text: str,
         type1: TestType,
-        statement_id: str,
+        verify_id: str,
     ):
         super().__init__(id1, text, [])
-        self.type = str(type1)
-        self.statement_id = statement_id
+        self.type = type1.value
+        self.verify_id = verify_id
 
 
 class TestList(Entry):
@@ -123,6 +127,7 @@ class TestList(Entry):
     ):
         super().__init__(id1, text, children)
         self.engine = engine
+
 
 class Design(Entry):
     """Design value object, contains the full design"""

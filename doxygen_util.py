@@ -125,7 +125,12 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
             all_functions += extract_all_functions(file)
 
         return [
-            en.Test(f"{test_list_id}-{index}", func.name, en.TestType.AUTOMATIC, func.statement)
+            en.Test(
+                f"{test_list_id}-{index}",
+                func.name,
+                en.TestType.AUTOMATIC,
+                func.statement,
+            )
             for index, func in enumerate(all_functions)
         ]
 

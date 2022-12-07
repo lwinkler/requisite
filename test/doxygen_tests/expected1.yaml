@@ -4,36 +4,44 @@
     children:
     - !Test
       id: tests-unit-0
-      statement: req-1a
       text: test1a
+      type: automatic
+      verify_id: req-1a
     - !Test
       id: tests-unit-1
-      statement: req-1b
       text: test1b
+      type: automatic
+      verify_id: req-1b
     - !Test
       id: tests-unit-2
-      statement: req-2a
       text: test2a
+      type: automatic
+      verify_id: req-2a
     - !Test
       id: tests-unit-3
-      statement: req-2b
       text: test2b
+      type: automatic
+      verify_id: req-2b
     - !Test
       id: tests-unit-4
-      statement: req-3a
       text: test3a
+      type: automatic
+      verify_id: req-3a
     - !Test
       id: tests-unit-5
-      statement: req-3b
       text: test3b
+      type: automatic
+      verify_id: req-3b
     - !Test
       id: tests-unit-6
-      statement: req-4a
       text: test4a
+      type: automatic
+      verify_id: req-4a
     - !Test
       id: tests-unit-7
-      statement: req-4b
       text: test4b
+      type: automatic
+      verify_id: req-4b
     id: my-doxy-test-list
     text: Tests documented with Doxygen (C++)
   text: Test section

@@ -10,15 +10,16 @@ import sys
 import argparse
 import unittest
 from pathlib import Path
+from typing import List
 
 import yaml_util as yu
-import entries
+import entries as en
 import expanders
 import operations as op
 import report as rp
 
 # use modules to avoid warning
-_ = (entries.Entry, expanders.Expander)
+_ = (expanders.Expander)
 del _
 
 if sys.version_info[0] < 3:
@@ -55,14 +56,31 @@ def arguments_parser():
     return parser.parse_args()
 
 
-def check_for_errors(product_design):
+def check_for_errors(design: en.Design):
     """Check for all syntax errors in design and abort on error"""
 
-    errors = op.check_all_rules(product_design)
+    errors = op.check_all_rules(design)
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
         sys.exit(1)
+
+
+def extract_python_unittest_tests(path: Path, pattern: str) -> List[str]:
+
+    def extract_test_cases(test_suite_or_case: unittest.TestSuite | unittest.TestCase):
+        if isinstance(test_suite_or_case, unittest.TestCase):
+            return [en.Test(test_suite_or_case.id(), test_suite_or_case._testMethodDoc, en.TestType.AUTOMATIC, "TODO")]
+        assert isinstance(test_suite_or_case, unittest.TestSuite)
+        results = []
+        for child in test_suite_or_case._tests:  # pylint: disable=W0212
+            results += extract_test_cases(child)
+
+        return results
+
+    test_loader = unittest.defaultTestLoader
+    return extract_test_cases(test_loader.discover(path, pattern=pattern))
+
 
 if __name__ == "__main__":
 
@@ -77,30 +95,15 @@ if __name__ == "__main__":
         print(f"Create {args.output.as_posix()}")
         yu.write_design(args.output, product_design)
 
-    test_loader = unittest.defaultTestLoader
 
     if args.report:
         print(f"Create {args.report.as_posix()}")
         rp.write_html_report(args.report, product_design)
 
-
     print(" ------------------------ ")
 
-    for test_suite in test_loader.discover(".", pattern="test_*"):
-        print("-", test_suite.countTestCases(), test_suite)
-        # for test in test_loader.loadTestsFromTestSuite(test_suite):
-        if isinstance(test_suite, unittest.TestCase):
-            print(111)
-            continue
-        for test_case in test_suite._tests:  # pylint: disable=W0212
-            print("  - ", test_case.countTestCases())
-            # for test_method in test_loader.loadTestsFromTestCase(test_case):
-            if isinstance(test_case, unittest.TestCase):
-                print(222)
-                continue
-            for test_method in test_case._tests:  # pylint: disable=W0212
-                assert isinstance(test_method, unittest.TestCase)
-                print("    - ", "id", test_method.id(), test_method._testMethodDoc)
-                # print(891, test_loader.getTestCaseNames(test_method))
-                # print(890, test_loader.loadTestsFromModule(test_method))
-                # pprint(vars(test_method))
+    tests = extract_python_unittest_tests(Path("."), "test_*")
+    for test in tests:
+        test.print()
+
+

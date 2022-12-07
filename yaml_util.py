@@ -26,6 +26,7 @@ def write_design(path: Path, design: en.Design) -> None:
         # so far we set a very high line width
         fout.write(yaml.dump(design, width=1000))
 
+
 def write_entries(path: Path, entries: List[en.Entry]) -> None:
     """Write a full design document in YAML format"""
 

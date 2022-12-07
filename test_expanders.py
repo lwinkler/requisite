@@ -6,8 +6,9 @@ from pathlib import Path
 import expanders
 import yaml_util as yu
 
-_ = (expanders.Expander)
+_ = expanders.Expander
 del _
+
 
 class TestExpanders(unittest.TestCase):
     """Test"""
