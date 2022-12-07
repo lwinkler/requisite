@@ -18,7 +18,8 @@ import operations as op
 import report as rp
 
 # use modules to avoid warning
-_ = (entries.Entry, expanders.Expander); del _
+_ = (entries.Entry, expanders.Expander)
+del _
 
 if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
-        exit(1)
+        sys.exit(1)
 
     if args.output:
         print(f"Create {args.output.as_posix()}")
@@ -75,7 +76,7 @@ if __name__ == "__main__":
 
     if args.report:
         print(f"Create {args.report.as_posix()}")
-        rp.write_report(args.report, product_design)
+        rp.write_html_report(args.report, product_design)
 
     print(" ------------------------ ")
 

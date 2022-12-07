@@ -54,11 +54,7 @@ class Entry(yaml.YAMLObject):
         """Extract all the links mentioned in the associated text"""
         if not hasattr(self, "text"):
             return []
-        results = LINK_EXPRESSION.findall(self.text)
-        if not results:
-            return []
-        return [result for result in results]
-
+        return LINK_EXPRESSION.findall(self.text)
 
 class Section(Entry):
     """A section: only to organize entries"""

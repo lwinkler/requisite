@@ -22,6 +22,7 @@ import entries as en
 
 @dataclass
 class ErrorMessage:
+    """Error messages returned by checks"""
     related_id: str
     text: str
 
@@ -54,33 +55,33 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_definition_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
+def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-definition-id-mandatory"""
 
     messages: List[ErrorMessage] = []
-    for entry in extract_entries_of_type(entry, en.Definition):
+    for entry in extract_entries_of_type(entry_to_check, en.Definition):
         if not hasattr(entry, "id") or entry.id is None or not entry.id:
             messages.append(ErrorMessage("", "Definition id is missing"))
     return messages
 
 
-def check_statement_id_mandatory(entry: en.Entry) -> List[ErrorMessage]:
+def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-mandatory"""
 
     messages: List[ErrorMessage] = []
-    for entry in extract_entries_of_type(entry, en.Statement):
+    for entry in extract_entries_of_type(entry_to_check, en.Statement):
         if not hasattr(entry, "id") or entry.id is None or not entry.id:
             messages.append(ErrorMessage("", "Statement id is missing"))
     return messages
 
 
-def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
+def check_id_unique(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-unique"""
 
     known_ids: List[str] = []
     messages: List[ErrorMessage] = []
 
-    for entry in extract_entries_of_type(entry, en.Entry):
+    for entry in extract_entries_of_type(entry_to_check, en.Entry):
         if hasattr(entry, "id") and entry.id is not None and entry.id:
             if entry.id in known_ids:
                 messages.append(ErrorMessage(entry.id, "ID is duplicated"))
@@ -89,12 +90,12 @@ def check_id_unique(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_id_valid(entry: en.Entry) -> List[ErrorMessage]:
+def check_id_valid(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-valid"""
 
     messages: List[ErrorMessage] = []
 
-    for entry in extract_entries_of_type(entry, en.Entry):
+    for entry in extract_entries_of_type(entry_to_check, en.Entry):
         if hasattr(entry, "id") and entry.id is not None and entry.id:
             if not re.fullmatch("[a-zA-Z_][a-zA-Z0-9_-]*", entry.id):
                 messages.append(
@@ -103,12 +104,12 @@ def check_id_valid(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_id_spec(entry: en.Entry) -> List[ErrorMessage]:
+def check_id_spec(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-spec"""
 
     messages: List[ErrorMessage] = []
 
-    for entry in extract_entries_of_type(entry, en.Specification):
+    for entry in extract_entries_of_type(entry_to_check, en.Specification):
         if hasattr(entry, "id") and entry.id is not None and entry.id:
             if not entry.id.startswith("spec-"):
                 messages.append(
@@ -119,11 +120,11 @@ def check_id_spec(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_id_req(entry: en.Entry) -> List[ErrorMessage]:
+def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
     messages: List[ErrorMessage] = []
-    for entry in extract_entries_of_type(entry, en.Requirement):
+    for entry in extract_entries_of_type(entry_to_check, en.Requirement):
         if hasattr(entry, "id") and entry.id is not None and entry.id:
             if not entry.id.startswith("req-"):
                 messages.append(
@@ -132,12 +133,12 @@ def check_id_req(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_links(entry: en.Entry) -> List[ErrorMessage]:
+def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    all_ids = [entry.id for entry in extract_entries_of_type(entry, en.Entry)]
+    all_ids = [entry.id for entry in extract_entries_of_type(entry_to_check, en.Entry)]
     messages: List[ErrorMessage] = []
-    for entry in extract_entries_of_type(entry, en.Entry):
+    for entry in extract_entries_of_type(entry_to_check, en.Entry):
         links = entry.extract_links()
         for link in links:
             if link not in all_ids:
@@ -146,8 +147,3 @@ def check_links(entry: en.Entry) -> List[ErrorMessage]:
                 )
 
     return messages
-
-
-# - !Specification
-# id: spec-valid-links
-# text: The links in any text field of any *entry must be an existing entry id.
