@@ -4,6 +4,7 @@
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
 from typing import List, Optional
+from enum import Enum
 
 import re
 import yaml
@@ -85,6 +86,11 @@ class Specification(Statement):
 
     yaml_tag = "!Specification"
 
+class TestType(Enum):
+    """The different types of tests"""
+    AUTOMATIC = "autmatic"
+    MANUAL = "manual"
+    INSPECTION = "inspection"
 
 class Test(Entry):
     """Test value object"""
@@ -95,11 +101,12 @@ class Test(Entry):
         self,
         id1: str,
         text: str,
-        children: List[Entry],
-        statement: str,
+        type1: TestType,
+        statement_id: str,
     ):
-        super().__init__(id1, text, children)
-        self.statement = statement
+        super().__init__(id1, text, [])
+        self.type = str(type1)
+        self.statement_id = statement_id
 
 
 class TestList(Entry):
@@ -107,6 +114,15 @@ class TestList(Entry):
 
     yaml_tag = "!TestList"
 
+    def __init__(
+        self,
+        id1: str,
+        text: str,
+        children: List[Entry],
+        engine: str,
+    ):
+        super().__init__(id1, text, children)
+        self.engine = engine
 
 class Design(Entry):
     """Design value object, contains the full design"""
