@@ -1,7 +1,7 @@
 """Expanders are entries that can modify their parent entry (then are removed)"""
 
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import yaml_util as yu
 import doxygen_util as du
@@ -17,8 +17,10 @@ class Expander(Entry):
         """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
-    def expand(self, parent: Entry):
+    def expand(self, parent: Optional[Entry]):
         """Processing: extract child tests"""
+        if parent is None:
+            raise Exception("Cannot use expanders at top level")
         if hasattr(self, "children"):  # TODO: Remove children
             raise Exception("Include children should not be defined manually")
         super().expand(self)

@@ -1,6 +1,6 @@
 #! env python3
 
-""" Requisite: Tools for the parsing and analysis of software specifications and requirements.
+""" Requisite: Tools for the parsing and analysis of software specifications
 @author: Laurent Winkler
 @date: November 2022
 @license: MIT
@@ -12,11 +12,13 @@ import unittest
 from pathlib import Path
 
 import yaml_util as yu
-import entries  # pylint: disable=W0611
-import expanders  # pylint: disable=W0611
+import entries
+import expanders
 import operations as op
 import report as rp
 
+# use modules to avoid warning
+_ = (entries.Entry, expanders.Expander); del _
 
 if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")

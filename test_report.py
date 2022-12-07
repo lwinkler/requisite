@@ -1,7 +1,6 @@
 """Unit test for doxygen test extraction"""
 
 import unittest
-import yaml
 
 import report as rp
 

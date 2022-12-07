@@ -3,9 +3,10 @@
 import unittest
 from pathlib import Path
 
-import expanders  # pylint: disable=W0611
+import expanders
 import yaml_util as yu
 
+_ = (expanders.Expander); del _
 
 class TestExpanders(unittest.TestCase):
     """Test"""
@@ -21,10 +22,10 @@ class TestExpanders(unittest.TestCase):
         """Test"""
 
         data_path = Path("test/include")
-        entries = yu.read_design(data_path / "input1.yaml")
+        entries = yu.read_entries(data_path / "input1.yaml")
         for entry in entries:
             entry.expand(None)
-        yu.write_design(data_path / "output1.yaml", entries)
+        yu.write_entries(data_path / "output1.yaml", entries)
         self.compare_text_files(
             data_path / "expected1.yaml", data_path / "output1.yaml"
         )
@@ -33,10 +34,10 @@ class TestExpanders(unittest.TestCase):
         """Test"""
 
         data_path = Path("test/doxygen_tests")
-        entries = yu.read_design(data_path / "input1.yaml")
+        entries = yu.read_entries(data_path / "input1.yaml")
         for entry in entries:
             entry.expand(None)
-        yu.write_design(data_path / "output1.yaml", entries)
+        yu.write_entries(data_path / "output1.yaml", entries)
         self.compare_text_files(
             data_path / "expected1.yaml", data_path / "output1.yaml"
         )

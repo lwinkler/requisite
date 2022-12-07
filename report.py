@@ -3,9 +3,9 @@
 import io
 import sys
 import re
+import html
 from xml.etree import ElementTree as ET
 from pathlib import Path
-from typing import Type
 import entries as en
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
@@ -25,14 +25,14 @@ def get_text(entry: en.Entry) -> str:
     return ""
 
 
-def wrap_id(entry: en.Entry) -> str:
+def wrap_id(entry: en.Entry) -> ET.Element:
     """Return the text if available"""
     a = ET.Element("a", attrib={"id": entry.id})
     a.text = get_id(entry)
     return a
 
 
-def wrap_text(entry: en.Entry) -> str:
+def wrap_text(entry: en.Entry) -> ET.Element:
     """Return the text if available"""
     if not hasattr(entry, "text"):
         return ET.Element("p")
@@ -40,32 +40,14 @@ def wrap_text(entry: en.Entry) -> str:
     return ET.fromstring("<p>" + html + "</p>")
 
 
+# TODO: Remove
 def text_to_markdown(text: str) -> str:
     """Conversion to markdown text format"""
     results = re.sub(LINK_EXPRESSION, "[\\1](#\\1)", text)
     return html.escape(results)
 
 
-def text_to_html(text: str) -> str:
-    """Convert text with links to html"""
-    return (
-        re.sub(LINK_EXPRESSION, '<a href="#\\1">\\1</a>', entry.text)
-        if hasattr(entry, "text")
-        else ""
-    )
-
-
-# TODO: Remove
-def write_as_title_md(fout: io.TextIOWrapper, entry: en.Entry, level: int):
-    fout.write("#" * level + " " + get_id(entry) + "\n")
-    fout.write(text_to_markdown(get_text(entry)) + "\n")
-    fout.write("\n")
-    if hasattr(entry, "children"):
-        for child in entry.children:
-            write_as_title(fout, child, level + 1)
-
-
-def class_to_tag(entry: en.Entry) -> str:
+def class_to_tag(entry: en.Entry) -> ET.Element:
     """Write a class into a string"""
     tag = ET.Element("b")
     if type(entry) == en.Specification:
@@ -75,7 +57,7 @@ def class_to_tag(entry: en.Entry) -> str:
     return tag
 
 
-def id_to_tag(entry: en.Entry, add_id: bool) -> str:
+def id_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Write a class into a string"""
     id1 = get_id(entry)
     tag = ET.Element("a", attrib={"id": id1}) if add_id else ET.Element("a")
@@ -83,7 +65,7 @@ def id_to_tag(entry: en.Entry, add_id: bool) -> str:
     return tag
 
 
-def entry_to_tag(entry: en.Entry, add_id: bool) -> str:
+def entry_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Transform an entry into a string: for list"""
     tag = ET.Element("p")
     tag.append(class_to_tag(entry))
@@ -97,7 +79,7 @@ def entry_to_tag(entry: en.Entry, add_id: bool) -> str:
     return tag
 
 
-def generate_list(entry: en.Entry, level: int) -> str:
+def generate_list(entry: en.Entry, level: int) -> ET.Element:
     if not hasattr(entry, "children"):
         return entry_to_tag(entry, True)
 

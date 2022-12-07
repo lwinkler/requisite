@@ -3,7 +3,7 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
-from typing import List
+from typing import List, Optional
 
 import re
 import yaml
@@ -26,7 +26,7 @@ class Entry(yaml.YAMLObject):
         if children:
             self.children = children
 
-    def expand(self, _parent: Entry | None):
+    def expand(self, _parent: Optional[Entry]):
         """Processing: Nothing to do by default but call on children"""
         try:
             if hasattr(self, "children"):
