@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import List, Type
 
 import entries as en
+import expanders as ex
 
 
 # def check_is_instance(entry: en.Entry, parent_class: Type) -> None:
@@ -53,6 +54,10 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_id_spec(entry)
     messages += check_id_req(entry)
     messages += check_links(entry)
+    messages += check_child_statements(entry)
+    messages += check_child_definition(entry)
+    messages += check_child_test(entry)
+    messages += check_parent_test(entry)
     return messages
 
 
@@ -153,19 +158,60 @@ def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     return messages
 
+def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-child-statement"""
 
-# - !Specification
-# id: spec-child-statement
-# text: A <statement> can only have <statement>s as children
-#
-# - !Specification
-# id: spec-child-definition
-# text: A <definition> can only have <definition>s as children
-#
-# - !Specification
-# id: spec-child-test-list
-# text: A <test-list> can only have <test>s as children
-#
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry_to_check, en.Statement):
+        if hasattr(entry, "children"):
+            for child in entry.children:
+                if not isinstance(child, en.Statement) and not isinstance(child, ex.Expander):
+                    messages.append(
+                        ErrorMessage(entry.id, "Statement can only have statements as children")
+                    )
+
+    return messages
+
+def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-child-definition"""
+
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry_to_check, en.Definition):
+        if hasattr(entry, "children"):
+            for child in entry.children:
+                if not isinstance(child, en.Definition) and not isinstance(child, ex.Expander):
+                    messages.append(
+                        ErrorMessage(entry.id, "Definition can only have definitions as children")
+                    )
+
+    return messages
+
+def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-child-test-list"""
+
+    messages: List[ErrorMessage] = []
+    for entry in extract_entries_of_type(entry_to_check, en.TestList):
+        if hasattr(entry, "children"):
+            for child in entry.children:
+                if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
+                    messages.append(
+                        ErrorMessage(entry.id, "TestList can only have tests as children")
+                    )
+
+    return messages
+
+def check_parent_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-parent-test"""
+    return [] # TODO
+
+    for entry in extract_entries_of_type(entry_to_check, en.Test):
+        for child in entry.children:
+            if not isinstance(child, en.Test):
+                messages.append(
+                    ErrorMessage(entry.id, "TestList can only have tests as children")
+                )
+
+    return messages
 # - !Specification
 # id: spec-parent-test
 # text: A <test> can only have a <test-list> as parent
