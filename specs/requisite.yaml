@@ -21,8 +21,8 @@ children:
     text: The YAML format, used for input and output.
 
   - !Definition
-    id: markdown-format
-    text: The Markdown format to generate documents, reports, ...
+    id: html-format
+    text: The HTML format to generate documents, reports, ...
 
 - !Definition
   id: syntax-rule
@@ -120,8 +120,8 @@ children:
     text: The <expanded-design> can be written to <yaml-format>
 
   - !Specification
-    id: spec-design-output-markdown
-    text: The <expanded-design> can be written as a report to the <markdown-format>
+    id: spec-design-output-html
+    text: The <expanded-design> can be written as a report to the <html-format>
 
   - !Specification
     id: spec-output-tests

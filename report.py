@@ -1,4 +1,4 @@
-"""Generation of report in Markdown format"""
+"""Generation of specification report in HTML format"""
 
 import sys
 import re
@@ -37,13 +37,6 @@ def wrap_text(entry: en.Entry) -> ET.Element:
         return ET.Element("p")
     html_str = re.sub(LINK_EXPRESSION, '<a href="#\\1">\\1</a>', entry.text)
     return ET.fromstring("<p>" + html_str + "</p>")
-
-
-# TODO: Remove
-def text_to_markdown(text: str) -> str:
-    """Conversion to markdown text format"""
-    results = re.sub(LINK_EXPRESSION, "[\\1](#\\1)", text)
-    return html.escape(results)
 
 
 def class_to_tag(entry: en.Entry) -> ET.Element:
@@ -101,7 +94,6 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
         sys.exit(1)
     with open(output_path, "w", encoding="utf-8") as fout:
 
-        # write_as_title_md(fout, design, 1)
         html_tag = ET.Element("html")
         body_tag = ET.Element("body")
         html_tag.append(body_tag)

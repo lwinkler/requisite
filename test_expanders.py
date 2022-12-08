@@ -1,4 +1,4 @@
-"""Unit test for doxygen test extraction"""
+"""Unit test for expander classes"""
 
 import unittest
 from pathlib import Path
