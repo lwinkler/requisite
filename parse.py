@@ -15,12 +15,12 @@ from typing import List
 import yaml_util as yu
 import entries as en
 import expanders
-import doxygen
+import parsers.doxygen
 import operations as op
 import report as rp
 
 # use modules to avoid warning
-_ = (expanders.Expander, doxygen.ExtractTestsFromDoxygen)
+_ = (expanders.Expander, parsers.doxygen.ExtractTestsFromDoxygen)
 del _
 
 if sys.version_info[0] < 3:

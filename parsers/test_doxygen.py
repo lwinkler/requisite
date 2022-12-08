@@ -5,7 +5,8 @@ from pathlib import Path
 from typing import List
 
 import entries as en
-from doxygen import extract_tests_from_functions
+import yaml_util as yu
+from parsers.doxygen import extract_tests_from_functions
 
 
 def get_by_text(all_tests: List[en.Test], name: str) -> en.Test:
@@ -45,3 +46,15 @@ class TestTestListFromDoxygen(unittest.TestCase):
         self.assertEqual(get_by_text(all_tests, "test3b").id, "myid-5")
         self.assertEqual(get_by_text(all_tests, "test4a").id, "myid-6")
         self.assertEqual(get_by_text(all_tests, "test4b").id, "myid-7")
+
+    def test_extract_tests_from_doxygen(self) -> None:
+        """Test"""
+
+        data_path = Path("test/doxygen_tests")
+        entries = yu.read_entries(data_path / "input1.yaml")
+        for entry in entries:
+            entry.expand(None)
+        yu.write_entries(data_path / "output1.yaml", entries)
+        self.compare_text_files(
+            data_path / "expected1.yaml", data_path / "output1.yaml"
+        )

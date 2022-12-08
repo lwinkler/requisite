@@ -32,14 +32,3 @@ class TestExpanders(unittest.TestCase):
             data_path / "expected1.yaml", data_path / "output1.yaml"
         )
 
-    def test_extract_tests_from_doxygen(self) -> None:
-        """Test"""
-
-        data_path = Path("test/doxygen_tests")
-        entries = yu.read_entries(data_path / "input1.yaml")
-        for entry in entries:
-            entry.expand(None)
-        yu.write_entries(data_path / "output1.yaml", entries)
-        self.compare_text_files(
-            data_path / "expected1.yaml", data_path / "output1.yaml"
-        )
