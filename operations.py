@@ -63,6 +63,7 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_child_statements(entry)
     messages += check_child_definition(entry)
     messages += check_child_test(entry)
+    messages += check_test_statement_id(entry)
     return messages
 
 
@@ -202,8 +203,8 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     return messages
 
-def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
-    """Check rule spec-pec-test-statement-id"""
+def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-test-statement-id"""
 
     all_ids = gather_all_ids(entry_to_check, en.Entry)
     messages: List[ErrorMessage] = []

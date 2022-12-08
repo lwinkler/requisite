@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 import entries as en
-from doxygen_util import extract_tests_from_functions
+from doxygen import extract_tests_from_functions
 
 
 def get_by_text(all_tests: List[en.Test], name: str) -> en.Test:

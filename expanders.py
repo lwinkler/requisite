@@ -4,9 +4,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import yaml_util as yu
-import doxygen_util as du
 from entries import Entry
-
 
 class Expander(Entry):
     """Parent class for all entries that add entries to their parent"""
@@ -50,20 +48,3 @@ class Include(Expander):
         return Path(self.path)
 
 
-class ExtractTestsFromDoxygen(Expander):
-    """Placeholder class that expands its parent to include another YAML file"""
-
-    yaml_tag = "!ExtractTestsFromDoxygen"
-
-    def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, children: List[Entry], path: Path
-    ):
-        super().__init__(id1, text, children)
-        self.path = path
-
-    def create_entries(self) -> List[Entry]:
-        return du.extract_tests_from_functions(self.get_path(), self.id)
-
-    def get_path(self) -> Path:
-        """Return a Path object"""
-        return Path(self.path)

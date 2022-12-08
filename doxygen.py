@@ -9,6 +9,7 @@ from typing import List
 from pathlib import Path
 from dataclasses import dataclass
 import entries as en
+import expanders as ex
 
 
 @dataclass
@@ -137,3 +138,21 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
     finally:
         print("Delete " + tmp_dir.as_posix())
         shutil.rmtree(tmp_dir)
+
+class ExtractTestsFromDoxygen(ex.Expander):
+    """Placeholder class that expands its parent to include another YAML file"""
+
+    yaml_tag = "!ExtractTestsFromDoxygen"
+
+    def __init__(  # pylint: disable=R0913
+        self, id1: str, text: str, children: List[en.Entry], path: Path
+    ):
+        super().__init__(id1, text, children)
+        self.path = path
+
+    def create_entries(self) -> List[en.Entry]:
+        return extract_tests_from_functions(self.get_path(), self.id)
+
+    def get_path(self) -> Path:
+        """Return a Path object"""
+        return Path(self.path)
