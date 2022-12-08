@@ -43,6 +43,12 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
     return res
 
+def gather_all_ids(entry_to_check: en.Entry, parent_class: Type) -> List[str]:
+    all_ids: List[str] = []
+    for entry in extract_entries_of_type(entry_to_check, parent_class):
+        if hasattr(entry, "id"):
+            all_ids.append(entry.id)
+    return all_ids
 
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
@@ -57,7 +63,6 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_child_statements(entry)
     messages += check_child_definition(entry)
     messages += check_child_test(entry)
-    messages += check_parent_test(entry)
     return messages
 
 
@@ -142,10 +147,7 @@ def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
 def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    all_ids: List[str] = []
-    for entry in extract_entries_of_type(entry_to_check, en.Entry):
-        if hasattr(entry, "id"):
-            all_ids.append(entry.id)
+    all_ids = gather_all_ids(entry_to_check, en.Entry)
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
@@ -200,19 +202,15 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     return messages
 
-def check_parent_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
-    """Check rule spec-parent-test"""
-    return [] # TODO
+def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-pec-test-statement-id"""
 
+    all_ids = gather_all_ids(entry_to_check, en.Entry)
+    messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Test):
-        for child in entry.children:
-            if not isinstance(child, en.Test):
-                messages.append(
-                    ErrorMessage(entry.id, "TestList can only have tests as children")
-                )
+        if hasattr(entry, "verify_id") and entry.verify_id and entry.verify_id not in all_ids:
+            messages.append(
+                    ErrorMessage(entry.id, f"Test refers to an unvalid id: verify_id={entry.verify_id}")
+            )
 
     return messages
-# - !Specification
-# id: spec-parent-test
-# text: A <test> can only have a <test-list> as parent
-#

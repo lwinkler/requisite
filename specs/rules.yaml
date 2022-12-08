@@ -40,10 +40,6 @@
   text: A <test-list> can only have <test>s as children
 
 - !Specification
-  id: spec-parent-test
-  text: A <test> can only have a <test-list> as parent
-
-- !Specification
   id: spec-test-statement-id
   text: A <test> must refer to a valid <statement>
 
