@@ -9,5 +9,5 @@
     children:
     - !ExtractTestsFromPythonUnitTest
       id: tests-unit
-      path: .
-      pattern: "tests_*"
+      path: parsers
+      pattern: "test_python_unittest_*"

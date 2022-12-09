@@ -4,20 +4,21 @@ import unittest
 
 from typing import List
 from pathlib import Path
-from dataclasses import dataclass
 import entries as en
 import expanders as ex
 
 
 def extract_python_unittest_tests(path: Path, pattern: str) -> List[en.Entry]:
+    """Extract the unit tests from python unittest module"""
     def extract_test_cases(
         test_suite_or_case: unittest.TestSuite | unittest.TestCase,
     ) -> List[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
+            print()
             return [
                 en.Test(
-                    test_suite_or_case.id() + "-" + test_suite_or_case._testMethodDoc,
-                    "",
+                    test_suite_or_case.id(),
+                    "TODO " + test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
                     en.TestType.AUTOMATIC,
                     "TODO",
                 )

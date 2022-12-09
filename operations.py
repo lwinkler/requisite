@@ -45,6 +45,7 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
 
 def gather_all_ids(entry_to_check: en.Entry, parent_class: Type) -> List[str]:
+    """Return all ids from the own and children entries"""
     all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):
         if hasattr(entry, "id"):

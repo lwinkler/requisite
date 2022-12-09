@@ -2,7 +2,6 @@
 
 import sys
 import re
-import html
 from xml.etree import ElementTree as ET
 from pathlib import Path
 import entries as en

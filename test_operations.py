@@ -43,7 +43,6 @@ children:
   - !TestList
     id: tests-system
     children:
-  
     - !Test
       id: test-design-review
       text: Verify that a design can be reviewed manually

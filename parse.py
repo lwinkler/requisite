@@ -9,7 +9,6 @@
 import sys
 import argparse
 from pathlib import Path
-from typing import List
 
 import yaml_util as yu
 import entries as en

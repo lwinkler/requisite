@@ -21,11 +21,13 @@ class Function:
     file: Path
     line: int
 
+
 def function_to_id(path: Path, name: str) -> str:
     """Convert a function name to id"""
     return path.as_posix().replace("/", "-").replace(".", "-") + "-" + name
 
-def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Entry]:
+
+def extract_tests_from_functions(path: Path) -> List[en.Entry]:
     """Parse the source code to extract the test information"""
 
     def get_all_xml_files(xml_dir: Path) -> List[Path]:
@@ -61,9 +63,14 @@ def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Entry
         location = get_child(node, "location", True)
         statement = get_requirement_node(node)
 
-        return Function(name.text, statement.text.strip() if statement is not None and statement.text else None, 
-                Path(location.attrib["file"]),
-                location.attrib["line"])
+        return Function(
+            name.text,
+            statement.text.strip()
+            if statement is not None and statement.text
+            else None,
+            Path(location.attrib["file"]),
+            location.attrib["line"],
+        )
 
     def execute(command: List[str], tmp_dir: Path) -> None:
         ret = subprocess.run(
@@ -137,8 +144,9 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
         print("Delete " + tmp_dir.as_posix())
         shutil.rmtree(tmp_dir)
 
+
 class ExtractTestsFromDoxygen(ex.Expander):
-    """Extract tests from doxygen documentation, C++ or other. 
+    """Extract tests from doxygen documentation, C++ or other.
     Will generate XML with doxygen then parse the XML to retrieve the test functions"""
 
     yaml_tag = "!ExtractTestsFromDoxygen"
@@ -150,7 +158,7 @@ class ExtractTestsFromDoxygen(ex.Expander):
         self.path = path
 
     def create_entries(self, parent: en.Entry) -> List[en.Entry]:
-        return extract_tests_from_functions(self.get_path(), parent.id)
+        return extract_tests_from_functions(self.get_path())
 
     def get_path(self) -> Path:
         """Return a Path object"""

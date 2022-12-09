@@ -9,12 +9,12 @@ import yaml_util as yu
 from parsers.python_unittest import extract_python_unittest_tests
 
 
-def get_by_text(all_tests: List[en.Test], name: str) -> en.Test:
-    """Search function by name"""
+def get_by_id(all_tests: List[en.Test], id1: str) -> en.Test:
+    """Search function by id"""
     for test in all_tests:
-        if test.text == name:
+        if test.id == id1:
             return test
-    raise Exception(f"No test found with name {name}")
+    raise Exception(f"No test found with id {id1}")
 
 
 class TestTestListFromPythonUnitTest(unittest.TestCase):
@@ -30,18 +30,30 @@ class TestTestListFromPythonUnitTest(unittest.TestCase):
     def test_python_unittest_test_matching(self):
         """Test"""
 
-        all_tests = extract_python_unittest_tests(Path("."), "test_python_unittest*")
+        all_tests = extract_python_unittest_tests(
+            Path("parsers"), "test_python_unittest*"
+        )
 
-        # for t in all_functions:
-        # print(t.name, t.file, t.line, t.verify_id)
+        # for test in all_tests:
+            # print(111, test.id, test.verify_id)
 
         self.assertTrue(len(all_tests) > 0)
-        print(888)
-        all_tests[0].print()
-        self.assertEqual(get_by_text(all_tests, "test1a").verify_id, "req-1a")
-        # parsers.test_python_unittest.TestTestListFromPythonUnitTest.test_extract_tests_from_python_unittest
-
-        self.assertEqual(get_by_text(all_tests, "test1a").id, "myid-0")
+        self.assertEqual(
+            get_by_id(
+                all_tests,
+                "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
+                ".test_extract_tests_from_python_unittest",
+            ).verify_id,
+            "req-1a",
+        )
+        self.assertEqual(
+            get_by_id(
+                all_tests,
+                "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
+                ".test_python_unittest_test_matching",
+            ).verify_id,
+            "req-1a",
+        )
 
     def test_extract_tests_from_python_unittest(self) -> None:
         """Test"""
