@@ -27,7 +27,7 @@ def extract_python_unittest_tests(path: Path, pattern: str) -> List[str]:
 class ExtractTestsFromPythonUnitTest(ex.Expander):
     """Extract tests written using the python unittest module"""
 
-    yaml_tag = "!ExtractTestsFromPythonUnitTests"
+    yaml_tag = "!ExtractTestsFromPythonUnitTest"
 
     def __init__(  # pylint: disable=R0913
             self, id1: str, text: str, children: List[en.Entry], path: Path, pattern: str

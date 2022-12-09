@@ -1,0 +1,13 @@
+
+- !Section
+  text: Test section
+  children:
+
+  - !TestList
+    id: my-python-test-list
+    text: Tests with python unittest module
+    children:
+    - !ExtractTestsFromPythonUnitTest
+      id: tests-unit
+      path: .
+      pattern: "tests_*"

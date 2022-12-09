@@ -20,6 +20,13 @@ def get_by_text(all_tests: List[en.Test], name: str) -> en.Test:
 class TestTestListFromDoxygen(unittest.TestCase):
     """Test for class"""
 
+    def compare_text_files(self, path1: Path, path2: Path) -> None:
+        """Compare text files for tests"""
+        with open(path1.as_posix(), encoding="utf-8") as file1, open(
+            path2.as_posix(), encoding="utf-8"
+        ) as file2:
+            self.assertListEqual(list(file1), list(file2))
+
     def test_doxygen_test_matching(self):
         """Test"""
 
