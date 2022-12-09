@@ -8,16 +8,16 @@
 
 import sys
 import argparse
-import unittest
 from pathlib import Path
 from typing import List
 
 import yaml_util as yu
 import entries as en
 import expanders
-import parsers.doxygen
 import operations as op
 import report as rp
+import parsers.doxygen
+import parsers.python_unittest as pu
 
 # use modules to avoid warning
 _ = (expanders.Expander, parsers.doxygen.ExtractTestsFromDoxygen)
@@ -67,22 +67,6 @@ def check_for_errors(design: en.Design):
         sys.exit(1)
 
 
-def extract_python_unittest_tests(path: Path, pattern: str) -> List[str]:
-
-    def extract_test_cases(test_suite_or_case: unittest.TestSuite | unittest.TestCase):
-        if isinstance(test_suite_or_case, unittest.TestCase):
-            return [en.Test(test_suite_or_case.id(), test_suite_or_case._testMethodDoc, en.TestType.AUTOMATIC, "TODO")]
-        assert isinstance(test_suite_or_case, unittest.TestSuite)
-        results = []
-        for child in test_suite_or_case._tests:  # pylint: disable=W0212
-            results += extract_test_cases(child)
-
-        return results
-
-    test_loader = unittest.defaultTestLoader
-    return extract_test_cases(test_loader.discover(path, pattern=pattern))
-
-
 if __name__ == "__main__":
 
     args = arguments_parser()
@@ -103,7 +87,7 @@ if __name__ == "__main__":
 
     print(" ------------------------ ")
 
-    tests = extract_python_unittest_tests(Path("."), "test_*")
+    tests = pu.extract_python_unittest_tests(Path("."), "test_*")
     for test in tests:
         test.print()
 

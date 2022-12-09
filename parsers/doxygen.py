@@ -140,7 +140,8 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
         shutil.rmtree(tmp_dir)
 
 class ExtractTestsFromDoxygen(ex.Expander):
-    """Placeholder class that expands its parent to include another YAML file"""
+    """Extract tests from doxygen documentation, C++ or other. 
+    Will generate XML with doxygen then parse the XML to retrieve the test functions"""
 
     yaml_tag = "!ExtractTestsFromDoxygen"
 
