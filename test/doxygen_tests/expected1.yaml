@@ -3,43 +3,35 @@
   - !TestList
     children:
     - !Test
-      id: tests-unit-0
-      text: test1a
+      id: test1-simplest-cpp-test1a
       type: automatic
       verify_id: req-1a
     - !Test
-      id: tests-unit-1
-      text: test1b
+      id: test1-simplest-cpp-test1b
       type: automatic
       verify_id: req-1b
     - !Test
-      id: tests-unit-2
-      text: test2a
+      id: test1-simplest-cpp-test2a
       type: automatic
       verify_id: req-2a
     - !Test
-      id: tests-unit-3
-      text: test2b
+      id: test1-simplest-cpp-test2b
       type: automatic
       verify_id: req-2b
     - !Test
-      id: tests-unit-4
-      text: test3a
+      id: subdir-test2-simplest-cpp-test3a
       type: automatic
       verify_id: req-3a
     - !Test
-      id: tests-unit-5
-      text: test3b
+      id: subdir-test2-simplest-cpp-test3b
       type: automatic
       verify_id: req-3b
     - !Test
-      id: tests-unit-6
-      text: test4a
+      id: subdir-test2-simplest-cpp-test4a
       type: automatic
       verify_id: req-4a
     - !Test
-      id: tests-unit-7
-      text: test4b
+      id: subdir-test2-simplest-cpp-test4b
       type: automatic
       verify_id: req-4b
     id: my-doxy-test-list

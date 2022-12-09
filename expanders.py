@@ -6,12 +6,13 @@ from typing import List, Optional
 import yaml_util as yu
 from entries import Entry
 
+
 class Expander(Entry):
     """Parent class for all entries that add entries to their parent"""
 
     yaml_tag = "!Expander"
 
-    def create_entries(self) -> List[Entry]:
+    def create_entries(self, parent: Entry) -> List[Entry]:
         """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
@@ -23,7 +24,7 @@ class Expander(Entry):
             raise Exception("Include children should not be defined manually")
         super().expand(self)
         parent.children.remove(self)
-        new_entries = self.create_entries()
+        new_entries = self.create_entries(parent)
         for entry in new_entries:
             entry.expand(self)
         parent.children += new_entries
@@ -40,11 +41,9 @@ class Include(Expander):
         super().__init__(id1, text, children)
         self.path = path
 
-    def create_entries(self) -> List[Entry]:
+    def create_entries(self, parent: Entry) -> List[Entry]:
         return yu.read_entries(self.get_path())
 
     def get_path(self) -> Path:
         """Return a Path object"""
         return Path(self.path)
-
-

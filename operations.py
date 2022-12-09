@@ -43,12 +43,14 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
     return res
 
+
 def gather_all_ids(entry_to_check: en.Entry, parent_class: Type) -> List[str]:
     all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):
         if hasattr(entry, "id"):
             all_ids.append(entry.id)
     return all_ids
+
 
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
@@ -161,6 +163,7 @@ def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     return messages
 
+
 def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-child-statement"""
 
@@ -168,12 +171,17 @@ def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
     for entry in extract_entries_of_type(entry_to_check, en.Statement):
         if hasattr(entry, "children"):
             for child in entry.children:
-                if not isinstance(child, en.Statement) and not isinstance(child, ex.Expander):
+                if not isinstance(child, en.Statement) and not isinstance(
+                    child, ex.Expander
+                ):
                     messages.append(
-                        ErrorMessage(entry.id, "Statement can only have statements as children")
+                        ErrorMessage(
+                            entry.id, "Statement can only have statements as children"
+                        )
                     )
 
     return messages
+
 
 def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-child-definition"""
@@ -182,12 +190,17 @@ def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
     for entry in extract_entries_of_type(entry_to_check, en.Definition):
         if hasattr(entry, "children"):
             for child in entry.children:
-                if not isinstance(child, en.Definition) and not isinstance(child, ex.Expander):
+                if not isinstance(child, en.Definition) and not isinstance(
+                    child, ex.Expander
+                ):
                     messages.append(
-                        ErrorMessage(entry.id, "Definition can only have definitions as children")
+                        ErrorMessage(
+                            entry.id, "Definition can only have definitions as children"
+                        )
                     )
 
     return messages
+
 
 def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-child-test-list"""
@@ -196,12 +209,17 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
     for entry in extract_entries_of_type(entry_to_check, en.TestList):
         if hasattr(entry, "children"):
             for child in entry.children:
-                if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
+                if not isinstance(child, en.Test) and not isinstance(
+                    child, ex.Expander
+                ):
                     messages.append(
-                        ErrorMessage(entry.id, "TestList can only have tests as children")
+                        ErrorMessage(
+                            entry.id, "TestList can only have tests as children"
+                        )
                     )
 
     return messages
+
 
 def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-test-statement-id"""
@@ -209,9 +227,16 @@ def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
     all_ids = gather_all_ids(entry_to_check, en.Entry)
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Test):
-        if hasattr(entry, "verify_id") and entry.verify_id and entry.verify_id not in all_ids:
+        if (
+            hasattr(entry, "verify_id")
+            and entry.verify_id
+            and entry.verify_id not in all_ids
+        ):
             messages.append(
-                    ErrorMessage(entry.id, f"Test refers to an unvalid id: verify_id={entry.verify_id}")
+                ErrorMessage(
+                    entry.id,
+                    f"Test refers to an unvalid id: verify_id={entry.verify_id}",
+                )
             )
 
     return messages

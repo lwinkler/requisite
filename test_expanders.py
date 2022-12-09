@@ -31,4 +31,3 @@ class TestExpanders(unittest.TestCase):
         self.compare_text_files(
             data_path / "expected1.yaml", data_path / "output1.yaml"
         )
-

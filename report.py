@@ -42,7 +42,7 @@ def wrap_text(entry: en.Entry) -> ET.Element:
 def class_to_tag(entry: en.Entry) -> ET.Element:
     """Write a class into a string"""
     tag = ET.Element("b")
-    if type(entry) == en.Specification:   # pylint: disable=C0123
+    if type(entry) == en.Specification:  # pylint: disable=C0123
         tag.text = "spec"
     else:
         tag.text = type(entry).__name__.lower()[0:3]

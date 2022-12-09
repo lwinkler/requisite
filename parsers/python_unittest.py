@@ -8,11 +8,20 @@ from dataclasses import dataclass
 import entries as en
 import expanders as ex
 
-def extract_python_unittest_tests(path: Path, pattern: str) -> List[str]:
 
-    def extract_test_cases(test_suite_or_case: unittest.TestSuite | unittest.TestCase):
+def extract_python_unittest_tests(path: Path, pattern: str) -> List[en.Entry]:
+    def extract_test_cases(
+        test_suite_or_case: unittest.TestSuite | unittest.TestCase,
+    ) -> List[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
-            return [en.Test(test_suite_or_case.id(), test_suite_or_case._testMethodDoc, en.TestType.AUTOMATIC, "TODO")]
+            return [
+                en.Test(
+                    test_suite_or_case.id() + "-" + test_suite_or_case._testMethodDoc,
+                    "",
+                    en.TestType.AUTOMATIC,
+                    "TODO",
+                )
+            ]
         assert isinstance(test_suite_or_case, unittest.TestSuite)
         results = []
         for child in test_suite_or_case._tests:  # pylint: disable=W0212
@@ -21,7 +30,7 @@ def extract_python_unittest_tests(path: Path, pattern: str) -> List[str]:
         return results
 
     test_loader = unittest.defaultTestLoader
-    return extract_test_cases(test_loader.discover(path, pattern=pattern))
+    return extract_test_cases(test_loader.discover(path.as_posix(), pattern=pattern))
 
 
 class ExtractTestsFromPythonUnitTest(ex.Expander):
@@ -30,13 +39,13 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
     yaml_tag = "!ExtractTestsFromPythonUnitTest"
 
     def __init__(  # pylint: disable=R0913
-            self, id1: str, text: str, children: List[en.Entry], path: Path, pattern: str
+        self, id1: str, text: str, children: List[en.Entry], path: Path, pattern: str
     ):
         super().__init__(id1, text, children)
         self.path = path
         self.pattern = pattern
 
-    def create_entries(self) -> List[en.Entry]:
+    def create_entries(self, parent: en.Entry) -> List[en.Entry]:
         return extract_python_unittest_tests(self.get_path(), self.pattern)
 
     def get_path(self) -> Path:

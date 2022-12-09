@@ -80,7 +80,6 @@ if __name__ == "__main__":
         print(f"Create {args.output.as_posix()}")
         yu.write_design(args.output, product_design)
 
-
     if args.report:
         print(f"Create {args.report.as_posix()}")
         rp.write_html_report(args.report, product_design)
@@ -90,5 +89,3 @@ if __name__ == "__main__":
     tests = pu.extract_python_unittest_tests(Path("."), "test_*")
     for test in tests:
         test.print()
-
-

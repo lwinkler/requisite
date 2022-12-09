@@ -27,6 +27,14 @@ class Entry(yaml.YAMLObject):
         if children:
             self.children = children
 
+    def get_id(self) -> Optional[str]:
+        """Return the id if applicable else None"""
+        return self.id if hasattr(self, "id") else None
+
+    def get_text(self) -> Optional[str]:
+        """Return the text if applicable else None"""
+        return self.text if hasattr(self, "text") else None
+
     def expand(self, _parent: Optional[Entry]):
         """Processing: Nothing to do by default but call on children"""
         try:
@@ -34,7 +42,7 @@ class Entry(yaml.YAMLObject):
                 for child in self.children:
                     child.expand(self)
         except Exception as exc:
-            print(f"Exception while expanding {self.id}:", exc)
+            print(f"Exception while expanding {self.get_id()}:", exc)
             raise
 
     def print(self, indent: int = 0) -> None:
@@ -104,7 +112,7 @@ class Test(Entry):
     def __init__(
         self,
         id1: str,
-        text: str,
+        text: Optional[str],
         type1: TestType,
         verify_id: str,
     ):

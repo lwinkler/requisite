@@ -17,10 +17,13 @@ class Function:
     """A function and the associated statement"""
 
     name: str
-    statement: str
+    verify_id: str
     file: Path
     line: int
 
+def function_to_id(path: Path, name: str) -> str:
+    """Convert a function name to id"""
+    return path.as_posix().replace("/", "-").replace(".", "-") + "-" + name
 
 def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Entry]:
     """Parse the source code to extract the test information"""
@@ -58,14 +61,9 @@ def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Entry
         location = get_child(node, "location", True)
         statement = get_requirement_node(node)
 
-        if statement is not None and statement.text:
-            return Function(
-                name.text,
-                statement.text.strip(),
-                location.attrib["file"],
-                location.attrib["line"],
-            )
-        return Function(name.text, "", location.attrib["file"], location.attrib["line"])
+        return Function(name.text, statement.text.strip() if statement is not None and statement.text else None, 
+                Path(location.attrib["file"]),
+                location.attrib["line"])
 
     def execute(command: List[str], tmp_dir: Path) -> None:
         ret = subprocess.run(
@@ -93,7 +91,7 @@ def extract_tests_from_functions(path: Path, test_list_id: str) -> List[en.Entry
                 funct = extract_function(memberdef)
 
                 # only the functions associated with a statement
-                if funct.statement:
+                if funct.verify_id:
                     res.append(funct)
         return res
 
@@ -127,12 +125,12 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
 
         return [
             en.Test(
-                f"{test_list_id}-{index}",
-                func.name,
+                function_to_id(func.file.relative_to(path.resolve()), func.name),
+                None,
                 en.TestType.AUTOMATIC,
-                func.statement,
+                func.verify_id,
             )
-            for index, func in enumerate(all_functions)
+            for func in all_functions
         ]
 
     finally:
@@ -151,8 +149,8 @@ class ExtractTestsFromDoxygen(ex.Expander):
         super().__init__(id1, text, children)
         self.path = path
 
-    def create_entries(self) -> List[en.Entry]:
-        return extract_tests_from_functions(self.get_path(), self.id)
+    def create_entries(self, parent: en.Entry) -> List[en.Entry]:
+        return extract_tests_from_functions(self.get_path(), parent.id)
 
     def get_path(self) -> Path:
         """Return a Path object"""
