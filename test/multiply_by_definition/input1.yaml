@@ -1,46 +1,58 @@
 - !Definition
-  id: def-parenta
-  text: Parent text
+  id: supported-operations
+  text: All supported operations
   children:
   - !Definition
-    id: def-child1a
+    id: addition
+    text: Addition
   - !Definition
-    id: def-child2a
+    id: multiplication
+    text: Multiplication
   - !Definition
-    id: def-child3a
+    id: division
+    text: Division
   - !Definition
-    id: def-child4a
+    id: subtraction
+    text: Subtraction
 
 - !Definition
-  id: def-parentb
+  id: supported-types
   children:
   - !Definition
-    id: def-child1b
+    id: int
   - !Definition
-    id: def-child2b
+    id: float
   - !Definition
-    id: def-child3b
-  - !Definition
-    id: def-child4b
+    id: double
 
 - !Specification
-  id: spec-spec-to-multiply1
-  text: Some specification
+  id: spec-display
+  text: Display must work for the <supported-types>
   children:
     - !MultiplyByDefinition
-      definition_id: def-parenta
+      definition_id: supported-types
 
 - !Specification
-  id: spec-spec-to-multiply2
+  id: spec-buttons
   children:
     - !MultiplyByDefinition
-      definition_id: def-parenta
+      definition_id: supported-operations
 
 - !Specification
-  id: spec-spec-to-multiply3
+  id: spec-documentation
+  text: What should be documented in the manual
   children:
     - !MultiplyByDefinition
-      definition_id: def-parenta
+      definition_id: supported-operations
+      children:
+    - !MultiplyByDefinition
+      definition_id: supported-types
+
+- !Specification
+  id: spec-operations
+  children:
+    - !MultiplyByDefinition
+      definition_id: supported-operations
       children:
       - !MultiplyByDefinition
-        definition_id: def-parentb
+        definition_id: supported-types

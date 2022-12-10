@@ -133,7 +133,7 @@ ALIASES = \"verify=@xrefitem verify \\\"Verify\\\" \\\"Verify\\\" \"
         return [
             en.Test(
                 function_to_id(func.file.relative_to(path.resolve()), func.name),
-                None,
+                "",
                 en.TestType.AUTOMATIC,
                 func.verify_id,
             )

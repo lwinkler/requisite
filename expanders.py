@@ -17,16 +17,24 @@ class Expander(Entry):
         """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
-    def expand(self, parent: Optional[Entry]):
+    def expand(self, parent: Optional[Entry]) -> List[Entry]:
         """Processing: extract child tests"""
         if parent is None:
             raise Exception("Cannot use expanders at top level")
-        parent.children.remove(self)
-        new_entries = self.create_entries(parent)
-        for entry in new_entries:
-            entry.expand(parent)
-        parent.children += new_entries
-        super().expand(parent)
+
+        results = self.create_entries(parent) # TODO
+        for result in results:
+            result.expand(parent)
+        return results
+
+        results : List[Entry] = []
+        new_entries = [self]
+        while new_entries:
+            for entry in new_entries:
+                new_entries2 = self.create_entries(parent)
+
+
+        return results
 
 
 class Include(Expander):
@@ -37,7 +45,7 @@ class Include(Expander):
     def __init__(  # pylint: disable=R0913
         self, id1: str, text: str, path: Path
     ):
-        super().__init__(id1, text)
+        super().__init__(id1, text, [])
         self.path = path
 
     def create_entries(self, parent: Entry) -> List[Entry]:
@@ -59,7 +67,6 @@ class MultiplyByDefinition(Expander):
         self.definition_id = definition_id
 
     def create_entries(self, parent: Entry) -> List[Entry]:
-        parent_copy = copy.deepcopy(parent)
         ret: List[Entry] = []
         ttt = ["a", "b", "cTODO"]
         for t in ttt:
@@ -68,9 +75,7 @@ class MultiplyByDefinition(Expander):
             last.id += "-" + t
             if hasattr(last, "text"):
                 last.text += f" ({t})"
+            last.children = copy.deepcopy(self.get_children())
+            print(444, len(parent.get_children()), len(last.get_children()))
 
         return ret
-
-    def get_path(self) -> Path:
-        """Return a Path object"""
-        return Path(self.path)
