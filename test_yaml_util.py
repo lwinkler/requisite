@@ -26,10 +26,12 @@ class TestYamlUtil(unittest.TestCase):
         statement = en.Statement("id2", "Some text", None)
         definition = en.Definition("id3", "Some text", None)
 
+        statement.simplify()
         self.assertEqual(
             yaml.dump(statement, width=1000),
             "!Statement\nid: id2\ntext: Some text\n",
         )
+        definition.simplify()
         self.assertEqual(
             yaml.dump(definition, width=1000),
             "!Definition\nid: id3\ntext: Some text\n",
@@ -45,10 +47,12 @@ class TestYamlUtil(unittest.TestCase):
 
         self.assertEqual(definition.id, "id3")
 
+        statement.simplify()
         self.assertEqual(
             yaml.dump(statement, width=1000),
             "!Statement\nid: id2\ntext: Some text\n",
         )
+        definition.simplify()
         self.assertEqual(
             yaml.dump(definition, width=1000),
             "!Definition\nid: id3\ntext: Some text\n",
@@ -61,6 +65,7 @@ class TestYamlUtil(unittest.TestCase):
         definition = en.Definition("id3", "Some text", None)
         design = en.Design("design-id", None, [definition] + [statement])
 
+        design.simplify()
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)
 
     def test_unserialize_design(self):
@@ -74,4 +79,5 @@ class TestYamlUtil(unittest.TestCase):
         self.assertTrue(isinstance(design.children[0], en.Definition))
         self.assertEqual(design.children[0].id, "id3")
 
+        design.simplify()
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)

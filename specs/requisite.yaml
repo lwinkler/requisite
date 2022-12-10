@@ -135,7 +135,9 @@ children:
   - !Specification
     id: spec-extract-tests
     text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations>
-    multiply: supported-code-annotations
+    children: 
+    # - !MultiplyByDefinition
+    # definition_id: supported-code-annotations
 
 - !Requirement
   id: req-syntax-check

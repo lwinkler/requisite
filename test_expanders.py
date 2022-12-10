@@ -31,3 +31,15 @@ class TestExpanders(unittest.TestCase):
         self.compare_text_files(
             data_path / "expected1.yaml", data_path / "output1.yaml"
         )
+
+    def test_multiply_by_definition(self) -> None:
+        """Test"""
+
+        data_path = Path("test/multiply_by_definition")
+        entries = yu.read_entries(data_path / "input1.yaml")
+        for entry in entries:
+            entry.expand(None)
+        yu.write_entries(data_path / "output1.yaml", entries)
+        self.compare_text_files(
+            data_path / "expected1.yaml", data_path / "output1.yaml"
+        )

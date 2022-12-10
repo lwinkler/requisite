@@ -6,7 +6,6 @@ from typing import List
 import yaml
 import entries as en
 
-
 def read_design(path: Path) -> en.Design:
     """Read a full design document in YAML format"""
     with open(path, encoding="utf-8") as fin:
@@ -22,6 +21,8 @@ def read_entries(path: Path) -> List[en.Entry]:
 def write_design(path: Path, design: en.Design) -> None:
     """Write a full design document in YAML format"""
 
+    design.simplify()
+
     with open(path, "w", encoding="utf-8") as fout:
         # so far we set a very high line width
         fout.write(yaml.dump(design, width=1000))
@@ -29,6 +30,9 @@ def write_design(path: Path, design: en.Design) -> None:
 
 def write_entries(path: Path, entries: List[en.Entry]) -> None:
     """Write a full design document in YAML format"""
+
+    for entry in entries:
+        entry.simplify()
 
     with open(path, "w", encoding="utf-8") as fout:
         # so far we set a very high line width

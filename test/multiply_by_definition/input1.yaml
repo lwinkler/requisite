@@ -1,0 +1,46 @@
+- !Definition
+  id: def-parenta
+  text: Parent text
+  children:
+  - !Definition
+    id: def-child1a
+  - !Definition
+    id: def-child2a
+  - !Definition
+    id: def-child3a
+  - !Definition
+    id: def-child4a
+
+- !Definition
+  id: def-parentb
+  children:
+  - !Definition
+    id: def-child1b
+  - !Definition
+    id: def-child2b
+  - !Definition
+    id: def-child3b
+  - !Definition
+    id: def-child4b
+
+- !Specification
+  id: spec-spec-to-multiply1
+  text: Some specification
+  children:
+    - !MultiplyByDefinition
+      definition_id: def-parenta
+
+- !Specification
+  id: spec-spec-to-multiply2
+  children:
+    - !MultiplyByDefinition
+      definition_id: def-parenta
+
+- !Specification
+  id: spec-spec-to-multiply3
+  children:
+    - !MultiplyByDefinition
+      definition_id: def-parenta
+      children:
+      - !MultiplyByDefinition
+        definition_id: def-parentb

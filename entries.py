@@ -20,12 +20,9 @@ class Entry(yaml.YAMLObject):
     yaml_tag = "!Entry"
 
     def __init__(self, id1: str, text: str, children: List[Entry]):
-        if id1 is not None:
-            self.id = id1  # pylint: disable=C0103
-        if text is not None:
-            self.text = text
-        if children:
-            self.children = children
+        self.id = id1  # pylint: disable=C0103
+        self.text = text
+        self.children = children
 
     def get_id(self) -> Optional[str]:
         """Return the id if applicable else None"""
@@ -64,6 +61,18 @@ class Entry(yaml.YAMLObject):
         if not hasattr(self, "text"):
             return []
         return LINK_EXPRESSION.findall(self.text)
+
+    def simplify(self):
+        """Remove fields that are empty, to simplify writing to YAML"""
+        if hasattr(self, "id") and not self.id:
+            delattr(self, "id")
+        if hasattr(self, "text") and not self.text:
+            delattr(self, "text")
+        if hasattr(self, "children") and not self.children:
+            delattr(self, "children")
+        if hasattr(self, "children"):
+            for child in self.children:
+                child.simplify()
 
 
 class Section(Entry):
