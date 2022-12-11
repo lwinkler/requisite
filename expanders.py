@@ -23,7 +23,8 @@ class Expander(Entry):
         if parent is None:
             raise Exception("Cannot use expanders at top level")
 
-        for result in self.create_entries(design, parent)
+        results = self.create_entries(design, parent)
+        for result in results:
             result.expand(design, parent)
         return results
 

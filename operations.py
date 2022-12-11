@@ -47,9 +47,9 @@ def extract_entries_of_type(
 
 
 def find_entry_by_type_and_id(
-        """Find an entry by type and id"""
     main_entry: en.Entry, parent_class: type[en.Entry], id1: str
 ) -> en.Entry:
+    """Find an entry by type and id"""
 
     # TODO Test
     for entry in extract_entries_of_type(main_entry, parent_class):
