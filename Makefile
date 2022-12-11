@@ -16,6 +16,9 @@ flake8:
 mypy:
 	${PYTHON} -m mypy .
 
+mypy-strict:
+	${PYTHON} -m mypy --strict .
+
 black:
 	${PYTHON} -m black --check .
 

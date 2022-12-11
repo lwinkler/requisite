@@ -27,7 +27,7 @@ if sys.version_info[0] < 3:
     sys.exit(1)
 
 
-def arguments_parser():
+def arguments_parser() -> argparse.Namespace:
     """Define the parser and parse arguments"""
 
     # Main parser
@@ -56,7 +56,7 @@ def arguments_parser():
     return parser.parse_args()
 
 
-def check_for_errors(design: en.Design):
+def check_for_errors(design: en.Design) -> None:
     """Check for all syntax errors in design and abort on error"""
 
     errors = op.check_all_rules(design)

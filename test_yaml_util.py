@@ -20,11 +20,11 @@ id: design-id
 class TestYamlUtil(unittest.TestCase):
     """Test"""
 
-    def test_serialize(self):
+    def test_serialize(self) -> None:
         """Test"""
 
-        statement = en.Statement("id2", "Some text", None)
-        definition = en.Definition("id3", "Some text", None)
+        statement = en.Statement("id2", "Some text", [])
+        definition = en.Definition("id3", "Some text", [])
 
         statement.simplify()
         self.assertEqual(
@@ -37,7 +37,7 @@ class TestYamlUtil(unittest.TestCase):
             "!Definition\nid: id3\ntext: Some text\n",
         )
 
-    def test_unserialize(self):
+    def test_unserialize(self) -> None:
         """Test"""
 
         statement = yaml.safe_load("!Statement\nid: id2\ntext: Some text\n")
@@ -58,17 +58,17 @@ class TestYamlUtil(unittest.TestCase):
             "!Definition\nid: id3\ntext: Some text\n",
         )
 
-    def test_serialize_design(self):
+    def test_serialize_design(self) -> None:
         """Test"""
 
-        statement = en.Statement("id2", "Some text", None)
-        definition = en.Definition("id3", "Some text", None)
-        design = en.Design("design-id", None, [definition] + [statement])
+        statement = en.Statement("id2", "Some text", [])
+        definition = en.Definition("id3", "Some text", [])
+        design = en.Design("design-id", "", [definition] + [statement])
 
         design.simplify()
         self.assertEqual(yaml.dump(design, width=1000), DESIGN_STR1)
 
-    def test_unserialize_design(self):
+    def test_unserialize_design(self) -> None:
         """Test"""
 
         design = yaml.safe_load(DESIGN_STR1)

@@ -19,7 +19,7 @@ class TestDesignUtil(unittest.TestCase):
 
         self.assertEqual(definition.id, "id3")
 
-    def test_extract_links(self):
+    def test_extract_links(self) -> None:
         """Test"""
         self.assertEqual(en.Entry("id", "My text without link", []).extract_links(), [])
         self.assertEqual(

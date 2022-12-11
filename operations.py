@@ -29,7 +29,7 @@ class ErrorMessage:
     text: str
 
 
-def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entry]:
+def extract_entries_of_type(entry: en.Entry, parent_class: type[en.Entry]) -> List[en.Entry]:
     """Extract all instances that inherit from the type"""
 
     res: List[en.Entry] = []
@@ -43,7 +43,7 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
     return res
 
-def find_entry_by_type_and_id(entry: en.Entry, parent_class: Type, id1: str) -> en.Entry:
+def find_entry_by_type_and_id(entry: en.Entry, parent_class: type[en.Entry], id1: str) -> en.Entry:
 
     # TODO Test
     all_entries = extract_entries_of_type(entry, parent_class)
@@ -52,7 +52,7 @@ def find_entry_by_type_and_id(entry: en.Entry, parent_class: Type, id1: str) -> 
             return entry
     raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
 
-def gather_all_ids(entry_to_check: en.Entry, parent_class: Type) -> List[str]:
+def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> List[str]:
     """Return all ids from the own and children entries"""
     all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):

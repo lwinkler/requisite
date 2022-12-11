@@ -24,13 +24,13 @@ class Entry(yaml.YAMLObject):
         self.text = text
         self.children = children
 
-    def get_id(self) -> Optional[str]:
+    def get_id(self) -> str:
         """Return the id if applicable else None"""
-        return self.id if hasattr(self, "id") else None
+        return self.id if hasattr(self, "id") else ""
 
-    def get_text(self) -> Optional[str]:
+    def get_text(self) -> str:
         """Return the text if applicable else None"""
-        return self.text if hasattr(self, "text") else None
+        return self.text if hasattr(self, "text") else ""
 
     def get_children(self) -> List[Entry]:
         """Return the children if applicable else []"""
@@ -71,7 +71,7 @@ class Entry(yaml.YAMLObject):
             return []
         return LINK_EXPRESSION.findall(self.text)
 
-    def simplify(self):
+    def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
         if hasattr(self, "id") and not self.id:
             delattr(self, "id")

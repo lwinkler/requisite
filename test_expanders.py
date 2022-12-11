@@ -2,6 +2,7 @@
 
 import unittest
 from pathlib import Path
+from typing import Any
 
 import expanders
 import yaml_util as yu
@@ -9,7 +10,7 @@ import yaml_util as yu
 _ = expanders.Expander
 del _
 
-def parse_and_compare(test_object, data_path: Path) -> None:
+def parse_and_compare(test_object: Any, data_path: Path) -> None:
         design = yu.read_design(data_path / "input.yaml")
         design.expand(design, None)
         yu.write_design(data_path / "output.yaml", design)

@@ -8,7 +8,7 @@ import unittest
 class TestReport(unittest.TestCase):
     """Test operations"""
 
-    def test_text_to_markdown(self):
+    def test_text_to_markdown(self) -> None:
         """Test"""
         # self.assertEqual(
         # rp.text_to_markdown("Some simple text with <link>"),

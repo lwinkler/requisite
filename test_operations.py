@@ -184,7 +184,7 @@ class TestOperations(unittest.TestCase):
 
   # TODO id: spec-entry-attributes-non-null
 
-    def test_extract_entries_of_type(self):
+    def test_extract_entries_of_type(self) -> None:
         """Test"""
         design1 = yaml.safe_load(DESIGN_STR1)
 

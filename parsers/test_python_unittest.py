@@ -2,14 +2,14 @@
 
 import unittest
 from pathlib import Path
-from typing import List
+from typing import List, Any, cast
 
 import entries as en
 import yaml_util as yu
 from parsers.python_unittest import extract_python_unittest_tests
 
 
-def parse_and_compare(test_object, data_path: Path) -> None:
+def parse_and_compare(test_object: Any, data_path: Path) -> None:
         design = yu.read_design(data_path / "input.yaml")
         design.expand(design, None)
         yu.write_design(data_path / "output.yaml", design)
@@ -17,11 +17,11 @@ def parse_and_compare(test_object, data_path: Path) -> None:
             data_path / "output.expected.yaml", data_path / "output.yaml"
         )
 
-def get_by_id(all_tests: List[en.Test], id1: str) -> en.Test:
+def get_by_id(all_tests: List[en.Entry], id1: str) -> en.Test:
     """Search function by id"""
     for test in all_tests:
         if test.id == id1:
-            return test
+            return cast(en.Test, test)
     raise Exception(f"No test found with id {id1}")
 
 
@@ -35,7 +35,7 @@ class TestTestListFromPythonUnitTest(unittest.TestCase):
         ) as file2:
             self.assertListEqual(list(file1), list(file2))
 
-    def test_python_unittest_test_matching(self):
+    def test_python_unittest_test_matching(self) -> None:
         """Test"""
         
         all_ids = ["req-asdf", "req-ffff", "spec-extract-tests-python-unittest-format"]

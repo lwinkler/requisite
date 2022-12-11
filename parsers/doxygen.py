@@ -5,7 +5,7 @@ import tempfile
 import shutil
 import xml.etree.ElementTree as ET
 
-from typing import List
+from typing import List, Optional
 from pathlib import Path
 from dataclasses import dataclass
 import entries as en
@@ -40,7 +40,7 @@ def extract_tests_from_functions(path: Path) -> List[en.Entry]:
         res.sort()
         return res
 
-    def get_child(node, attribute_name: str, check_unique: bool):
+    def get_child(node: ET.Element, attribute_name: str, check_unique: bool) -> Optional[ET.Element]:
         children = []
         for child in node.iter(attribute_name):
             children.append(child)
@@ -48,28 +48,32 @@ def extract_tests_from_functions(path: Path) -> List[en.Entry]:
             assert len(children) == 1
         return children[0] if children else None
 
-    def get_requirement_node(node):
+    def get_requirement_node(node: ET.Element) -> Optional[ET.Element]:
         descr = get_child(node, "detaileddescription", True)
+        assert descr is not None
         xrefsect = get_child(descr, "xrefsect", False)
         if xrefsect is None:
             return None
         xrefdescr = get_child(xrefsect, "xrefdescription", True)
+        assert xrefdescr is not None
         return get_child(xrefdescr, "para", False)
 
-    def extract_function(node) -> Function:
+    def extract_function(node: ET.Element) -> Function:
         """Extract function from xml node"""
 
         name = get_child(node, "name", True)
+        assert name is not None
         location = get_child(node, "location", True)
+        assert location is not None
         statement = get_requirement_node(node)
 
         return Function(
-            name.text,
+            name.text or "",
             statement.text.strip()
             if statement is not None and statement.text
-            else None,
+            else "",
             Path(location.attrib["file"]),
-            location.attrib["line"],
+            int(location.attrib["line"]),
         )
 
     def execute(command: List[str], tmp_dir: Path) -> None:
