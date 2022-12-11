@@ -25,15 +25,15 @@ def write_design(path: Path, design: en.Design) -> None:
 
     with open(path, "w", encoding="utf-8") as fout:
         # so far we set a very high line width
-        fout.write(yaml.dump(design, width=1000))
+        fout.write(yaml.dump(design, width=1000, sort_keys=False))
 
 
-def write_entries(path: Path, entries: List[en.Entry]) -> None:
-    """Write a full design document in YAML format"""
-
-    for entry in entries:
-        entry.simplify()
-
-    with open(path, "w", encoding="utf-8") as fout:
-        # so far we set a very high line width
-        fout.write(yaml.dump(entries, width=1000))
+# def write_entries(path: Path, entries: List[en.Entry]) -> None:
+    # """Write a full design document in YAML format"""
+# 
+    # for entry in entries:
+        # entry.simplify()
+# 
+    # with open(path, "w", encoding="utf-8") as fout:
+        # # so far we set a very high line width
+        # fout.write(yaml.dump(entries, width=1000, sort_keys=False)))

@@ -1,8 +1,12 @@
 !Design
+id: test
 children:
 - !Section
+  text: Test section
   children:
   - !TestList
+    id: my-doxy-test-list
+    text: Tests documented with Doxygen (C++)
     children:
     - !Test
       id: test1-simplest-cpp-test1a
@@ -36,7 +40,3 @@ children:
       id: subdir-test2-simplest-cpp-test4b
       type: automatic
       verify_id: req-4b
-    id: my-doxy-test-list
-    text: Tests documented with Doxygen (C++)
-  text: Test section
-id: test

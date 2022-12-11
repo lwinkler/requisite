@@ -1,6 +1,9 @@
 !Design
+id: test
 children:
 - !Definition
+  id: supported-operations
+  text: All supported operations
   children:
   - !Definition
     id: addition
@@ -14,9 +17,8 @@ children:
   - !Definition
     id: subtraction
     text: Subtraction
-  id: supported-operations
-  text: All supported operations
 - !Definition
+  id: supported-types
   children:
   - !Definition
     id: int
@@ -24,8 +26,9 @@ children:
     id: float
   - !Definition
     id: double
-  id: supported-types
 - !Specification
+  id: spec-display
+  text: Display must work for the <supported-types>
   children:
   - !Specification
     id: spec-display-int
@@ -36,9 +39,8 @@ children:
   - !Specification
     id: spec-display-double
     text: Display must work for the <supported-types> (double)
-  id: spec-display
-  text: Display must work for the <supported-types>
 - !Specification
+  id: spec-buttons
   children:
   - !Specification
     id: spec-buttons-addition
@@ -48,8 +50,9 @@ children:
     id: spec-buttons-division
   - !Specification
     id: spec-buttons-subtraction
-  id: spec-buttons
 - !Specification
+  id: spec-documentation
+  text: What should be documented in the manual
   children:
   - !Specification
     id: spec-documentation-addition
@@ -72,11 +75,13 @@ children:
   - !Specification
     id: spec-documentation-double
     text: What should be documented in the manual (double)
-  id: spec-documentation
-  text: What should be documented in the manual
 - !Specification
+  id: spec-operations
+  text: Operation should be supported for <supported-operations> and <supported-types>
   children:
   - !Specification
+    id: spec-operations-addition
+    text: Operation should be supported for <supported-operations> and <supported-types> (addition)
     children:
     - !Specification
       id: spec-operations-addition-int
@@ -87,9 +92,9 @@ children:
     - !Specification
       id: spec-operations-addition-double
       text: Operation should be supported for <supported-operations> and <supported-types> (addition) (double)
-    id: spec-operations-addition
-    text: Operation should be supported for <supported-operations> and <supported-types> (addition)
   - !Specification
+    id: spec-operations-multiplication
+    text: Operation should be supported for <supported-operations> and <supported-types> (multiplication)
     children:
     - !Specification
       id: spec-operations-multiplication-int
@@ -100,9 +105,9 @@ children:
     - !Specification
       id: spec-operations-multiplication-double
       text: Operation should be supported for <supported-operations> and <supported-types> (multiplication) (double)
-    id: spec-operations-multiplication
-    text: Operation should be supported for <supported-operations> and <supported-types> (multiplication)
   - !Specification
+    id: spec-operations-division
+    text: Operation should be supported for <supported-operations> and <supported-types> (division)
     children:
     - !Specification
       id: spec-operations-division-int
@@ -113,9 +118,9 @@ children:
     - !Specification
       id: spec-operations-division-double
       text: Operation should be supported for <supported-operations> and <supported-types> (division) (double)
-    id: spec-operations-division
-    text: Operation should be supported for <supported-operations> and <supported-types> (division)
   - !Specification
+    id: spec-operations-subtraction
+    text: Operation should be supported for <supported-operations> and <supported-types> (subtraction)
     children:
     - !Specification
       id: spec-operations-subtraction-int
@@ -126,8 +131,3 @@ children:
     - !Specification
       id: spec-operations-subtraction-double
       text: Operation should be supported for <supported-operations> and <supported-types> (subtraction) (double)
-    id: spec-operations-subtraction
-    text: Operation should be supported for <supported-operations> and <supported-types> (subtraction)
-  id: spec-operations
-  text: Operation should be supported for <supported-operations> and <supported-types>
-id: test

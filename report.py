@@ -88,9 +88,9 @@ def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
 def write_html_report(output_path: Path, design: en.Entry) -> None:
     """Write a HTML report to file"""
 
-    if output_path.is_file():
-        print(f"File {output_path.as_posix()} already exists")
-        sys.exit(1)
+    # if output_path.is_file():
+        # print(f"File {output_path.as_posix()} already exists")
+        # sys.exit(1)
     with open(output_path, "w", encoding="utf-8") as fout:
 
         html_tag = ET.Element("html")

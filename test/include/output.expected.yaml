@@ -1,16 +1,16 @@
 !Design
+id: test
 children:
 - !Entry
   id: id1
 - !Entry
   id: id2
 - !Entry
+  id: id3
   children:
   - !Entry
     id: id3a
   - !Entry
     id: id3b
-  id: id3
 - !Entry
   id: id4
-id: test
