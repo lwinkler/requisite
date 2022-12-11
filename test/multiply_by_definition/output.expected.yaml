@@ -1,0 +1,133 @@
+!Design
+children:
+- !Definition
+  children:
+  - !Definition
+    id: addition
+    text: Addition
+  - !Definition
+    id: multiplication
+    text: Multiplication
+  - !Definition
+    id: division
+    text: Division
+  - !Definition
+    id: subtraction
+    text: Subtraction
+  id: supported-operations
+  text: All supported operations
+- !Definition
+  children:
+  - !Definition
+    id: int
+  - !Definition
+    id: float
+  - !Definition
+    id: double
+  id: supported-types
+- !Specification
+  children:
+  - !Specification
+    id: spec-display-int
+    text: Display must work for the <supported-types> (int)
+  - !Specification
+    id: spec-display-float
+    text: Display must work for the <supported-types> (float)
+  - !Specification
+    id: spec-display-double
+    text: Display must work for the <supported-types> (double)
+  id: spec-display
+  text: Display must work for the <supported-types>
+- !Specification
+  children:
+  - !Specification
+    id: spec-buttons-addition
+  - !Specification
+    id: spec-buttons-multiplication
+  - !Specification
+    id: spec-buttons-division
+  - !Specification
+    id: spec-buttons-subtraction
+  id: spec-buttons
+- !Specification
+  children:
+  - !Specification
+    id: spec-documentation-addition
+    text: What should be documented in the manual (addition)
+  - !Specification
+    id: spec-documentation-multiplication
+    text: What should be documented in the manual (multiplication)
+  - !Specification
+    id: spec-documentation-division
+    text: What should be documented in the manual (division)
+  - !Specification
+    id: spec-documentation-subtraction
+    text: What should be documented in the manual (subtraction)
+  - !Specification
+    id: spec-documentation-int
+    text: What should be documented in the manual (int)
+  - !Specification
+    id: spec-documentation-float
+    text: What should be documented in the manual (float)
+  - !Specification
+    id: spec-documentation-double
+    text: What should be documented in the manual (double)
+  id: spec-documentation
+  text: What should be documented in the manual
+- !Specification
+  children:
+  - !Specification
+    children:
+    - !Specification
+      id: spec-operations-addition-int
+      text: Operation should be supported for <supported-operations> and <supported-types> (addition) (int)
+    - !Specification
+      id: spec-operations-addition-float
+      text: Operation should be supported for <supported-operations> and <supported-types> (addition) (float)
+    - !Specification
+      id: spec-operations-addition-double
+      text: Operation should be supported for <supported-operations> and <supported-types> (addition) (double)
+    id: spec-operations-addition
+    text: Operation should be supported for <supported-operations> and <supported-types> (addition)
+  - !Specification
+    children:
+    - !Specification
+      id: spec-operations-multiplication-int
+      text: Operation should be supported for <supported-operations> and <supported-types> (multiplication) (int)
+    - !Specification
+      id: spec-operations-multiplication-float
+      text: Operation should be supported for <supported-operations> and <supported-types> (multiplication) (float)
+    - !Specification
+      id: spec-operations-multiplication-double
+      text: Operation should be supported for <supported-operations> and <supported-types> (multiplication) (double)
+    id: spec-operations-multiplication
+    text: Operation should be supported for <supported-operations> and <supported-types> (multiplication)
+  - !Specification
+    children:
+    - !Specification
+      id: spec-operations-division-int
+      text: Operation should be supported for <supported-operations> and <supported-types> (division) (int)
+    - !Specification
+      id: spec-operations-division-float
+      text: Operation should be supported for <supported-operations> and <supported-types> (division) (float)
+    - !Specification
+      id: spec-operations-division-double
+      text: Operation should be supported for <supported-operations> and <supported-types> (division) (double)
+    id: spec-operations-division
+    text: Operation should be supported for <supported-operations> and <supported-types> (division)
+  - !Specification
+    children:
+    - !Specification
+      id: spec-operations-subtraction-int
+      text: Operation should be supported for <supported-operations> and <supported-types> (subtraction) (int)
+    - !Specification
+      id: spec-operations-subtraction-float
+      text: Operation should be supported for <supported-operations> and <supported-types> (subtraction) (float)
+    - !Specification
+      id: spec-operations-subtraction-double
+      text: Operation should be supported for <supported-operations> and <supported-types> (subtraction) (double)
+    id: spec-operations-subtraction
+    text: Operation should be supported for <supported-operations> and <supported-types> (subtraction)
+  id: spec-operations
+  text: Operation should be supported for <supported-operations> and <supported-types>
+id: test

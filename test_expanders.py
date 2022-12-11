@@ -9,6 +9,13 @@ import yaml_util as yu
 _ = expanders.Expander
 del _
 
+def parse_and_compare(test_object, data_path: Path) -> None:
+        design = yu.read_design(data_path / "input.yaml")
+        design.expand(design, None)
+        yu.write_design(data_path / "output.yaml", design)
+        test_object.compare_text_files(
+            data_path / "output.expected.yaml", data_path / "output.yaml"
+        )
 
 class TestExpanders(unittest.TestCase):
     """Test"""
@@ -22,24 +29,8 @@ class TestExpanders(unittest.TestCase):
 
     def test_include(self) -> None:
         """Test"""
-
-        data_path = Path("test/include")
-        entries = yu.read_entries(data_path / "input1.yaml")
-        for entry in entries:
-            entry.expand(None)
-        yu.write_entries(data_path / "output1.yaml", entries)
-        self.compare_text_files(
-            data_path / "expected1.yaml", data_path / "output1.yaml"
-        )
+        parse_and_compare(self, Path("test/include"))
 
     def test_multiply_by_definition(self) -> None:
         """Test"""
-
-        data_path = Path("test/multiply_by_definition")
-        entries = yu.read_entries(data_path / "input1.yaml")
-        for entry in entries:
-            entry.expand(None)
-        yu.write_entries(data_path / "output1.yaml", entries)
-        self.compare_text_files(
-            data_path / "expected1.yaml", data_path / "output1.yaml"
-        )
+        parse_and_compare(self, Path("test/multiply_by_definition"))

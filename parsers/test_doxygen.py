@@ -16,6 +16,13 @@ def get_by_id(all_tests: List[en.Test], id1: str) -> en.Test:
             return test
     raise Exception(f"No test found with id {id1}")
 
+def parse_and_compare(test_object, data_path: Path) -> None:
+        design = yu.read_design(data_path / "input.yaml")
+        design.expand(design, None)
+        yu.write_design(data_path / "output.yaml", design)
+        test_object.compare_text_files(
+            data_path / "output.expected.yaml", data_path / "output.yaml"
+        )
 
 class TestTestListFromDoxygen(unittest.TestCase):
     """Test for class"""
@@ -64,11 +71,4 @@ class TestTestListFromDoxygen(unittest.TestCase):
     def test_extract_tests_from_doxygen(self) -> None:
         """Test"""
 
-        data_path = Path("test/doxygen_tests")
-        entries = yu.read_entries(data_path / "input1.yaml")
-        for entry in entries:
-            entry.expand(None)
-        yu.write_entries(data_path / "output1.yaml", entries)
-        self.compare_text_files(
-            data_path / "expected1.yaml", data_path / "output1.yaml"
-        )
+        parse_and_compare(self, Path("test/doxygen_tests"))

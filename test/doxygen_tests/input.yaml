@@ -1,4 +1,7 @@
-
+!Design
+id: test
+children:
+  
 - !Section
   text: Test section
   children:

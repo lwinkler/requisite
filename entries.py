@@ -32,11 +32,11 @@ class Entry(yaml.YAMLObject):
         """Return the text if applicable else None"""
         return self.text if hasattr(self, "text") else None
 
-    def get_children(self) -> Optional[str]:
+    def get_children(self) -> List[Entry]:
         """Return the children if applicable else []"""
         return self.children if hasattr(self, "children") and self.children is not None else []
 
-    def expand(self, _parent: Optional[Entry]) -> List[Entry]:
+    def expand(self, design: Entry, _parent: Optional[Entry]) -> List[Entry]:
         """Processing: Nothing to do by default but call on children"""
         try:
             if hasattr(self, "children"):
@@ -44,7 +44,7 @@ class Entry(yaml.YAMLObject):
                 self.children = []
 
                 for child in old_children:
-                    self.children += child.expand(self)
+                    self.children += child.expand(design, self)
             return [self]
 
         except Exception as exc:

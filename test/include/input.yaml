@@ -1,3 +1,6 @@
+!Design
+id: test
+children:
 - !Entry
   id: id1
 

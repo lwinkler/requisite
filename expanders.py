@@ -5,7 +5,8 @@ from pathlib import Path
 from typing import List, Optional
 
 import yaml_util as yu
-from entries import Entry
+import operations as op
+from entries import Entry, Definition
 
 
 class Expander(Entry):
@@ -13,27 +14,18 @@ class Expander(Entry):
 
     yaml_tag = "!Expander"
 
-    def create_entries(self, parent: Entry) -> List[Entry]:
+    def create_entries(self, design: Entry, parent: Entry) -> List[Entry]:
         """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
-    def expand(self, parent: Optional[Entry]) -> List[Entry]:
+    def expand(self, design: Entry, parent: Optional[Entry]) -> List[Entry]:
         """Processing: extract child tests"""
         if parent is None:
             raise Exception("Cannot use expanders at top level")
 
-        results = self.create_entries(parent) # TODO
+        results = self.create_entries(design, parent) # TODO
         for result in results:
-            result.expand(parent)
-        return results
-
-        results : List[Entry] = []
-        new_entries = [self]
-        while new_entries:
-            for entry in new_entries:
-                new_entries2 = self.create_entries(parent)
-
-
+            result.expand(design, parent)
         return results
 
 
@@ -48,7 +40,7 @@ class Include(Expander):
         super().__init__(id1, text, [])
         self.path = path
 
-    def create_entries(self, parent: Entry) -> List[Entry]:
+    def create_entries(self, design: Entry, parent: Entry) -> List[Entry]:
         return yu.read_entries(self.get_path())
 
     def get_path(self) -> Path:
@@ -66,16 +58,16 @@ class MultiplyByDefinition(Expander):
         super().__init__(id1, text, [])
         self.definition_id = definition_id
 
-    def create_entries(self, parent: Entry) -> List[Entry]:
+    def create_entries(self, design: Entry, parent: Entry) -> List[Entry]:
         ret: List[Entry] = []
-        ttt = ["a", "b", "cTODO"]
-        for t in ttt:
+        definition = op.find_entry_by_type_and_id(design, Definition, self.definition_id)
+
+        for child_definition in definition.children:
             ret.append(copy.deepcopy(parent))
             last = ret[-1]
-            last.id += "-" + t
+            last.id += "-" + (child_definition.get_id() or "NONE")
             if hasattr(last, "text"):
-                last.text += f" ({t})"
+                last.text += f" ({child_definition.get_id()})"
             last.children = copy.deepcopy(self.get_children())
-            print(444, len(parent.get_children()), len(last.get_children()))
 
         return ret

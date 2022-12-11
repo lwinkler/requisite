@@ -1,3 +1,6 @@
+!Design
+id: test
+children:
 - !Definition
   id: supported-operations
   text: All supported operations
@@ -50,6 +53,7 @@
 
 - !Specification
   id: spec-operations
+  text: Operation should be supported for <supported-operations> and <supported-types>
   children:
     - !MultiplyByDefinition
       definition_id: supported-operations

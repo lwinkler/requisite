@@ -71,7 +71,7 @@ if __name__ == "__main__":
     args = arguments_parser()
     product_design = yu.read_design(args.input)
     check_for_errors(product_design)
-    product_design.expand(None)
+    product_design.expand(product_design, None)
     check_for_errors(product_design)
     product_design.print()
 

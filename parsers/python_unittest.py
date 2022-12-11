@@ -46,7 +46,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self.path = path
         self.pattern = pattern
 
-    def create_entries(self, parent: en.Entry) -> List[en.Entry]:
+    def create_entries(self, _design: en.Entry, parent: en.Entry) -> List[en.Entry]:
         return extract_python_unittest_tests(self.get_path(), self.pattern)
 
     def get_path(self) -> Path:

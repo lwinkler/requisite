@@ -43,6 +43,14 @@ def extract_entries_of_type(entry: en.Entry, parent_class: Type) -> List[en.Entr
 
     return res
 
+def find_entry_by_type_and_id(entry: en.Entry, parent_class: Type, id1: str) -> en.Entry:
+
+    # TODO Test
+    all_entries = extract_entries_of_type(entry, parent_class)
+    for entry in all_entries:
+        if entry.id == id1:
+            return entry
+    raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
 
 def gather_all_ids(entry_to_check: en.Entry, parent_class: Type) -> List[str]:
     """Return all ids from the own and children entries"""
