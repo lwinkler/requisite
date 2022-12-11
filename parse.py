@@ -19,7 +19,11 @@ import parsers.doxygen
 import parsers.python_unittest
 
 # use modules to avoid warning
-_ = (expanders.Expander, parsers.doxygen.ExtractTestsFromDoxygen, parsers.python_unittest.ExtractTestsFromPythonUnitTest)
+_ = (
+    expanders.Expander,
+    parsers.doxygen.ExtractTestsFromDoxygen,
+    parsers.python_unittest.ExtractTestsFromPythonUnitTest,
+)
 del _
 
 if sys.version_info[0] < 3:

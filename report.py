@@ -1,6 +1,5 @@
 """Generation of specification report in HTML format"""
 
-import sys
 import re
 from xml.etree import ElementTree as ET
 from pathlib import Path
@@ -89,8 +88,8 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
     """Write a HTML report to file"""
 
     # if output_path.is_file():
-        # print(f"File {output_path.as_posix()} already exists")
-        # sys.exit(1)
+    # print(f"File {output_path.as_posix()} already exists")
+    # sys.exit(1)
     with open(output_path, "w", encoding="utf-8") as fout:
 
         html_tag = ET.Element("html")

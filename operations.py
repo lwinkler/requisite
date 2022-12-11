@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from typing import List, Type
+from typing import List
 
 import entries as en
 import expanders as ex
@@ -29,7 +29,9 @@ class ErrorMessage:
     text: str
 
 
-def extract_entries_of_type(entry: en.Entry, parent_class: type[en.Entry]) -> List[en.Entry]:
+def extract_entries_of_type(
+    entry: en.Entry, parent_class: type[en.Entry]
+) -> List[en.Entry]:
     """Extract all instances that inherit from the type"""
 
     res: List[en.Entry] = []
@@ -43,14 +45,18 @@ def extract_entries_of_type(entry: en.Entry, parent_class: type[en.Entry]) -> Li
 
     return res
 
-def find_entry_by_type_and_id(entry: en.Entry, parent_class: type[en.Entry], id1: str) -> en.Entry:
+
+def find_entry_by_type_and_id(
+        """Find an entry by type and id"""
+    main_entry: en.Entry, parent_class: type[en.Entry], id1: str
+) -> en.Entry:
 
     # TODO Test
-    all_entries = extract_entries_of_type(entry, parent_class)
-    for entry in all_entries:
+    for entry in extract_entries_of_type(main_entry, parent_class):
         if entry.id == id1:
             return entry
     raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
+
 
 def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> List[str]:
     """Return all ids from the own and children entries"""
@@ -78,13 +84,22 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_entry_attributes_non_null(entry)
     return messages
 
+
 def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessage]:
     """Check rule spec-entry-attributes-non-null"""
 
     messages: List[ErrorMessage] = []
     for attribute_name in ["id", "text", "children"]:
-        if hasattr(entry_to_check, attribute_name) and getattr(entry_to_check, attribute_name) is None:
-            messages.append(ErrorMessage(entry_to_check.get_id(), f"Entry attribute {attribute_name} has a null value"))
+        if (
+            hasattr(entry_to_check, attribute_name)
+            and getattr(entry_to_check, attribute_name) is None
+        ):
+            messages.append(
+                ErrorMessage(
+                    entry_to_check.get_id(),
+                    f"Entry attribute {attribute_name} has a null value",
+                )
+            )
     return messages
 
 

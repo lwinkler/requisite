@@ -182,7 +182,7 @@ children:
 class TestOperations(unittest.TestCase):
     """Test operations"""
 
-  # TODO id: spec-entry-attributes-non-null
+    # TODO id: spec-entry-attributes-non-null
 
     def test_extract_entries_of_type(self) -> None:
         """Test"""

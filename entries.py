@@ -34,7 +34,11 @@ class Entry(yaml.YAMLObject):
 
     def get_children(self) -> List[Entry]:
         """Return the children if applicable else []"""
-        return self.children if hasattr(self, "children") and self.children is not None else []
+        return (
+            self.children
+            if hasattr(self, "children") and self.children is not None
+            else []
+        )
 
     def expand(self, design: Entry, _parent: Optional[Entry]) -> List[Entry]:
         """Processing: Nothing to do by default but call on children"""
@@ -144,19 +148,8 @@ class TestList(Entry):
 
     yaml_tag = "!TestList"
 
-    def __init__(
-        self,
-        id1: str,
-        text: str,
-        children: List[Entry]
-        # engine: str,
-    ):
-        super().__init__(id1, text, children)
-        # self.engine = engine
-
 
 class Design(Entry):
     """Design value object, contains the full design"""
 
-    yaml_loader = yaml.SafeLoader
     yaml_tag = "!Design"

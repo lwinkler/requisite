@@ -40,7 +40,9 @@ def extract_tests_from_functions(path: Path) -> List[en.Entry]:
         res.sort()
         return res
 
-    def get_child(node: ET.Element, attribute_name: str, check_unique: bool) -> Optional[ET.Element]:
+    def get_child(
+        node: ET.Element, attribute_name: str, check_unique: bool
+    ) -> Optional[ET.Element]:
         children = []
         for child in node.iter(attribute_name):
             children.append(child)
@@ -69,9 +71,7 @@ def extract_tests_from_functions(path: Path) -> List[en.Entry]:
 
         return Function(
             name.text or "",
-            statement.text.strip()
-            if statement is not None and statement.text
-            else "",
+            statement.text.strip() if statement is not None and statement.text else "",
             Path(location.attrib["file"]),
             int(location.attrib["line"]),
         )

@@ -10,13 +10,15 @@ import yaml_util as yu
 _ = expanders.Expander
 del _
 
+
 def parse_and_compare(test_object: Any, data_path: Path) -> None:
-        design = yu.read_design(data_path / "input.yaml")
-        design.expand(design, None)
-        yu.write_design(data_path / "output.yaml", design)
-        test_object.compare_text_files(
-            data_path / "output.expected.yaml", data_path / "output.yaml"
-        )
+    design = yu.read_design(data_path / "input.yaml")
+    design.expand(design, None)
+    yu.write_design(data_path / "output.yaml", design)
+    test_object.compare_text_files(
+        data_path / "output.expected.yaml", data_path / "output.yaml"
+    )
+
 
 class TestExpanders(unittest.TestCase):
     """Test"""

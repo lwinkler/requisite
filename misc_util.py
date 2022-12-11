@@ -32,7 +32,7 @@ def list_all_git_files(path: Path, extensions: List[str]) -> List[Path]:
 
 
 def run_on_all_git_files(
-        command: str, path: Path, extensions: List[str], check: bool =True
+    command: str, path: Path, extensions: List[str], check: bool = True
 ) -> int:
     """Execute a command on all files using git and xargs"""
 

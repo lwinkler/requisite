@@ -23,8 +23,7 @@ class Expander(Entry):
         if parent is None:
             raise Exception("Cannot use expanders at top level")
 
-        results = self.create_entries(design, parent) # TODO
-        for result in results:
+        for result in self.create_entries(design, parent)
             result.expand(design, parent)
         return results
 
@@ -34,9 +33,7 @@ class Include(Expander):
 
     yaml_tag = "!Include"
 
-    def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, path: Path
-    ):
+    def __init__(self, id1: str, text: str, path: Path):  # pylint: disable=R0913
         super().__init__(id1, text, [])
         self.path = path
 
@@ -47,20 +44,23 @@ class Include(Expander):
         """Return a Path object"""
         return Path(self.path)
 
+
 class MultiplyByDefinition(Expander):
     """Placeholder class that expands its parent to include another YAML file"""
 
     yaml_tag = "!MultiplyByDefinition"
 
     def __init__(  # pylint: disable=R0913
-            self, id1: str, text: str, definition_id: str
+        self, id1: str, text: str, definition_id: str
     ):
         super().__init__(id1, text, [])
         self.definition_id = definition_id
 
     def create_entries(self, design: Entry, parent: Entry) -> List[Entry]:
         ret: List[Entry] = []
-        definition = op.find_entry_by_type_and_id(design, Definition, self.definition_id)
+        definition = op.find_entry_by_type_and_id(
+            design, Definition, self.definition_id
+        )
 
         for child_definition in definition.children:
             ret.append(copy.deepcopy(parent))

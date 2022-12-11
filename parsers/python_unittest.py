@@ -10,38 +10,56 @@ import operations as op
 
 TEST_PREFIX = "test_"
 
-def extract_verify_id_from_function_name(name: str, all_ids: List[str]) -> Optional[str]:
+
+def extract_verify_id_from_function_name(
+    name: str, all_ids: List[str]
+) -> Optional[str]:
     """Extract the statement id from the function name"""
+
     def simplify_id(id1: str) -> str:
         return id1.replace("-", "").replace("_", "").lower()
 
     assert name.startswith(TEST_PREFIX)
-    simplified_id = simplify_id(name[len(TEST_PREFIX):])
+    simplified_id = simplify_id(name[len(TEST_PREFIX) :])
     possible_ids: List[str] = []
     for id1 in all_ids:
         if simplify_id(id1) == simplified_id:
             possible_ids.append(id1)
 
     if len(possible_ids) > 1:
-        raise Exception(f"More than one statement match test method name '{name}: '", possible_ids, " Please change one of those ids.")
+        raise Exception(
+            f"More than one statement match test method name '{name}: '",
+            possible_ids,
+            " Please change one of those ids.",
+        )
 
     return possible_ids[0] if len(possible_ids) == 1 else None
 
-def extract_python_unittest_tests(path: Path, pattern: str, all_ids: List[str]) -> List[en.Entry]:
+
+def extract_python_unittest_tests(
+    path: Path, pattern: str, all_ids: List[str]
+) -> List[en.Entry]:
     """Extract the unit tests from python unittest module"""
+
     def extract_test_cases(
         test_suite_or_case: Union[unittest.TestSuite, unittest.TestCase],
     ) -> List[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
-            verify_id = extract_verify_id_from_function_name(test_suite_or_case._testMethodName, all_ids)
-            return [] if verify_id is None else [
-                en.Test(
-                    test_suite_or_case.id(),
-                    test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
-                    en.TestType.AUTOMATIC,
-                    verify_id
-                )
-            ]
+            verify_id = extract_verify_id_from_function_name(
+                    test_suite_or_case._testMethodName, all_ids # pylint: disable=W0212
+            )
+            return (
+                []
+                if verify_id is None
+                else [
+                    en.Test(
+                        test_suite_or_case.id(),
+                        test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
+                        en.TestType.AUTOMATIC,
+                        verify_id,
+                    )
+                ]
+            )
         assert isinstance(test_suite_or_case, unittest.TestSuite)
         results = []
         for child in test_suite_or_case._tests:  # pylint: disable=W0212
