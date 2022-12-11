@@ -46,7 +46,7 @@ def extract_python_unittest_tests(
     ) -> List[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
             verify_id = extract_verify_id_from_function_name(
-                    test_suite_or_case._testMethodName, all_ids # pylint: disable=W0212
+                test_suite_or_case._testMethodName, all_ids  # pylint: disable=W0212
             )
             return (
                 []

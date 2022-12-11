@@ -1,11 +1,7 @@
 """Unit test for python unittest test extraction"""
 
-import unittest
 from pathlib import Path
-from typing import List, Any, cast
 
-import entries as en
-import yaml_util as yu
 import common_test as ct
 from parsers.python_unittest import extract_python_unittest_tests
 

@@ -6,6 +6,7 @@ from typing import List, cast
 import entries as en
 import yaml_util as yu
 
+
 def get_by_id(all_tests: List[en.Entry], id1: str) -> en.Test:
     """Search function by id"""
     for test in all_tests:
@@ -31,4 +32,3 @@ class TestCommon(unittest.TestCase):
         self.compare_text_files(
             data_path / "output.expected.yaml", data_path / "output.yaml"
         )
-

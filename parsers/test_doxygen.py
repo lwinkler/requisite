@@ -1,11 +1,7 @@
 """Unit test for doxygen test extraction"""
 
-import unittest
 from pathlib import Path
-from typing import List, Any, cast
 
-import entries as en
-import yaml_util as yu
 import common_test as ct
 from parsers.doxygen import extract_tests_from_functions
 
@@ -35,16 +31,20 @@ class TestTestListFromDoxygen(ct.TestCommon):
             ct.get_by_id(all_tests, "test1-simplest-cpp-test2b").verify_id, "req-2b"
         )
         self.assertEqual(
-            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test3a").verify_id, "req-3a"
+            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test3a").verify_id,
+            "req-3a",
         )
         self.assertEqual(
-            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test3b").verify_id, "req-3b"
+            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test3b").verify_id,
+            "req-3b",
         )
         self.assertEqual(
-            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test4a").verify_id, "req-4a"
+            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test4a").verify_id,
+            "req-4a",
         )
         self.assertEqual(
-            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test4b").verify_id, "req-4b"
+            ct.get_by_id(all_tests, "subdir-test2-simplest-cpp-test4b").verify_id,
+            "req-4b",
         )
 
     def test_spec_extract_tests_doxygen_doc_format(self) -> None:

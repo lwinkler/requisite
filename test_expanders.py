@@ -1,16 +1,12 @@
 """Unit test for expander classes"""
 
-import unittest
 from pathlib import Path
-from typing import Any
 
 import expanders
-import yaml_util as yu
 import common_test as ct
 
 _ = expanders.Expander
 del _
-
 
 
 class TestExpanders(ct.TestCommon):
