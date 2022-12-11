@@ -1,5 +1,9 @@
 # Rules
 - !Specification
+  id: spec-entry-attributes-non-null
+  text: Any <entry> id, text and children attribute must be non-null if defined.
+
+- !Specification
   id: spec-definition-id-mandatory
   text: Any <definition>s must have an id.
 
@@ -9,23 +13,23 @@
 
 - !Specification
   id: spec-unique-id
-  text: The id field of any <entry> must be unique.
+  text: The id attribute of any <entry> must be unique.
 
 - !Specification
   id: spec-id-valid-chars
-  text: The id field of any <entry> must constist of valid characters (a-z, A-Z, 0-9, -, _) and start with a letter.
+  text: The id attribute of any <entry> must constist of valid characters (a-z, A-Z, 0-9, -, _) and start with a letter.
 
 - !Specification
   id: spec-id-spec
-  text: The id field of any <specification> must start with spec.
+  text: The id attribute of any <specification> must start with spec.
 
 - !Specification
   id: spec-id-req
-  text: The id field of any <requirement> must start with req.
+  text: The id attribute of any <requirement> must start with req.
 
 - !Specification
   id: spec-valid-links
-  text: The links in any text field of any <entry> must be an existing entry id.
+  text: The links in any text attribute of any <entry> must be an existing entry id.
 
 - !Specification
   id: spec-child-statement

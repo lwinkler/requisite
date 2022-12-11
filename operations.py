@@ -75,6 +75,16 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_child_definition(entry)
     messages += check_child_test(entry)
     messages += check_test_statement_id(entry)
+    messages += check_entry_attributes_non_null(entry)
+    return messages
+
+def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessage]:
+    """Check rule spec-entry-attributes-non-null"""
+
+    messages: List[ErrorMessage] = []
+    for attribute_name in ["id", "text", "children"]:
+        if hasattr(entry_to_check, attribute_name) and getattr(entry_to_check, attribute_name) is None:
+            messages.append(ErrorMessage(entry_to_check.get_id(), f"Entry attribute {attribute_name} has a null value"))
     return messages
 
 
