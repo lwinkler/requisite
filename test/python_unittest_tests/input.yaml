@@ -1,6 +1,27 @@
 !Design
 id: test
 children:
+- !Definition
+  id: supported-code-annotations
+  text: The different source code annotations formats supported by our parser (to extract information about tests)
+  children:
+  - !Definition
+    id: doxygen-doc-format
+  - !Definition
+    id: python-unittest-format
+
+- !Requirement
+  id: req-extract-tests
+  text: Links between tests and statements can be extracted from the sources of the tests (if properly annotated)
+  children:
+
+  - !Specification
+    id: spec-extract-tests
+    text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations>
+    children: 
+      - !MultiplyByDefinition
+        definition_id: supported-code-annotations
+
 - !Section
   text: Test section
   children:
@@ -11,5 +32,5 @@ children:
     children:
     - !ExtractTestsFromPythonUnitTest
       id: tests-unit
-      path: parsers
-      pattern: "test_python_unittest_*"
+      path: .
+      pattern: "test_python_unittest*"

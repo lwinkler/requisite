@@ -68,7 +68,7 @@ class TestTestListFromDoxygen(unittest.TestCase):
             get_by_id(all_tests, "subdir-test2-simplest-cpp-test4b").verify_id, "req-4b"
         )
 
-    def test_extract_tests_from_doxygen(self) -> None:
+    def test_spec_extract_tests_doxygen_doc_format(self) -> None:
         """Test"""
 
         parse_and_compare(self, Path("test/doxygen_tests"))

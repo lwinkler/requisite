@@ -2,25 +2,44 @@
 
 import unittest
 
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
 import entries as en
 import expanders as ex
+import operations as op
 
+TEST_PREFIX = "test_"
 
-def extract_python_unittest_tests(path: Path, pattern: str) -> List[en.Entry]:
+def extract_verify_id_from_function_name(name: str, all_ids: List[str]) -> Optional[str]:
+    """Extract the statement id from the function name"""
+    def simplify_id(id1: str) -> str:
+        return id1.replace("-", "").replace("_", "").lower()
+
+    assert name.startswith(TEST_PREFIX)
+    simplified_id = simplify_id(name[len(TEST_PREFIX):])
+    possible_ids: List[str] = []
+    for id1 in all_ids:
+        if simplify_id(id1) == simplified_id:
+            possible_ids.append(id1)
+
+    if len(possible_ids) > 1:
+        raise Exception(f"More than one statement match test method name '{name}: '", possible_ids, " Please change one of those ids.")
+
+    return possible_ids[0] if len(possible_ids) == 1 else None
+
+def extract_python_unittest_tests(path: Path, pattern: str, all_ids: List[str]) -> List[en.Entry]:
     """Extract the unit tests from python unittest module"""
     def extract_test_cases(
         test_suite_or_case: Union[unittest.TestSuite, unittest.TestCase],
     ) -> List[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
-            print()
-            return [
+            verify_id = extract_verify_id_from_function_name(test_suite_or_case._testMethodName, all_ids)
+            return [] if verify_id is None else [
                 en.Test(
                     test_suite_or_case.id(),
-                    "TODO " + test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
+                    test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
                     en.TestType.AUTOMATIC,
-                    "TODO",
+                    verify_id
                 )
             ]
         assert isinstance(test_suite_or_case, unittest.TestSuite)
@@ -46,8 +65,9 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self.path = path
         self.pattern = pattern
 
-    def create_entries(self, _design: en.Entry, parent: en.Entry) -> List[en.Entry]:
-        return extract_python_unittest_tests(self.get_path(), self.pattern)
+    def create_entries(self, design: en.Entry, parent: en.Entry) -> List[en.Entry]:
+        all_ids = op.gather_all_ids(design, en.Statement)
+        return extract_python_unittest_tests(self.get_path(), self.pattern, all_ids)
 
     def get_path(self) -> Path:
         """Return a Path object"""

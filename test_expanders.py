@@ -27,7 +27,7 @@ class TestExpanders(unittest.TestCase):
         ) as file2:
             self.assertListEqual(list(file1), list(file2))
 
-    def test_include(self) -> None:
+    def test_spec_design_split(self) -> None:
         """Test"""
         parse_and_compare(self, Path("test/include"))
 

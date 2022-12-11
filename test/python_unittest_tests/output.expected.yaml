@@ -1,47 +1,37 @@
+!Design
+id: test
+children:
+- !Definition
+  id: supported-code-annotations
+  text: The different source code annotations formats supported by our parser (to extract information about tests)
+  children:
+  - !Definition
+    id: doxygen-doc-format
+  - !Definition
+    id: python-unittest-format
+- !Requirement
+  id: req-extract-tests
+  text: Links between tests and statements can be extracted from the sources of the tests (if properly annotated)
+  children:
+  - !Specification
+    id: spec-extract-tests
+    text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations>
+    children:
+    - !Specification
+      id: spec-extract-tests-doxygen-doc-format
+      text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations> (doxygen-doc-format)
+    - !Specification
+      id: spec-extract-tests-python-unittest-format
+      text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations> (python-unittest-format)
 - !Section
+  text: Test section
   children:
   - !TestList
+    id: my-python-test-list
+    text: Tests with python unittest module
     children:
     - !Test
-      id: tests-unit-0
-      text: test1a
+      id: parsers.test_python_unittest.TestTestListFromPythonUnitTest.test_spec_extract_tests_python_unittest_format
+      text: Test
       type: automatic
-      verify_id: req-1a
-    - !Test
-      id: tests-unit-1
-      text: test1b
-      type: automatic
-      verify_id: req-1b
-    - !Test
-      id: tests-unit-2
-      text: test2a
-      type: automatic
-      verify_id: req-2a
-    - !Test
-      id: tests-unit-3
-      text: test2b
-      type: automatic
-      verify_id: req-2b
-    - !Test
-      id: tests-unit-4
-      text: test3a
-      type: automatic
-      verify_id: req-3a
-    - !Test
-      id: tests-unit-5
-      text: test3b
-      type: automatic
-      verify_id: req-3b
-    - !Test
-      id: tests-unit-6
-      text: test4a
-      type: automatic
-      verify_id: req-4a
-    - !Test
-      id: tests-unit-7
-      text: test4b
-      type: automatic
-      verify_id: req-4b
-    id: my-doxy-test-list
-    text: Tests documented with Doxygen (C++)
-  text: Test section
+      verify_id: spec-extract-tests-python-unittest-format

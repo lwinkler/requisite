@@ -129,6 +129,8 @@ children:
     id: 44z
   - !Definition
     id: maRkdown-format
+  - !Definition
+    id: ma.kdown-format
 - !Statement
   id: пр44
 - !Statement
@@ -180,6 +182,8 @@ children:
 class TestOperations(unittest.TestCase):
     """Test operations"""
 
+  # TODO id: spec-entry-attributes-non-null
+
     def test_extract_entries_of_type(self):
         """Test"""
         design1 = yaml.safe_load(DESIGN_STR1)
@@ -196,7 +200,7 @@ class TestOperations(unittest.TestCase):
         )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
 
-    def test_check_definition_id_mandatory(self) -> None:
+    def test_spec_definition_id_mandatory(self) -> None:
         """Test verify spec-definition-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_definition_id_mandatory(design)
@@ -208,7 +212,7 @@ class TestOperations(unittest.TestCase):
             ],
         )
 
-    def test_check_statement_id_mandatory(self) -> None:
+    def test_spec_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
         design = yaml.safe_load(TEST_ID_MANDATORY)
         messages = op.check_statement_id_mandatory(design)
@@ -216,7 +220,7 @@ class TestOperations(unittest.TestCase):
             messages, [op.ErrorMessage(related_id="", text="Statement id is missing")]
         )
 
-    def test_check_id_unique(self) -> None:
+    def test_spec_id_unique(self) -> None:
         """Test verify spec-id-unique"""
         design = yaml.safe_load(TEST_ID_UNIQUE)
         messages = op.check_id_unique(design)
@@ -228,8 +232,8 @@ class TestOperations(unittest.TestCase):
             ],
         )
 
-    def test_check_id_valid(self) -> None:
-        """Test verify spec-id-valid"""
+    def test_spec_id_valid_chars(self) -> None:
+        """Test verify spec-id-valid-chars"""
         design = yaml.safe_load(TEST_ID_VALID)
         messages = op.check_id_valid(design)
         self.assertEqual(
@@ -250,7 +254,7 @@ class TestOperations(unittest.TestCase):
             ],
         )
 
-    def test_check_id_spec(self) -> None:
+    def test_spec_id_spec(self) -> None:
         """Test verify spec-id-spec"""
         design = yaml.safe_load(TEST_ID_PREF)
         messages = op.check_id_spec(design)
@@ -264,7 +268,7 @@ class TestOperations(unittest.TestCase):
             ],
         )
 
-    def test_check_id_req(self) -> None:
+    def test_spec_id_req(self) -> None:
         """Test verify spec-id-req"""
         design = yaml.safe_load(TEST_ID_PREF)
         messages = op.check_id_req(design)
@@ -281,7 +285,7 @@ class TestOperations(unittest.TestCase):
             ],
         )
 
-    def test_check_links(self) -> None:
+    def test_spec_valid_links(self) -> None:
         """Test verify spec-valid-links"""
         design = yaml.safe_load(TEST_LINKS)
         messages = op.check_links(design)

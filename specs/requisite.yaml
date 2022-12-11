@@ -81,7 +81,7 @@ children:
   - !Definition
     id: doxygen-doc-format
   - !Definition
-    id: pydoc-doc-format
+    id: python-unittest-format
 
 
 # Requirements
@@ -100,7 +100,6 @@ children:
     children:
       - !Include
         path: specs/rules.yaml
-
 
   - !Specification
     id: spec-design-split
@@ -154,3 +153,16 @@ children:
     # labels: non-functional
     text: Verify that a design can be reviewed manually
     statement: req-design-review
+
+  - !Test
+    id: test-design-made-of-entries
+    text: Inspect the code and verify that Entry is the only class inheriting from yaml.YAMLObject (and that other classes inherit from Entry)
+    type: inspection
+    verify_id: spec-entry-types
+
+- !TestList
+  id: tests-python-unittest
+  children:
+    - !ExtractTestsFromPythonUnitTest
+      path: .
+      pattern: "test_*"

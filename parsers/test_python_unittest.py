@@ -37,9 +37,10 @@ class TestTestListFromPythonUnitTest(unittest.TestCase):
 
     def test_python_unittest_test_matching(self):
         """Test"""
-
+        
+        all_ids = ["req-asdf", "req-ffff", "spec-extract-tests-python-unittest-format"]
         all_tests = extract_python_unittest_tests(
-            Path("parsers"), "test_python_unittest*"
+            Path("."), "test_python_unittest*", all_ids
         )
 
         # for test in all_tests:
@@ -50,20 +51,12 @@ class TestTestListFromPythonUnitTest(unittest.TestCase):
             get_by_id(
                 all_tests,
                 "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
-                ".test_extract_tests_from_python_unittest",
+                ".test_spec_extract_tests_python_unittest_format",
             ).verify_id,
-            "req-1a",
-        )
-        self.assertEqual(
-            get_by_id(
-                all_tests,
-                "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
-                ".test_python_unittest_test_matching",
-            ).verify_id,
-            "req-1a",
+            "spec-extract-tests-python-unittest-format",
         )
 
-    def test_extract_tests_from_python_unittest(self) -> None:
+    def test_spec_extract_tests_python_unittest_format(self) -> None:
         """Test"""
         parse_and_compare(self, Path("test/python_unittest_tests"))
 

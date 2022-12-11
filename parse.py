@@ -16,10 +16,10 @@ import expanders
 import operations as op
 import report as rp
 import parsers.doxygen
-import parsers.python_unittest as pu
+import parsers.python_unittest
 
 # use modules to avoid warning
-_ = (expanders.Expander, parsers.doxygen.ExtractTestsFromDoxygen)
+_ = (expanders.Expander, parsers.doxygen.ExtractTestsFromDoxygen, parsers.python_unittest.ExtractTestsFromPythonUnitTest)
 del _
 
 if sys.version_info[0] < 3:
@@ -84,7 +84,3 @@ if __name__ == "__main__":
         rp.write_html_report(args.report, product_design)
 
     print(" ------------------------ ")
-
-    tests = pu.extract_python_unittest_tests(Path("."), "test_*")
-    for test in tests:
-        test.print()

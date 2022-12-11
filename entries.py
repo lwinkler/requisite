@@ -148,11 +148,11 @@ class TestList(Entry):
         self,
         id1: str,
         text: str,
-        children: List[Entry],
-        engine: str,
+        children: List[Entry]
+        # engine: str,
     ):
         super().__init__(id1, text, children)
-        self.engine = engine
+        # self.engine = engine
 
 
 class Design(Entry):
