@@ -69,8 +69,6 @@ def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> Li
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
     messages = check_entry_attributes_non_null(entry)
-    if messages:
-        return messages
     messages += check_definition_id_mandatory(entry)
     messages += check_statement_id_mandatory(entry)
     messages += check_id_unique(entry)
@@ -91,7 +89,7 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
     messages: List[ErrorMessage] = []
     # TODO: Children
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
-        for attribute_name in ["id", "text", "children"]:
+        for attribute_name in entry.__dict__.keys():
             if (
                 hasattr(entry, attribute_name)
                 and getattr(entry, attribute_name) is None
@@ -242,13 +240,9 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.TestList):
         for child in entry.get_children():
-            if not isinstance(child, en.Test) and not isinstance(
-                child, ex.Expander
-            ):
+            if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
                 messages.append(
-                    ErrorMessage(
-                        entry.id, "TestList can only have tests as children"
-                    )
+                    ErrorMessage(entry.id, "TestList can only have tests as children")
                 )
 
     return messages
