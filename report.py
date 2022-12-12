@@ -134,7 +134,7 @@ def entry_to_table_tag(parent_entry: en.Entry) -> ET.Element:
     p_tag.append(table_tag)
     table_tag.append(generate_table_header())
 
-    verified_ids = [test.verify_id for test in op.extract_entries_of_type(parent_entry, en.Test)]
+    verified_ids = [test.verify_id for test in cast(List[en.Test], op.extract_entries_of_type(parent_entry, en.Test))]
 
     for entry in op.extract_entries_of_type(parent_entry, en.Statement):
         table_tag.append(entry_to_td(entry, verified_ids))

@@ -13,7 +13,7 @@ from pathlib import Path
 import yaml_util as yu
 import entries as en
 import expanders
-import operations as op
+import rules as ru
 import report as rp
 import parsers.doxygen
 import parsers.python_unittest
@@ -63,7 +63,7 @@ def arguments_parser() -> argparse.Namespace:
 def check_for_errors(design: en.Design) -> None:
     """Check for all syntax errors in design and abort on error"""
 
-    errors = op.check_all_rules(design)
+    errors = ru.check_all_rules(design)
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
