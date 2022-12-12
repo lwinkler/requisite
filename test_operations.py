@@ -2,6 +2,7 @@
 
 import unittest
 import yaml
+from typing import List, Any
 
 import entries as en
 import operations as op
@@ -233,10 +234,19 @@ class TestOperations(unittest.TestCase):
         )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
 
+    def check_rule(self, func: Any, design_str: str, expected_messages: List[op.ErrorMessage]):
+        """Test any checking function"""
+        design = yaml.safe_load(design_str)
+        messages = func(design)
+        self.assertListEqual(messages, expected_messages)
+        # check that global check also finds our messages
+        messages = op.check_all_rules(design)
+        for msg in expected_messages:
+            self.assertIn(msg, messages)
+
     def test_spec_entry_attributes_non_null(self) -> None:
         """Test spec-entry-attributes-non-null"""
-        design = yaml.safe_load(TEST_ID_NON_NULL)
-        expected_messages = [
+        self.check_rule(op.check_entry_attributes_non_null, TEST_ID_NON_NULL, [
             op.ErrorMessage(related_id="", text="Entry attribute id has a null value"),
             op.ErrorMessage(
                 related_id="", text="Entry attribute text has a null value"
@@ -244,85 +254,62 @@ class TestOperations(unittest.TestCase):
             op.ErrorMessage(
                 related_id="my-test", text="Entry attribute verify_id has a null value"
             ),
-        ]
-        messages = op.check_entry_attributes_non_null(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_definition_id_mandatory(self) -> None:
         """Test verify spec-definition-id-mandatory"""
-        design = yaml.safe_load(TEST_ID_MANDATORY)
-        expected_messages = [
+        self.check_rule(op.check_definition_id_mandatory, TEST_ID_MANDATORY, [
             op.ErrorMessage(related_id="", text="Definition id is missing"),
             op.ErrorMessage(related_id="", text="Definition id is missing"),
-        ]
-
-        messages = op.check_definition_id_mandatory(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
-        design = yaml.safe_load(TEST_ID_MANDATORY)
-        expected_messages = [
+        self.check_rule(op.check_statement_id_mandatory, TEST_ID_MANDATORY, [
             op.ErrorMessage(related_id="", text="Statement id is missing")
-        ]
-        messages = op.check_statement_id_mandatory(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_id_unique(self) -> None:
         """Test verify spec-id-unique"""
-        design = yaml.safe_load(TEST_ID_UNIQUE)
-        expected_messages = [
+        self.check_rule(op.check_id_unique, TEST_ID_UNIQUE, [
             op.ErrorMessage(related_id="id-a", text="ID is duplicated"),
             op.ErrorMessage(related_id="id-b", text="ID is duplicated"),
-        ]
-        messages = op.check_id_unique(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_id_valid_chars(self) -> None:
         """Test verify spec-id-valid-chars"""
-        design = yaml.safe_load(TEST_ID_VALID)
-        expected_messages = [
+        self.check_rule(op.check_id_valid, TEST_ID_VALID, [
             op.ErrorMessage(related_id="id%", text="ID contains invalid characters"),
             op.ErrorMessage(
                 related_id="expanded$-design", text="ID contains invalid characters"
             ),
             op.ErrorMessage(related_id="44z", text="ID contains invalid characters"),
             op.ErrorMessage(related_id="пр44", text="ID contains invalid characters"),
-        ]
-        messages = op.check_id_valid(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_id_spec(self) -> None:
         """Test verify spec-id-spec"""
-        design = yaml.safe_load(TEST_ID_PREF)
-        expected_messages = [
+        self.check_rule(op.check_id_spec, TEST_ID_PREF, [
             op.ErrorMessage(
                 related_id="req-format",
                 text="ID of specification must start with 'spec-'",
             )
-        ]
-        messages = op.check_id_spec(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_id_req(self) -> None:
         """Test verify spec-id-req"""
-        design = yaml.safe_load(TEST_ID_PREF)
-        expected_messages = [
+        self.check_rule(op.check_id_req, TEST_ID_PREF, [
             op.ErrorMessage(
                 related_id="44z", text="ID of requirement must start with 'req-'"
             ),
             op.ErrorMessage(
                 related_id="req_abc", text="ID of requirement must start with 'req-'"
             ),
-        ]
-
-        messages = op.check_id_req(design)
-        self.assertListEqual(messages, expected_messages)
+        ])
 
     def test_spec_valid_links(self) -> None:
         """Test verify spec-valid-links"""
-        design = yaml.safe_load(TEST_LINKS)
-        expected_messages = [
+        self.check_rule(op.check_links, TEST_LINKS, [
             op.ErrorMessage(
                 related_id="req-format", text="Linked id 'Text' does not exist."
             ),
@@ -330,6 +317,4 @@ class TestOperations(unittest.TestCase):
                 related_id="req-abc-asdf",
                 text="Linked id 'another' does not exist.",
             ),
-        ]
-        messages = op.check_links(design)
-        self.assertListEqual(messages, expected_messages)
+        ])

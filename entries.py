@@ -71,9 +71,7 @@ class Entry(yaml.YAMLObject):
 
     def extract_links(self) -> List[str]:
         """Extract all the links mentioned in the associated text"""
-        if not hasattr(self, "text"):
-            return []
-        return LINK_EXPRESSION.findall(self.text)
+        return LINK_EXPRESSION.findall(self.get_text())
 
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
