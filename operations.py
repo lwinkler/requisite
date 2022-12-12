@@ -61,7 +61,7 @@ def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> Li
     """Return all ids from the own and children entries"""
     all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):
-        if hasattr(entry, "id") and entry.id:
+        if entry.get_id():
             all_ids.append(entry.id)
     return all_ids
 
@@ -108,7 +108,7 @@ def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Definition):
-        if not hasattr(entry, "id") or entry.id is None or not entry.id:
+        if not entry.get_id():
             messages.append(ErrorMessage("", "Definition id is missing"))
     return messages
 
@@ -118,7 +118,7 @@ def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Statement):
-        if not hasattr(entry, "id") or entry.id is None or not entry.id:
+        if not entry.get_id():
             messages.append(ErrorMessage("", "Statement id is missing"))
     return messages
 
@@ -130,7 +130,7 @@ def check_id_unique(entry_to_check: en.Entry) -> List[ErrorMessage]:
     messages: List[ErrorMessage] = []
 
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
-        if hasattr(entry, "id") and entry.id is not None and entry.id:
+        if entry.get_id():
             if entry.id in known_ids:
                 messages.append(ErrorMessage(entry.id, "ID is duplicated"))
             else:
@@ -144,7 +144,7 @@ def check_id_valid(entry_to_check: en.Entry) -> List[ErrorMessage]:
     messages: List[ErrorMessage] = []
 
     for entry in extract_entries_of_type(entry_to_check, en.Entry):
-        if hasattr(entry, "id") and entry.id is not None and entry.id:
+        if entry.get_id():
             if not re.fullmatch("[a-zA-Z_][a-zA-Z0-9_.-]*", entry.id):
                 messages.append(
                     ErrorMessage(entry.id, "ID contains invalid characters")
@@ -158,7 +158,7 @@ def check_id_spec(entry_to_check: en.Entry) -> List[ErrorMessage]:
     messages: List[ErrorMessage] = []
 
     for entry in extract_entries_of_type(entry_to_check, en.Specification):
-        if hasattr(entry, "id") and entry.id is not None and entry.id:
+        if entry.get_id():
             if not entry.id.startswith("spec-"):
                 messages.append(
                     ErrorMessage(
@@ -173,7 +173,7 @@ def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Requirement):
-        if hasattr(entry, "id") and entry.id is not None and entry.id:
+        if entry.get_id():
             if not entry.id.startswith("req-"):
                 messages.append(
                     ErrorMessage(entry.id, "ID of requirement must start with 'req-'")

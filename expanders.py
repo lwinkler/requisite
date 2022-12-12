@@ -67,7 +67,7 @@ class MultiplyByDefinition(Expander):
             ret.append(copy.deepcopy(parent))
             last = ret[-1]
             last.id += "-" + (child_definition.get_id() or "NONE")
-            if hasattr(last, "text"):
+            if last.get_text():
                 last.text += f" ({child_definition.get_id()})"
             last.children = copy.deepcopy(self.get_children())
 

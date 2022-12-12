@@ -44,7 +44,7 @@ class Entry(yaml.YAMLObject):
     def expand(self, design: Entry, _parent: Optional[Entry]) -> List[Entry]:
         """Processing: Nothing to do by default but call on children"""
         try:
-            if hasattr(self, "children"):
+            if self.get_children():
                 old_children = self.children
                 self.children = []
 
@@ -58,17 +58,14 @@ class Entry(yaml.YAMLObject):
 
     def print(self, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
-        text_str = f", text: {self.text}" if hasattr(self, "text") else ""
+        text_str = f", text: {self.get_text()}"
         children_str = (
-            f", (nb_children: {len(self.children)})"
-            if hasattr(self, "children")
-            else ""
+            f", (nb_children: {len(self.get_children())})"
         )
         print(f"{indent * 2 * ' '}id: {self.id}" + text_str + children_str)
 
-        if hasattr(self, "children"):
-            for child in self.children:
-                child.print(indent + 1)
+        for child in self.get_children():
+            child.print(indent + 1)
 
     def extract_links(self) -> List[str]:
         """Extract all the links mentioned in the associated text"""
@@ -76,15 +73,16 @@ class Entry(yaml.YAMLObject):
 
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
-        if hasattr(self, "id") and not self.id:
-            delattr(self, "id")
-        if hasattr(self, "text") and not self.text:
-            delattr(self, "text")
-        if hasattr(self, "children") and not self.children:
-            delattr(self, "children")
-        if hasattr(self, "children"):
-            for child in self.children:
-                child.simplify()
+        keys_to_delete : List[str] = []
+        for attribute_name in self.__dict__.keys():
+            if hasattr(self, attribute_name) and not getattr(self, attribute_name):
+                keys_to_delete.append(attribute_name)
+
+        for attribute_name in keys_to_delete:
+            delattr(self, attribute_name)
+
+        for child in self.get_children():
+            child.simplify()
 
 
 class Section(Entry):
