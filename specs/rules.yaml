@@ -12,6 +12,10 @@
   text: Any <statement> must have an id.
 
 - !Specification
+  id: spec-test-verify_id-mandatory
+  text: Any <test> must have a verify_id.
+
+- !Specification
   id: spec-id-unique
   text: The id attribute of any <entry> must be unique.
 

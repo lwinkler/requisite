@@ -148,7 +148,7 @@ children:
     # labels: non-functional
     text: Verify that a design can be reviewed manually
     type: manual
-    statement: req-design-review
+    verify_id: req-design-review
 
   - !Test
     id: test-design-made-of-entries

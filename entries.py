@@ -16,6 +16,7 @@ LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 class Entry(yaml.YAMLObject):
     """Any entry: this is the parent class for all other. Virtual."""
 
+    short_type = "en"
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Entry"
 
@@ -89,30 +90,35 @@ class Entry(yaml.YAMLObject):
 class Section(Entry):
     """A section: only to organize entries"""
 
+    short_type = "se"
     yaml_tag = "!Section"
 
 
 class Definition(Entry):
     """Definition value object"""
 
+    short_type = "def"
     yaml_tag = "!Definition"
 
 
 class Statement(Entry):
     """Statement value object"""
 
+    short_type = "sta"
     yaml_tag = "!Statement"
 
 
 class Requirement(Statement):
     """Requirement value object"""
 
+    short_type = "req"
     yaml_tag = "!Requirement"
 
 
 class Specification(Statement):
     """Specification value object"""
 
+    short_type = "spec"
     yaml_tag = "!Specification"
 
 
@@ -127,6 +133,7 @@ class TestType(Enum):
 class Test(Entry):
     """Test value object"""
 
+    short_type = "test"
     yaml_tag = "!Test"
 
     def __init__(
@@ -144,10 +151,12 @@ class Test(Entry):
 class TestList(Entry):
     """TestList value object"""
 
+    short_type = "tl"
     yaml_tag = "!TestList"
 
 
 class Design(Entry):
     """Design value object, contains the full design"""
 
+    short_type = "de"
     yaml_tag = "!Design"
