@@ -86,5 +86,3 @@ if __name__ == "__main__":
     if args.report:
         print(f"Create {args.report.as_posix()}")
         rp.write_html_report(args.report, product_design)
-
-    print(" ------------------------ ")

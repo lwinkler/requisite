@@ -47,7 +47,6 @@ children:
   children:
     - !MultiplyByDefinition
       definition_id: supported-operations
-      children:
     - !MultiplyByDefinition
       definition_id: supported-types
 

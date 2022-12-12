@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from typing import List, cast
 import entries as en
+import operations as op
 import yaml_util as yu
 
 
@@ -27,7 +28,9 @@ class TestCommon(unittest.TestCase):
 
     def parse_and_compare(self, data_path: Path) -> None:
         design = yu.read_design(data_path / "input.yaml")
+        self.assertEqual(op.check_all_rules(design), [])
         design.expand(design, None)
+        self.assertEqual(op.check_all_rules(design), [])
         yu.write_design(data_path / "output.yaml", design)
         self.compare_text_files(
             data_path / "output.expected.yaml", data_path / "output.yaml"

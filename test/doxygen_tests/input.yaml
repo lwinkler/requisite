@@ -1,6 +1,22 @@
 !Design
 id: test
 children:
+- !Requirement
+  id: req-1a
+- !Requirement
+  id: req-2a
+- !Requirement
+  id: req-3a
+- !Requirement
+  id: req-4a
+- !Requirement
+  id: req-1b
+- !Requirement
+  id: req-2b
+- !Requirement
+  id: req-3b
+- !Requirement
+  id: req-4b
   
 - !Section
   text: Test section

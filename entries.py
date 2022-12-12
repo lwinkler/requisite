@@ -26,11 +26,11 @@ class Entry(yaml.YAMLObject):
 
     def get_id(self) -> str:
         """Return the id if applicable else None"""
-        return self.id if hasattr(self, "id") else ""
+        return self.id if hasattr(self, "id") and self.id is not None else ""
 
     def get_text(self) -> str:
         """Return the text if applicable else None"""
-        return self.text if hasattr(self, "text") else ""
+        return self.text if hasattr(self, "text") and self.text is not None else ""
 
     def get_children(self) -> List[Entry]:
         """Return the children if applicable else []"""

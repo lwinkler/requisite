@@ -39,9 +39,8 @@ def extract_entries_of_type(
     if isinstance(entry, parent_class):
         res.append(entry)
 
-    if hasattr(entry, "children"):
-        for child in entry.children:
-            res += extract_entries_of_type(child, parent_class)
+    for child in entry.get_children():
+        res += extract_entries_of_type(child, parent_class)
 
     return res
 
@@ -62,14 +61,16 @@ def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> Li
     """Return all ids from the own and children entries"""
     all_ids: List[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):
-        if hasattr(entry, "id"):
+        if hasattr(entry, "id") and entry.id:
             all_ids.append(entry.id)
     return all_ids
 
 
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
-    messages: List[ErrorMessage] = []
+    messages = check_entry_attributes_non_null(entry)
+    if messages:
+        return messages
     messages += check_definition_id_mandatory(entry)
     messages += check_statement_id_mandatory(entry)
     messages += check_id_unique(entry)
@@ -81,7 +82,6 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     messages += check_child_definition(entry)
     messages += check_child_test(entry)
     messages += check_test_statement_id(entry)
-    messages += check_entry_attributes_non_null(entry)
     return messages
 
 
@@ -89,17 +89,19 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
     """Check rule spec-entry-attributes-non-null"""
 
     messages: List[ErrorMessage] = []
-    for attribute_name in ["id", "text", "children"]:
-        if (
-            hasattr(entry_to_check, attribute_name)
-            and getattr(entry_to_check, attribute_name) is None
-        ):
-            messages.append(
-                ErrorMessage(
-                    entry_to_check.get_id(),
-                    f"Entry attribute {attribute_name} has a null value",
+    # TODO: Children
+    for entry in extract_entries_of_type(entry_to_check, en.Entry):
+        for attribute_name in ["id", "text", "children"]:
+            if (
+                hasattr(entry, attribute_name)
+                and getattr(entry, attribute_name) is None
+            ):
+                messages.append(
+                    ErrorMessage(
+                        entry.get_id(),
+                        f"Entry attribute {attribute_name} has a null value",
+                    )
                 )
-            )
     return messages
 
 
@@ -203,16 +205,15 @@ def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Statement):
-        if hasattr(entry, "children"):
-            for child in entry.children:
-                if not isinstance(child, en.Statement) and not isinstance(
-                    child, ex.Expander
-                ):
-                    messages.append(
-                        ErrorMessage(
-                            entry.id, "Statement can only have statements as children"
-                        )
+        for child in entry.get_children():
+            if not isinstance(child, en.Statement) and not isinstance(
+                child, ex.Expander
+            ):
+                messages.append(
+                    ErrorMessage(
+                        entry.id, "Statement can only have statements as children"
                     )
+                )
 
     return messages
 
@@ -222,16 +223,15 @@ def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.Definition):
-        if hasattr(entry, "children"):
-            for child in entry.children:
-                if not isinstance(child, en.Definition) and not isinstance(
-                    child, ex.Expander
-                ):
-                    messages.append(
-                        ErrorMessage(
-                            entry.id, "Definition can only have definitions as children"
-                        )
+        for child in entry.get_children():
+            if not isinstance(child, en.Definition) and not isinstance(
+                child, ex.Expander
+            ):
+                messages.append(
+                    ErrorMessage(
+                        entry.id, "Definition can only have definitions as children"
                     )
+                )
 
     return messages
 
@@ -241,16 +241,15 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
 
     messages: List[ErrorMessage] = []
     for entry in extract_entries_of_type(entry_to_check, en.TestList):
-        if hasattr(entry, "children"):
-            for child in entry.children:
-                if not isinstance(child, en.Test) and not isinstance(
-                    child, ex.Expander
-                ):
-                    messages.append(
-                        ErrorMessage(
-                            entry.id, "TestList can only have tests as children"
-                        )
+        for child in entry.get_children():
+            if not isinstance(child, en.Test) and not isinstance(
+                child, ex.Expander
+            ):
+                messages.append(
+                    ErrorMessage(
+                        entry.id, "TestList can only have tests as children"
                     )
+                )
 
     return messages
 
