@@ -4,6 +4,7 @@ import re
 from xml.etree import ElementTree as ET
 from pathlib import Path
 import entries as en
+import operations as op
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 
@@ -71,7 +72,7 @@ def entry_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
 
 def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
     """Generate a list tag from entry"""
-    if not hasattr(entry, "children"):
+    if not entry.get_children():
         return entry_to_tag(entry, True)
 
     p_tag = entry_to_tag(entry, True)
@@ -83,7 +84,43 @@ def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
         ul_tag.append(li_tag)
     return p_tag
 
+def generate_table_header() -> ET.Element:
+    tr_tag = ET.Element("tr")
+    for title in ["type", "id", "text"]:
+        th_tag = ET.Element("th")
+        th_tag.text = title
+        tr_tag.append(th_tag)
+    return tr_tag
 
+def entry_to_td(entry: en.Entry) -> ET.Element:
+    tr_tag = ET.Element("tr")
+
+    td_tag = ET.Element("td")
+    td_tag.text = type(entry).__name__
+    tr_tag.append(td_tag)
+
+    td_tag = ET.Element("td")
+    td_tag.text = entry.get_id()
+    tr_tag.append(td_tag)
+
+    td_tag = ET.Element("td")
+    td_tag.text = entry.get_text()
+    tr_tag.append(td_tag)
+
+    return tr_tag
+
+
+def generate_table_tag(parent_entry: en.Entry) -> ET.Element:
+    p_tag = entry_to_tag(parent_entry, True)
+    table_tag = ET.Element("table")
+    p_tag.append(table_tag)
+    table_tag.append(generate_table_header())
+
+    for entry in op.extract_entries_of_type(parent_entry, en.Statement):
+        table_tag.append(entry_to_td(entry))
+
+    return p_tag
+     
 def write_html_report(output_path: Path, design: en.Entry) -> None:
     """Write a HTML report to file"""
 
@@ -98,7 +135,11 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
         title_tag = ET.Element("h1")
         title_tag.text = "Specs report " + get_id(design)
         body_tag.append(title_tag)
+
+        # entry list
         body_tag.append(generate_list_tag(design, 1))
+
+        body_tag.append(generate_table_tag(design))
 
         tree = ET.ElementTree(html_tag)
         ET.indent(tree, "  ")

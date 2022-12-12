@@ -95,19 +95,19 @@ children:
     text: A <design-document> is composed of <entry-types>
 
   - !Specification
-    id: spec-syntax-check
-    text: The <design-document> is checked against a set of <syntax-rule>s
-    children:
-      - !Include
-        path: specs/rules.yaml
+    id: spec-input-entries
+    text: Any <entry-types> can be read from the <yaml-format>
 
   - !Specification
     id: spec-design-split
     text: A <design> can be split into several files
 
   - !Specification
-    id: spec-input-entries
-    text: Any <entry-types> can be read from the <yaml-format>
+    id: spec-syntax-check
+    text: The <design-document> is checked against a set of <syntax-rule>s
+    children:
+      - !Include
+        path: specs/rules.yaml
 
 - !Requirement
   id: req-design-output
@@ -128,20 +128,15 @@ children:
 
 - !Requirement
   id: req-extract-tests
-  text: Links between tests and statements can be extracted from the sources of the tests (if properly annotated)
+  text: Links between <test>s and <statement>s can be extracted from the sources of the tests (if properly annotated)
   children:
 
   - !Specification
     id: spec-extract-tests
-    text: Links between tests and statements can be extracted from the sources of the tests in different <supported-code-annotations>
+    text: Links between <test>s and <statement>s can be extracted from the sources of the tests in different <supported-code-annotations>
     children: 
       - !MultiplyByDefinition
         definition_id: supported-code-annotations
-
-- !Requirement
-  id: req-syntax-check
-  text: The syntax of the <design-document> is checked
-
 
 # Test lists
 - !TestList
@@ -152,6 +147,7 @@ children:
     id: test-design-review # TODO delete
     # labels: non-functional
     text: Verify that a design can be reviewed manually
+    type: manual
     statement: req-design-review
 
   - !Test
