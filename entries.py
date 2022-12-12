@@ -59,9 +59,7 @@ class Entry(yaml.YAMLObject):
     def print(self, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
         text_str = f", text: {self.get_text()}"
-        children_str = (
-            f", (nb_children: {len(self.get_children())})"
-        )
+        children_str = f", (nb_children: {len(self.get_children())})"
         print(f"{indent * 2 * ' '}id: {self.id}" + text_str + children_str)
 
         for child in self.get_children():
@@ -73,8 +71,8 @@ class Entry(yaml.YAMLObject):
 
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
-        keys_to_delete : List[str] = []
-        for attribute_name in self.__dict__.keys():
+        keys_to_delete: List[str] = []
+        for attribute_name, _ in self.__dict__:
             if hasattr(self, attribute_name) and not getattr(self, attribute_name):
                 keys_to_delete.append(attribute_name)
 

@@ -1,10 +1,9 @@
 """Unit test for rules.py"""
 
 import unittest
-import yaml
 from typing import List, Any
+import yaml
 
-import entries as en
 import rules as ru
 
 
@@ -35,7 +34,7 @@ children:
     text: The Markdown format to generate documents, reports, ...
 
 - !TestList
-  text:   
+  text:
   children:
   - !Test
     id: my-test
@@ -174,8 +173,11 @@ children:
 
 
 class TestRules(unittest.TestCase):
+    """Test rules"""
 
-    def check_rule(self, func: Any, design_str: str, expected_messages: List[ru.ErrorMessage]):
+    def check_rule(
+        self, func: Any, design_str: str, expected_messages: List[ru.ErrorMessage]
+    ):
         """Test any checking function"""
         design = yaml.safe_load(design_str)
         messages = func(design)
@@ -187,75 +189,115 @@ class TestRules(unittest.TestCase):
 
     def test_spec_entry_attributes_non_null(self) -> None:
         """Test spec-entry-attributes-non-null"""
-        self.check_rule(ru.check_entry_attributes_non_null, TEST_ID_NON_NULL, [
-            ru.ErrorMessage(related_id="", text="Entry attribute id has a null value"),
-            ru.ErrorMessage(
-                related_id="", text="Entry attribute text has a null value"
-            ),
-            ru.ErrorMessage(
-                related_id="my-test", text="Entry attribute verify_id has a null value"
-            ),
-        ])
+        self.check_rule(
+            ru.check_entry_attributes_non_null,
+            TEST_ID_NON_NULL,
+            [
+                ru.ErrorMessage(
+                    related_id="", text="Entry attribute id has a null value"
+                ),
+                ru.ErrorMessage(
+                    related_id="", text="Entry attribute text has a null value"
+                ),
+                ru.ErrorMessage(
+                    related_id="my-test",
+                    text="Entry attribute verify_id has a null value",
+                ),
+            ],
+        )
 
     def test_spec_definition_id_mandatory(self) -> None:
         """Test verify spec-definition-id-mandatory"""
-        self.check_rule(ru.check_definition_id_mandatory, TEST_ID_MANDATORY, [
-            ru.ErrorMessage(related_id="", text="Definition id is missing"),
-            ru.ErrorMessage(related_id="", text="Definition id is missing"),
-        ])
+        self.check_rule(
+            ru.check_definition_id_mandatory,
+            TEST_ID_MANDATORY,
+            [
+                ru.ErrorMessage(related_id="", text="Definition id is missing"),
+                ru.ErrorMessage(related_id="", text="Definition id is missing"),
+            ],
+        )
 
     def test_spec_statement_id_mandatory(self) -> None:
         """Test verify spec-statement-id-mandatory"""
-        self.check_rule(ru.check_statement_id_mandatory, TEST_ID_MANDATORY, [
-            ru.ErrorMessage(related_id="", text="Statement id is missing")
-        ])
+        self.check_rule(
+            ru.check_statement_id_mandatory,
+            TEST_ID_MANDATORY,
+            [ru.ErrorMessage(related_id="", text="Statement id is missing")],
+        )
 
     def test_spec_id_unique(self) -> None:
         """Test verify spec-id-unique"""
-        self.check_rule(ru.check_id_unique, TEST_ID_UNIQUE, [
-            ru.ErrorMessage(related_id="id-a", text="ID is duplicated"),
-            ru.ErrorMessage(related_id="id-b", text="ID is duplicated"),
-        ])
+        self.check_rule(
+            ru.check_id_unique,
+            TEST_ID_UNIQUE,
+            [
+                ru.ErrorMessage(related_id="id-a", text="ID is duplicated"),
+                ru.ErrorMessage(related_id="id-b", text="ID is duplicated"),
+            ],
+        )
 
     def test_spec_id_valid_chars(self) -> None:
         """Test verify spec-id-valid-chars"""
-        self.check_rule(ru.check_id_valid, TEST_ID_VALID, [
-            ru.ErrorMessage(related_id="id%", text="ID contains invalid characters"),
-            ru.ErrorMessage(
-                related_id="expanded$-design", text="ID contains invalid characters"
-            ),
-            ru.ErrorMessage(related_id="44z", text="ID contains invalid characters"),
-            ru.ErrorMessage(related_id="пр44", text="ID contains invalid characters"),
-        ])
+        self.check_rule(
+            ru.check_id_valid,
+            TEST_ID_VALID,
+            [
+                ru.ErrorMessage(
+                    related_id="id%", text="ID contains invalid characters"
+                ),
+                ru.ErrorMessage(
+                    related_id="expanded$-design", text="ID contains invalid characters"
+                ),
+                ru.ErrorMessage(
+                    related_id="44z", text="ID contains invalid characters"
+                ),
+                ru.ErrorMessage(
+                    related_id="пр44", text="ID contains invalid characters"
+                ),
+            ],
+        )
 
     def test_spec_id_spec(self) -> None:
         """Test verify spec-id-spec"""
-        self.check_rule(ru.check_id_spec, TEST_ID_PREF, [
-            ru.ErrorMessage(
-                related_id="req-format",
-                text="ID of specification must start with 'spec-'",
-            )
-        ])
+        self.check_rule(
+            ru.check_id_spec,
+            TEST_ID_PREF,
+            [
+                ru.ErrorMessage(
+                    related_id="req-format",
+                    text="ID of specification must start with 'spec-'",
+                )
+            ],
+        )
 
     def test_spec_id_req(self) -> None:
         """Test verify spec-id-req"""
-        self.check_rule(ru.check_id_req, TEST_ID_PREF, [
-            ru.ErrorMessage(
-                related_id="44z", text="ID of requirement must start with 'req-'"
-            ),
-            ru.ErrorMessage(
-                related_id="req_abc", text="ID of requirement must start with 'req-'"
-            ),
-        ])
+        self.check_rule(
+            ru.check_id_req,
+            TEST_ID_PREF,
+            [
+                ru.ErrorMessage(
+                    related_id="44z", text="ID of requirement must start with 'req-'"
+                ),
+                ru.ErrorMessage(
+                    related_id="req_abc",
+                    text="ID of requirement must start with 'req-'",
+                ),
+            ],
+        )
 
     def test_spec_valid_links(self) -> None:
         """Test verify spec-valid-links"""
-        self.check_rule(ru.check_links, TEST_LINKS, [
-            ru.ErrorMessage(
-                related_id="req-format", text="Linked id 'Text' does not exist."
-            ),
-            ru.ErrorMessage(
-                related_id="req-abc-asdf",
-                text="Linked id 'another' does not exist.",
-            ),
-        ])
+        self.check_rule(
+            ru.check_links,
+            TEST_LINKS,
+            [
+                ru.ErrorMessage(
+                    related_id="req-format", text="Linked id 'Text' does not exist."
+                ),
+                ru.ErrorMessage(
+                    related_id="req-abc-asdf",
+                    text="Linked id 'another' does not exist.",
+                ),
+            ],
+        )

@@ -2,7 +2,6 @@
 
 import unittest
 import yaml
-from typing import List, Any
 
 import entries as en
 import operations as op

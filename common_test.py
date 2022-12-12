@@ -27,6 +27,7 @@ class TestCommon(unittest.TestCase):
             self.assertListEqual(list(file1), list(file2))
 
     def parse_and_compare(self, data_path: Path) -> None:
+        """Parse an input YAML, expand and compare with expected YAML"""
         design = yu.read_design(data_path / "input.yaml")
         self.assertEqual(ru.check_all_rules(design), [])
         design.expand(design, None)

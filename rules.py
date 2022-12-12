@@ -8,12 +8,14 @@ import entries as en
 import operations as op
 import expanders as ex
 
+
 @dataclass
 class ErrorMessage:
     """Error messages returned by checks"""
 
     related_id: str
     text: str
+
 
 def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     """Apply all existing rules to the entry and its children"""
@@ -36,7 +38,6 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
     """Check rule spec-entry-attributes-non-null"""
 
     messages: List[ErrorMessage] = []
-    # TODO: Children
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         for attribute_name in entry.__dict__.keys():
             if (

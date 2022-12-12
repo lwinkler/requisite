@@ -1,11 +1,8 @@
 """Operations on design and entries"""
 
-import re
-from dataclasses import dataclass
 from typing import List
 
 import entries as en
-import expanders as ex
 
 
 def extract_entries_of_type(
@@ -43,5 +40,3 @@ def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> Li
         if entry.get_id():
             all_ids.append(entry.id)
     return all_ids
-
-
