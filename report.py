@@ -27,7 +27,7 @@ def class_to_tag(entry: en.Entry) -> ET.Element:
 
 def id_to_a_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Write a class into a string"""
-    attributes = {"id": entry.get_id()} if add_id else {"href": '#' + entry.get_id()}
+    attributes = {"id": entry.get_id()} if add_id else {"href": "#" + entry.get_id()}
     tag = ET.Element("a", attrib=attributes)
     tag.text = entry.get_id()
     return tag

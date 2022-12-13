@@ -74,6 +74,27 @@ children:
     id: test-list
     text: A list of tests
 
+  - !Definition
+    id: code-checkers
+    text: Tools to check Python code quality
+    children:
+
+    - !Definition
+      id: pylint
+      text: The pylint static code checker
+
+    - !Definition
+      id: mypy
+      text: The mypy static code checker
+
+    - !Definition
+      id: flake8
+      text: The flake8 code checker
+
+    - !Definition
+      id: black
+      text: The black code formatter
+
 - !Definition
   id: supported-code-annotations
   text: The different source code annotations formats supported by our parser (to extract information about tests)
@@ -138,6 +159,17 @@ children:
       - !MultiplyByDefinition
         definition_id: supported-code-annotations
 
+- !Requirement
+  id: req-code-quality
+  text: Application code follows high quality standard.
+  children:
+  - !Specification
+    id: spec-code-check
+    text: Python source code is checked with static checks
+    children:
+    - !MultiplyByDefinition
+      definition_id: code-checkers
+
 # Test lists
 - !TestList
   id: tests-system
@@ -162,3 +194,7 @@ children:
     - !ExtractTestsFromPythonUnitTest
       path: .
       pattern: "test_*"
+
+    - !ExtractTestsFromPythonUnitTest
+      path: .
+      pattern: "extra_test_*"
