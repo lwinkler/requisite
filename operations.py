@@ -26,9 +26,8 @@ def find_entry_by_type_and_id(
 ) -> en.Entry:
     """Find an entry by type and id"""
 
-    # TODO Test
     for entry in extract_entries_of_type(main_entry, parent_class):
-        if entry.id == id1:
+        if entry.get_id() == id1:
             return entry
     raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
 

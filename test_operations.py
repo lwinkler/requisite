@@ -1,6 +1,7 @@
 """Unit test for operations.py"""
 
 import unittest
+from typing import cast
 import yaml
 
 import entries as en
@@ -46,7 +47,7 @@ children:
     - !Test
       id: test-design-review
       text: Verify that a design can be reviewed manually
-      statement: req-design-review
+      verify_id: req-design-review
 """
 
 
@@ -54,7 +55,7 @@ class TestOperations(unittest.TestCase):
     """Test operations"""
 
     def test_extract_entries_of_type(self) -> None:
-        """Test"""
+        """Test function"""
         design1 = yaml.safe_load(DESIGN_STR1)
 
         designs = op.extract_entries_of_type(design1, en.Design)
@@ -68,3 +69,18 @@ class TestOperations(unittest.TestCase):
             "req-design-output,spec-design-output-yaml,spec-design-output-markdown",
         )
         self.assertEqual(",".join([test.id for test in tests]), "test-design-review")
+
+    def test_find_entry_by_type_and_id(self) -> None:
+        """Test function"""
+        design = yaml.safe_load(DESIGN_STR1)
+
+        entry = op.find_entry_by_type_and_id(design, en.Entry, "test-design-review")
+        self.assertEqual(cast(en.Test, entry).verify_id, "req-design-review")
+
+        entry = op.find_entry_by_type_and_id(design, en.Test, "test-design-review")
+        self.assertEqual(cast(en.Test, entry).verify_id, "req-design-review")
+
+        def failing() -> None:
+            op.find_entry_by_type_and_id(design, en.Statement, "test-design-review")
+
+        self.assertRaises(Exception, failing)
