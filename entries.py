@@ -72,7 +72,7 @@ class Entry(yaml.YAMLObject):
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
         keys_to_delete: List[str] = []
-        for attribute_name, _ in self.__dict__:
+        for attribute_name in self.__dict__:
             if hasattr(self, attribute_name) and not getattr(self, attribute_name):
                 keys_to_delete.append(attribute_name)
 

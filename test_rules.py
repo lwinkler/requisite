@@ -177,7 +177,7 @@ class TestRules(unittest.TestCase):
 
     def check_rule(
         self, func: Any, design_str: str, expected_messages: List[ru.ErrorMessage]
-    ):
+    ) -> None:
         """Test any checking function"""
         design = yaml.safe_load(design_str)
         messages = func(design)

@@ -10,27 +10,6 @@ import operations as op
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 
 
-def get_id(entry: en.Entry) -> str:
-    """Return the text if available"""
-    if hasattr(entry, "id"):
-        return entry.id
-    return ""
-
-
-def get_text(entry: en.Entry) -> str:
-    """Return the text if available"""
-    if hasattr(entry, "text"):
-        return entry.text
-    return ""
-
-
-def wrap_id(entry: en.Entry) -> ET.Element:
-    """Return the text if available"""
-    tag = ET.Element("a", attrib={"id": entry.id})
-    tag.text = get_id(entry)
-    return tag
-
-
 def wrap_text(entry: en.Entry) -> ET.Element:
     """Return the text if available"""
     if not hasattr(entry, "text"):
@@ -46,19 +25,19 @@ def class_to_tag(entry: en.Entry) -> ET.Element:
     return tag
 
 
-def id_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
+def id_to_a_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Write a class into a string"""
-    id1 = get_id(entry)
-    tag = ET.Element("a", attrib={"id": id1}) if add_id else ET.Element("a")
-    tag.text = id1
+    attributes = {"id": entry.get_id()} if add_id else {"href": '#' + entry.get_id()}
+    tag = ET.Element("a", attrib=attributes)
+    tag.text = entry.get_id()
     return tag
 
 
-def entry_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
+def entry_to_p_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Transform an entry into a string: for list"""
     tag = ET.Element("p")
     tag.append(class_to_tag(entry))
-    tag.append(id_to_tag(entry, add_id))
+    tag.append(id_to_a_tag(entry, add_id))
     text = (
         re.sub(LINK_EXPRESSION, '<a href="#\\1">\\1</a>', entry.text)
         if hasattr(entry, "text")
@@ -71,9 +50,9 @@ def entry_to_tag(entry: en.Entry, add_id: bool) -> ET.Element:
 def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
     """Generate a list tag from entry"""
     if not entry.get_children():
-        return entry_to_tag(entry, True)
+        return entry_to_p_tag(entry, True)
 
-    p_tag = entry_to_tag(entry, True)
+    p_tag = entry_to_p_tag(entry, True)
     ul_tag = ET.Element("ul")
     p_tag.append(ul_tag)
     for child in entry.children:
@@ -118,7 +97,7 @@ def entry_to_td(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
     tr_tag.append(td_tag)
 
     td_tag = ET.Element("td")
-    td_tag.text = entry.get_id()
+    td_tag.append(id_to_a_tag(entry, False))
     tr_tag.append(td_tag)
 
     td_tag = ET.Element("td")
@@ -134,7 +113,7 @@ def entry_to_td(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
 
 def entry_to_table_tag(parent_entry: en.Entry) -> ET.Element:
     """Convert an entry to a table tag"""
-    p_tag = entry_to_tag(parent_entry, True)
+    p_tag = entry_to_p_tag(parent_entry, True)
     table_tag = ET.Element("table")
     p_tag.append(table_tag)
     table_tag.append(generate_table_header())
@@ -165,7 +144,7 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
         html_tag.append(head_tag)
 
         title_tag = ET.Element("title")
-        title_tag.text = "Specs report " + get_id(design)
+        title_tag.text = "Specs report " + design.get_id()
         head_tag.append(title_tag)
 
         head_tag.append(generate_style_tag())
@@ -174,7 +153,7 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
         html_tag.append(body_tag)
 
         h1_tag = ET.Element("h1")
-        h1_tag.text = "Specs report " + get_id(design)
+        h1_tag.text = "Specs report " + design.get_id()
         body_tag.append(h1_tag)
 
         # entry list
@@ -192,6 +171,10 @@ def generate_style_tag() -> ET.Element:
 
     style_tag = ET.Element("style", attrib={"type": "text/css"})
     style_tag.text = """
+table ul {
+    list-style: none;
+}
+
 table {
     border: 1px solid black;
     width: 800px;
