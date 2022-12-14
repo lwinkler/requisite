@@ -176,7 +176,7 @@ class TestRules(unittest.TestCase):
     """Test rules"""
 
     def check_rule(
-        self, func: Any, design_str: str, expected_messages: List[ru.ErrorMessage]
+        self, func: Any, design_str: str, expected_messages: List[ru.EntryErrorMessage]
     ) -> None:
         """Test any checking function"""
         design = yaml.safe_load(design_str)
@@ -193,14 +193,19 @@ class TestRules(unittest.TestCase):
             ru.check_entry_attributes_non_null,
             TEST_ID_NON_NULL,
             [
-                ru.ErrorMessage(
-                    related_id="", text="Entry attribute id has a null value"
+                ru.EntryErrorMessage(
+                    related_id="",
+                    type_str="Definition",
+                    text="Entry attribute id has a null value",
                 ),
-                ru.ErrorMessage(
-                    related_id="", text="Entry attribute text has a null value"
+                ru.EntryErrorMessage(
+                    related_id="",
+                    type_str="TestList",
+                    text="Entry attribute text has a null value",
                 ),
-                ru.ErrorMessage(
+                ru.EntryErrorMessage(
                     related_id="my-test",
+                    type_str="Test",
                     text="Entry attribute verify_id has a null value",
                 ),
             ],
@@ -212,8 +217,16 @@ class TestRules(unittest.TestCase):
             ru.check_definition_id_mandatory,
             TEST_ID_MANDATORY,
             [
-                ru.ErrorMessage(related_id="", text="Definition id is missing"),
-                ru.ErrorMessage(related_id="", text="Definition id is missing"),
+                ru.EntryErrorMessage(
+                    related_id="",
+                    type_str="Definition",
+                    text="Definition id is missing",
+                ),
+                ru.EntryErrorMessage(
+                    related_id="",
+                    type_str="Definition",
+                    text="Definition id is missing",
+                ),
             ],
         )
 
@@ -222,7 +235,11 @@ class TestRules(unittest.TestCase):
         self.check_rule(
             ru.check_statement_id_mandatory,
             TEST_ID_MANDATORY,
-            [ru.ErrorMessage(related_id="", text="Statement id is missing")],
+            [
+                ru.EntryErrorMessage(
+                    related_id="", type_str="Statement", text="Statement id is missing"
+                )
+            ],
         )
 
     def test_spec_id_unique(self) -> None:
@@ -231,8 +248,12 @@ class TestRules(unittest.TestCase):
             ru.check_id_unique,
             TEST_ID_UNIQUE,
             [
-                ru.ErrorMessage(related_id="id-a", text="ID is duplicated"),
-                ru.ErrorMessage(related_id="id-b", text="ID is duplicated"),
+                ru.EntryErrorMessage(
+                    related_id="id-a", type_str="Definition", text="ID is duplicated"
+                ),
+                ru.EntryErrorMessage(
+                    related_id="id-b", type_str="Definition", text="ID is duplicated"
+                ),
             ],
         )
 
@@ -242,17 +263,25 @@ class TestRules(unittest.TestCase):
             ru.check_id_valid,
             TEST_ID_VALID,
             [
-                ru.ErrorMessage(
-                    related_id="id%", text="ID contains invalid characters"
+                ru.EntryErrorMessage(
+                    related_id="id%",
+                    type_str="Definition",
+                    text="ID contains invalid characters",
                 ),
-                ru.ErrorMessage(
-                    related_id="expanded$-design", text="ID contains invalid characters"
+                ru.EntryErrorMessage(
+                    related_id="expanded$-design",
+                    type_str="Definition",
+                    text="ID contains invalid characters",
                 ),
-                ru.ErrorMessage(
-                    related_id="44z", text="ID contains invalid characters"
+                ru.EntryErrorMessage(
+                    related_id="44z",
+                    type_str="Definition",
+                    text="ID contains invalid characters",
                 ),
-                ru.ErrorMessage(
-                    related_id="пр44", text="ID contains invalid characters"
+                ru.EntryErrorMessage(
+                    related_id="пр44",
+                    type_str="Statement",
+                    text="ID contains invalid characters",
                 ),
             ],
         )
@@ -263,8 +292,9 @@ class TestRules(unittest.TestCase):
             ru.check_id_spec,
             TEST_ID_PREF,
             [
-                ru.ErrorMessage(
+                ru.EntryErrorMessage(
                     related_id="req-format",
+                    type_str="Specification",
                     text="ID of specification must start with 'spec-'",
                 )
             ],
@@ -276,11 +306,14 @@ class TestRules(unittest.TestCase):
             ru.check_id_req,
             TEST_ID_PREF,
             [
-                ru.ErrorMessage(
-                    related_id="44z", text="ID of requirement must start with 'req-'"
+                ru.EntryErrorMessage(
+                    related_id="44z",
+                    type_str="Requirement",
+                    text="ID of requirement must start with 'req-'",
                 ),
-                ru.ErrorMessage(
+                ru.EntryErrorMessage(
                     related_id="req_abc",
+                    type_str="Requirement",
                     text="ID of requirement must start with 'req-'",
                 ),
             ],
@@ -292,11 +325,14 @@ class TestRules(unittest.TestCase):
             ru.check_links,
             TEST_LINKS,
             [
-                ru.ErrorMessage(
-                    related_id="req-format", text="Linked id 'Text' does not exist."
+                ru.EntryErrorMessage(
+                    related_id="req-format",
+                    type_str="Specification",
+                    text="Linked id 'Text' does not exist.",
                 ),
-                ru.ErrorMessage(
+                ru.EntryErrorMessage(
                     related_id="req-abc-asdf",
+                    type_str="Requirement",
                     text="Linked id 'another' does not exist.",
                 ),
             ],

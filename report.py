@@ -10,6 +10,7 @@ import operations as op
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 
+
 class VerificationType(Enum):
     """How a statement can be verified"""
 
@@ -17,17 +18,18 @@ class VerificationType(Enum):
     CHILDREN = "children"
 
 
+# TODO: add method and test
 class Verifier:
+    """Object that contains the verification information of the design"""
 
     def __init__(self, design: en.Design):
         self.verified_ids = [
             test.verify_id
-            for test in cast(
-                List[en.Test], op.extract_entries_of_type(design, en.Test)
-            )
+            for test in cast(List[en.Test], op.extract_entries_of_type(design, en.Test))
         ]
 
     def verify(self, statement: en.Statement) -> List[VerificationType]:
+        """Verify a statement"""
         results: List[VerificationType] = []
         if statement.id in self.verified_ids:
             results.append(VerificationType.TEST)
@@ -139,7 +141,6 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element
     table_tag = ET.Element("table")
     p_tag.append(table_tag)
     table_tag.append(generate_table_header())
-
 
     for entry in op.extract_entries_of_type(parent_entry, en.Statement):
         table_tag.append(entry_to_td(entry, verifier))

@@ -27,7 +27,10 @@ class Expander(Entry):
         for result in results:
             result.expand(design, parent)
         if len(results) == 0:
-            raise Exception(f"Expander with id '{self.get_id()}' of type {type(self).__name__} could not extract any element.")
+            raise Exception(
+                f"Expander with id '{self.get_id()}' of type {type(self).__name__}"
+                " could not extract any element."
+            )
         return results
 
 

@@ -10,20 +10,26 @@ import expanders as ex
 
 
 @dataclass
-class ErrorMessage:
+class EntryErrorMessage:
     """Error messages returned by checks"""
 
-    def __init__(self, entry: Optional[en.Entry]=None, text:str="", related_id:str = ""):
+    def __init__(
+        self,
+        entry: Optional[en.Entry] = None,
+        text: str = "",
+        related_id: str = "",
+        type_str="",
+    ):
         self.related_id = entry.get_id() if entry else related_id
-        # self.type_str = str(type(entry).__class__) # TODO
+        self.type_str = str(type(entry).__name__) if entry else type_str
         self.text = text
 
     related_id: str
-    # type_str: str
+    type_str: str
     text: str
 
 
-def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
+def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
     """Apply all existing rules to the entry and its children"""
     messages = check_entry_attributes_non_null(entry)
     messages += check_definition_id_mandatory(entry)
@@ -40,10 +46,12 @@ def check_all_rules(entry: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_entry_attributes_non_null(
+    entry_to_check: en.Entry,
+) -> List[EntryErrorMessage]:
     """Check rule spec-entry-attributes-non-null"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         for attribute_name in entry.__dict__.keys():
             if (
@@ -51,7 +59,7 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
                 and getattr(entry, attribute_name) is None
             ):
                 messages.append(
-                    ErrorMessage(
+                    EntryErrorMessage(
                         entry,
                         f"Entry attribute {attribute_name} has a null value",
                     )
@@ -59,112 +67,112 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
     return messages
 
 
-def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-definition-id-mandatory"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Definition):
         if not entry.get_id():
-            messages.append(ErrorMessage(entry, "Definition id is missing"))
+            messages.append(EntryErrorMessage(entry, "Definition id is missing"))
     return messages
 
 
-def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-mandatory"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Statement):
         if not entry.get_id():
-            messages.append(ErrorMessage(entry, "Statement id is missing"))
+            messages.append(EntryErrorMessage(entry, "Statement id is missing"))
     return messages
 
 
-def check_id_unique(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_id_unique(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-unique"""
 
     known_ids: List[str] = []
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         if entry.get_id():
             if entry.id in known_ids:
-                messages.append(ErrorMessage(entry, "ID is duplicated"))
+                messages.append(EntryErrorMessage(entry, "ID is duplicated"))
             else:
                 known_ids.append(entry.id)
     return messages
 
 
-def check_id_valid(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_id_valid(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-valid"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         if entry.get_id():
             if not re.fullmatch("[a-zA-Z_][a-zA-Z0-9_.-]*", entry.id):
                 messages.append(
-                    ErrorMessage(entry, "ID contains invalid characters")
+                    EntryErrorMessage(entry, "ID contains invalid characters")
                 )
     return messages
 
 
-def check_id_spec(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_id_spec(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-spec"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Specification):
         if entry.get_id():
             if not entry.id.startswith("spec-"):
                 messages.append(
-                    ErrorMessage(
+                    EntryErrorMessage(
                         entry, "ID of specification must start with 'spec-'"
                     )
                 )
     return messages
 
 
-def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_id_req(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Requirement):
         if entry.get_id():
             if not entry.id.startswith("req-"):
                 messages.append(
-                    ErrorMessage(entry, "ID of requirement must start with 'req-'")
+                    EntryErrorMessage(entry, "ID of requirement must start with 'req-'")
                 )
     return messages
 
 
-def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_links(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-req"""
 
     all_ids = op.gather_all_ids(entry_to_check, en.Entry)
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         links = entry.extract_links()
         for link in links:
             if link not in all_ids:
                 messages.append(
-                    ErrorMessage(entry, f"Linked id '{link}' does not exist.")
+                    EntryErrorMessage(entry, f"Linked id '{link}' does not exist.")
                 )
 
     return messages
 
 
-def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_child_statements(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-child-statement"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Statement):
         for child in entry.get_children():
             if not isinstance(child, en.Statement) and not isinstance(
                 child, ex.Expander
             ):
                 messages.append(
-                    ErrorMessage(
+                    EntryErrorMessage(
                         entry, "Statement can only have statements as children"
                     )
                 )
@@ -172,43 +180,44 @@ def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
     return messages
 
 
-def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_child_definition(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-child-definition"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Definition):
         for child in entry.get_children():
             if not isinstance(child, en.Definition) and not isinstance(
                 child, ex.Expander
             ):
                 messages.append(
-                    ErrorMessage(
-                        entry, "Definitions can only have definitions or expanders as children"
+                    EntryErrorMessage(
+                        entry,
+                        "Definitions can only have definitions or expanders as children",
                     )
                 )
 
     return messages
 
 
-def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_child_test(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-child-test-list"""
 
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.TestList):
         for child in entry.get_children():
             if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
                 messages.append(
-                    ErrorMessage(entry, "TestList can only have tests as children")
+                    EntryErrorMessage(entry, "TestList can only have tests as children")
                 )
 
     return messages
 
 
-def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
+def check_test_statement_id(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-test-statement-id"""
 
     all_ids = op.gather_all_ids(entry_to_check, en.Entry)
-    messages: List[ErrorMessage] = []
+    messages: List[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Test):
         if (
             hasattr(entry, "verify_id")
@@ -216,7 +225,7 @@ def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
             and entry.verify_id not in all_ids
         ):
             messages.append(
-                ErrorMessage(
+                EntryErrorMessage(
                     entry,
                     f"Test refers to an unvalid id: verify_id={entry.verify_id}",
                 )
