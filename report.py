@@ -2,12 +2,38 @@
 
 import re
 from xml.etree import ElementTree as ET
+from enum import Enum
 from pathlib import Path
 from typing import List, cast
 import entries as en
 import operations as op
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
+
+class VerificationType(Enum):
+    """How a statement can be verified"""
+
+    TEST = "test"
+    CHILDREN = "children"
+
+
+class Verifier:
+
+    def __init__(self, design: en.Design):
+        self.verified_ids = [
+            test.verify_id
+            for test in cast(
+                List[en.Test], op.extract_entries_of_type(design, en.Test)
+            )
+        ]
+
+    def verify(self, statement: en.Statement) -> List[VerificationType]:
+        results: List[VerificationType] = []
+        if statement.id in self.verified_ids:
+            results.append(VerificationType.TEST)
+        if statement.get_children():
+            results.append(VerificationType.CHILDREN)
+        return results
 
 
 def wrap_text(entry: en.Entry) -> ET.Element:
@@ -72,23 +98,19 @@ def generate_table_header() -> ET.Element:
     return tr_tag
 
 
-def get_verification_tag(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
+def get_verification_tag(entry: en.Entry, verifier: Verifier) -> ET.Element:
     """Return a tag from the verification info of a statement"""
 
     ul_tag = ET.Element("ul")
 
-    if entry.id in verified_ids:
+    for verification_type in verifier.verify(cast(en.Statement, entry)):
         li_tag = ET.Element("li")
-        li_tag.text = "tested"
-        ul_tag.append(li_tag)
-    if entry.get_children():
-        li_tag = ET.Element("li")
-        li_tag.text = "children"
+        li_tag.text = verification_type.value
         ul_tag.append(li_tag)
     return ul_tag
 
 
-def entry_to_td(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
+def entry_to_td(entry: en.Entry, verifier: Verifier) -> ET.Element:
     """Convert an id to a td tag"""
     tr_tag = ET.Element("tr")
 
@@ -101,7 +123,7 @@ def entry_to_td(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
     tr_tag.append(td_tag)
 
     td_tag = ET.Element("td")
-    td_tag.append(get_verification_tag(entry, verified_ids))
+    td_tag.append(get_verification_tag(entry, verifier))
     tr_tag.append(td_tag)
 
     td_tag = ET.Element("td")
@@ -111,28 +133,24 @@ def entry_to_td(entry: en.Entry, verified_ids: List[str]) -> ET.Element:
     return tr_tag
 
 
-def entry_to_table_tag(parent_entry: en.Entry) -> ET.Element:
+def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element:
     """Convert an entry to a table tag"""
     p_tag = entry_to_p_tag(parent_entry, True)
     table_tag = ET.Element("table")
     p_tag.append(table_tag)
     table_tag.append(generate_table_header())
 
-    verified_ids = [
-        test.verify_id
-        for test in cast(
-            List[en.Test], op.extract_entries_of_type(parent_entry, en.Test)
-        )
-    ]
 
     for entry in op.extract_entries_of_type(parent_entry, en.Statement):
-        table_tag.append(entry_to_td(entry, verified_ids))
+        table_tag.append(entry_to_td(entry, verifier))
 
     return p_tag
 
 
-def write_html_report(output_path: Path, design: en.Entry) -> None:
+def write_html_report(output_path: Path, design: en.Design) -> None:
     """Write a HTML report to file"""
+
+    verifier = Verifier(design)
 
     # if output_path.is_file():
     # print(f"File {output_path.as_posix()} already exists")
@@ -159,7 +177,7 @@ def write_html_report(output_path: Path, design: en.Entry) -> None:
         # entry list
         body_tag.append(generate_list_tag(design, 1))
 
-        body_tag.append(entry_to_table_tag(design))
+        body_tag.append(entry_to_table_tag(design, verifier))
 
         tree = ET.ElementTree(html_tag)
         ET.indent(tree, "  ")

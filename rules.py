@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 import entries as en
 import operations as op
@@ -13,7 +13,13 @@ import expanders as ex
 class ErrorMessage:
     """Error messages returned by checks"""
 
+    def __init__(self, entry: Optional[en.Entry]=None, text:str="", related_id:str = ""):
+        self.related_id = entry.get_id() if entry else related_id
+        # self.type_str = str(type(entry).__class__) # TODO
+        self.text = text
+
     related_id: str
+    # type_str: str
     text: str
 
 
@@ -46,7 +52,7 @@ def check_entry_attributes_non_null(entry_to_check: en.Entry) -> List[ErrorMessa
             ):
                 messages.append(
                     ErrorMessage(
-                        entry.get_id(),
+                        entry,
                         f"Entry attribute {attribute_name} has a null value",
                     )
                 )
@@ -59,7 +65,7 @@ def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage
     messages: List[ErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Definition):
         if not entry.get_id():
-            messages.append(ErrorMessage("", "Definition id is missing"))
+            messages.append(ErrorMessage(entry, "Definition id is missing"))
     return messages
 
 
@@ -69,7 +75,7 @@ def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[ErrorMessage]
     messages: List[ErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Statement):
         if not entry.get_id():
-            messages.append(ErrorMessage("", "Statement id is missing"))
+            messages.append(ErrorMessage(entry, "Statement id is missing"))
     return messages
 
 
@@ -82,7 +88,7 @@ def check_id_unique(entry_to_check: en.Entry) -> List[ErrorMessage]:
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         if entry.get_id():
             if entry.id in known_ids:
-                messages.append(ErrorMessage(entry.id, "ID is duplicated"))
+                messages.append(ErrorMessage(entry, "ID is duplicated"))
             else:
                 known_ids.append(entry.id)
     return messages
@@ -97,7 +103,7 @@ def check_id_valid(entry_to_check: en.Entry) -> List[ErrorMessage]:
         if entry.get_id():
             if not re.fullmatch("[a-zA-Z_][a-zA-Z0-9_.-]*", entry.id):
                 messages.append(
-                    ErrorMessage(entry.id, "ID contains invalid characters")
+                    ErrorMessage(entry, "ID contains invalid characters")
                 )
     return messages
 
@@ -112,7 +118,7 @@ def check_id_spec(entry_to_check: en.Entry) -> List[ErrorMessage]:
             if not entry.id.startswith("spec-"):
                 messages.append(
                     ErrorMessage(
-                        entry.id, "ID of specification must start with 'spec-'"
+                        entry, "ID of specification must start with 'spec-'"
                     )
                 )
     return messages
@@ -126,7 +132,7 @@ def check_id_req(entry_to_check: en.Entry) -> List[ErrorMessage]:
         if entry.get_id():
             if not entry.id.startswith("req-"):
                 messages.append(
-                    ErrorMessage(entry.id, "ID of requirement must start with 'req-'")
+                    ErrorMessage(entry, "ID of requirement must start with 'req-'")
                 )
     return messages
 
@@ -142,7 +148,7 @@ def check_links(entry_to_check: en.Entry) -> List[ErrorMessage]:
         for link in links:
             if link not in all_ids:
                 messages.append(
-                    ErrorMessage(entry.id, f"Linked id '{link}' does not exist.")
+                    ErrorMessage(entry, f"Linked id '{link}' does not exist.")
                 )
 
     return messages
@@ -159,7 +165,7 @@ def check_child_statements(entry_to_check: en.Entry) -> List[ErrorMessage]:
             ):
                 messages.append(
                     ErrorMessage(
-                        entry.id, "Statement can only have statements as children"
+                        entry, "Statement can only have statements as children"
                     )
                 )
 
@@ -177,7 +183,7 @@ def check_child_definition(entry_to_check: en.Entry) -> List[ErrorMessage]:
             ):
                 messages.append(
                     ErrorMessage(
-                        entry.id, "Definition can only have definitions as children"
+                        entry, "Definitions can only have definitions or expanders as children"
                     )
                 )
 
@@ -192,7 +198,7 @@ def check_child_test(entry_to_check: en.Entry) -> List[ErrorMessage]:
         for child in entry.get_children():
             if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
                 messages.append(
-                    ErrorMessage(entry.id, "TestList can only have tests as children")
+                    ErrorMessage(entry, "TestList can only have tests as children")
                 )
 
     return messages
@@ -211,7 +217,7 @@ def check_test_statement_id(entry_to_check: en.Entry) -> List[ErrorMessage]:
         ):
             messages.append(
                 ErrorMessage(
-                    entry.id,
+                    entry,
                     f"Test refers to an unvalid id: verify_id={entry.verify_id}",
                 )
             )

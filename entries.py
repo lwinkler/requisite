@@ -150,6 +150,16 @@ class TestList(Entry):
     short_type = "tl"
     yaml_tag = "!TestList"
 
+    def __init__(
+        self,
+        id1: str,
+        text: str,
+        children: List[Entry],
+        engine: str,
+    ):
+        super().__init__(id1, text, children)
+        self.engine = engine
+
 
 class Design(Entry):
     """Design value object, contains the full design"""
