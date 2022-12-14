@@ -60,7 +60,7 @@ class Entry(yaml.YAMLObject):
         """Print to stdout (for debug)"""
         text_str = f", text: {self.get_text()}"
         children_str = f", (nb_children: {len(self.get_children())})"
-        print(f"{indent * 2 * ' '}id: {self.id}" + text_str + children_str)
+        print(f"{indent * 2 * ' '}id: {self.get_id()}" + text_str + children_str)
 
         for child in self.get_children():
             child.print(indent + 1)

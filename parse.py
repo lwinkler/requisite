@@ -51,6 +51,12 @@ def arguments_parser() -> argparse.Namespace:
         help="Output the expanded design in YAML format.",
     )
     parser.add_argument(
+        "-e",
+        "--expand",
+        action="store_true",
+        help="Expand the design: will process all expander nodes, also file inclusion.",
+    )
+    parser.add_argument(
         "-O",
         "--report",
         type=Path,
@@ -75,9 +81,10 @@ if __name__ == "__main__":
     args = arguments_parser()
     product_design = yu.read_design(args.input)
     check_for_errors(product_design)
-    product_design.expand(product_design, None)
+    if args.expand:
+        product_design.expand(product_design, None)
     check_for_errors(product_design)
-    product_design.print()
+    # product_design.print()
 
     if args.output:
         print(f"Create {args.output.as_posix()}")
