@@ -182,7 +182,7 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         html_tag.append(head_tag)
 
         title_tag = ET.Element("title")
-        title_tag.text = "Specs report " + design.get_id()
+        title_tag.text = "Specifications " + design.get_id()
         head_tag.append(title_tag)
 
         head_tag.append(generate_style_tag())
@@ -191,13 +191,17 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         html_tag.append(body_tag)
 
         h1_tag = ET.Element("h1")
-        h1_tag.text = "Specs report " + design.get_id()
+        h1_tag.text = "Specifications " + design.get_id()
         body_tag.append(h1_tag)
 
         # entry list
+        h2_tag = ET.SubElement(body_tag, "h2")
+        h2_tag.text = "Design tree"
         # body_tag.append(generate_list_tag(design, 1))
         body_tag.append(entry_to_details_tag(design, True))
 
+        h2_tag2 = ET.SubElement(body_tag, "h2")
+        h2_tag2.text = "Statement table"
         body_tag.append(entry_to_table_tag(design, verifier))
 
         tree = ET.ElementTree(html_tag)
@@ -265,7 +269,6 @@ details {
 }
 
 summary {
-    font-weight: bold;
     margin: -.5em -.5em 0;
     padding: .5em;
 }
