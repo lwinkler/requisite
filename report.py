@@ -61,26 +61,43 @@ def id_to_a_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     return tag
 
 
-def entry_to_p_tag(entry: en.Entry, add_id: bool) -> ET.Element:
+def entry_to_details_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     """Transform an entry into a string: for list"""
-    tag = ET.Element("p")
-    tag.append(class_to_tag(entry))
-    tag.append(id_to_a_tag(entry, add_id))
+    details_tag = ET.Element("details")
+    summary_tag = ET.Element("summary")
+    for tag in entry_to_div_tag(entry, add_id):
+        summary_tag.append(tag)
+    details_tag.append(summary_tag)
+    for child in entry.get_children():
+        if child.get_children():
+            details_tag.append(entry_to_details_tag(child, add_id))
+        else:
+            p_tag = ET.Element("p")
+            for tag in entry_to_div_tag(child, add_id):
+                p_tag.append(tag)
+            details_tag.append(p_tag)
+    return details_tag
+
+def entry_to_div_tag(entry: en.Entry, add_id: bool) -> List[ET.Element]:
+    """Transform an entry into a string: for list"""
+    results: List[ET.Element] = []
+    results.append(class_to_tag(entry))
+    results.append(id_to_a_tag(entry, add_id))
     text = (
         re.sub(LINK_EXPRESSION, '<a href="#\\1">\\1</a>', entry.text)
         if hasattr(entry, "text")
         else ""
     )
-    tag.append(ET.fromstring("<a>" + text + "</a>"))
-    return tag
+    results.append(ET.fromstring("<a>" + text + "</a>"))
+    return results
 
 
 def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
     """Generate a list tag from entry"""
     if not entry.get_children():
-        return entry_to_p_tag(entry, True)
+        return entry_to_div_tag(entry, True)
 
-    p_tag = entry_to_p_tag(entry, True)
+    p_tag = entry_to_div_tag(entry, True)
     ul_tag = ET.Element("ul")
     p_tag.append(ul_tag)
     for child in entry.children:
@@ -137,7 +154,9 @@ def entry_to_td(entry: en.Entry, verifier: Verifier) -> ET.Element:
 
 def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element:
     """Convert an entry to a table tag"""
-    p_tag = entry_to_p_tag(parent_entry, True)
+    p_tag = ET.Element("p")
+    for tag in entry_to_div_tag(parent_entry, True):
+        p_tag.append(tag)
     table_tag = ET.Element("table")
     p_tag.append(table_tag)
     table_tag.append(generate_table_header())
@@ -176,7 +195,8 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         body_tag.append(h1_tag)
 
         # entry list
-        body_tag.append(generate_list_tag(design, 1))
+        # body_tag.append(generate_list_tag(design, 1))
+        body_tag.append(entry_to_details_tag(design, True))
 
         body_tag.append(entry_to_table_tag(design, verifier))
 
@@ -236,5 +256,28 @@ td.notperformed {
     height: 25px;
     background-color: green;
 }
+
+/* for details */
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+
 """
     return style_tag

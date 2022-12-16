@@ -3,106 +3,109 @@ id: design-requisite
 children:
 
 # Definitions
-- !Definition
-  id: design-document
-  text: The document that specifies the design.
-
-- !Definition
-  id: expanded-design
-  text: The full design, after entries have been expanded.
-
-- !Definition
-  id: formats
-  text: All file formats for input and output.
-  children:
-
-  - !Definition
-    id: yaml-format
-    text: The YAML format, used for input and output.
-
-  - !Definition
-    id: html-format
-    text: The HTML format to generate documents, reports, ...
-
-- !Definition
-  id: syntax-rule
-  text: A syntax rule for the <design> read from the <design-document>.
-
-- !Definition
-  id: entry-types
-  text: "A product design is composed of entries: specifications, requirements, definitions, tests, ..."
+- !Section
+  text: Definitions
   children:
   - !Definition
-    id: entry
-    text: The parent type for any entry.
+    id: design-document
+    text: The document that specifies the design.
 
   - !Definition
-    id: design
-    text: The specific design of a product, it contains the definitions, specifications, requirements, ...
+    id: expanded-design
+    text: The full design, after entries have been expanded.
 
   - !Definition
-    id: section
-    text: A section of the design. This is used purely to structure the <design-document>
-
-  - !Definition
-    id: expander
-    text: A placeholder <entry> that modifies its parent <entry>
-      # - !Definition
-      # id: external-section
-      # text: A section defined in an outside <design-document>
-
-  - !Definition
-    id: definition
-
-  - !Definition
-    id: statement
-    text: A statement can be any assertion made in the <design-document>. It can be a specification or a requirement
-
-  - !Definition
-    id: requirement
-    text: A statement that represents a requirement
-
-  - !Definition
-    id: specification
-    text: A statement that represents a specification
-
-  - !Definition
-    id: test
-    text: Information about a test. A test can verify a <statement>
-
-  - !Definition
-    id: test-list
-    text: A list of tests
-
-  - !Definition
-    id: code-checkers
-    text: Tools to check Python code quality
+    id: formats
+    text: All file formats for input and output.
     children:
 
     - !Definition
-      id: pylint
-      text: The pylint static code checker
+      id: yaml-format
+      text: The YAML format, used for input and output.
 
     - !Definition
-      id: mypy
-      text: The mypy static code checker
+      id: html-format
+      text: The HTML format to generate documents, reports, ...
 
-    - !Definition
-      id: flake8
-      text: The flake8 code checker
-
-    - !Definition
-      id: black
-      text: The black code formatter
-
-- !Definition
-  id: supported-code-annotations
-  text: The different source code annotations formats supported by our parser (to extract information about tests)
-  children:
   - !Definition
-    id: doxygen-doc-format
+    id: syntax-rule
+    text: A syntax rule for the <design> read from the <design-document>.
+
   - !Definition
-    id: python-unittest-format
+    id: entry-types
+    text: "A product design is composed of entries: specifications, requirements, definitions, tests, ..."
+    children:
+    - !Definition
+      id: entry
+      text: The parent type for any entry.
+
+    - !Definition
+      id: design
+      text: The specific design of a product, it contains the definitions, specifications, requirements, ...
+
+    - !Definition
+      id: section
+      text: A section of the design. This is used purely to structure the <design-document>
+
+    - !Definition
+      id: expander
+      text: A placeholder <entry> that modifies its parent <entry>
+        # - !Definition
+        # id: external-section
+        # text: A section defined in an outside <design-document>
+
+    - !Definition
+      id: definition
+
+    - !Definition
+      id: statement
+      text: A statement can be any assertion made in the <design-document>. It can be a specification or a requirement
+
+    - !Definition
+      id: requirement
+      text: A statement that represents a requirement
+
+    - !Definition
+      id: specification
+      text: A statement that represents a specification
+
+    - !Definition
+      id: test
+      text: Information about a test. A test can verify a <statement>
+
+    - !Definition
+      id: test-list
+      text: A list of tests
+
+    - !Definition
+      id: code-checkers
+      text: Tools to check Python code quality
+      children:
+
+      - !Definition
+        id: pylint
+        text: The pylint static code checker
+
+      - !Definition
+        id: mypy
+        text: The mypy static code checker
+
+      - !Definition
+        id: flake8
+        text: The flake8 code checker
+
+      - !Definition
+        id: black
+        text: The black code formatter
+
+  - !Definition
+    id: supported-code-annotations
+    text: The different source code annotations formats supported by our parser (to extract information about tests)
+    children:
+    - !Definition
+      id: doxygen-doc-format
+    - !Definition
+      id: python-unittest-format
 
 
 # Requirements
