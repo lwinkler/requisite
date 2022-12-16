@@ -111,9 +111,8 @@ def generate_table_header() -> ET.Element:
     """Generate a tr header tag for the table"""
     tr_tag = ET.Element("tr")
     for title in ["type", "id", "verification", "text"]:
-        th_tag = ET.Element("th")
+        th_tag = ET.SubElement(tr_tag, "th")
         th_tag.text = title
-        tr_tag.append(th_tag)
     return tr_tag
 
 
@@ -123,9 +122,8 @@ def get_verification_tag(entry: en.Entry, verifier: Verifier) -> ET.Element:
     ul_tag = ET.Element("ul")
 
     for verification_type in verifier.verify(cast(en.Statement, entry)):
-        li_tag = ET.Element("li")
+        li_tag = ET.SubElement(ul_tag, "li")
         li_tag.text = verification_type.value
-        ul_tag.append(li_tag)
     return ul_tag
 
 
@@ -133,21 +131,17 @@ def entry_to_td(entry: en.Entry, verifier: Verifier) -> ET.Element:
     """Convert an id to a td tag"""
     tr_tag = ET.Element("tr")
 
-    td_tag = ET.Element("td")
+    td_tag = ET.SubElement(tr_tag, "td")
     td_tag.append(class_to_tag(entry))
-    tr_tag.append(td_tag)
 
-    td_tag = ET.Element("td")
+    td_tag = ET.SubElement(tr_tag, "td")
     td_tag.append(id_to_a_tag(entry, False))
-    tr_tag.append(td_tag)
 
-    td_tag = ET.Element("td")
+    td_tag = ET.SubElement(tr_tag, "td")
     td_tag.append(get_verification_tag(entry, verifier))
-    tr_tag.append(td_tag)
 
-    td_tag = ET.Element("td")
+    td_tag = ET.SubElement(tr_tag, "td")
     td_tag.append(wrap_text(entry))
-    tr_tag.append(td_tag)
 
     return tr_tag
 
@@ -157,8 +151,7 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element
     p_tag = ET.Element("p")
     for tag in entry_to_div_tag(parent_entry, True):
         p_tag.append(tag)
-    table_tag = ET.Element("table")
-    p_tag.append(table_tag)
+    table_tag = ET.SubElement(p_tag, "table")
     table_tag.append(generate_table_header())
 
     for entry in op.extract_entries_of_type(parent_entry, en.Statement):
@@ -178,21 +171,17 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
     with open(output_path, "w", encoding="utf-8") as fout:
 
         html_tag = ET.Element("html")
-        head_tag = ET.Element("head")
-        html_tag.append(head_tag)
+        head_tag = ET.SubElement(html_tag, "head")
 
-        title_tag = ET.Element("title")
+        title_tag = ET.SubElement(head_tag, "title")
         title_tag.text = "Specifications " + design.get_id()
-        head_tag.append(title_tag)
 
         head_tag.append(generate_style_tag())
 
-        body_tag = ET.Element("body")
-        html_tag.append(body_tag)
+        body_tag = ET.SubElement(html_tag, "body")
 
-        h1_tag = ET.Element("h1")
+        h1_tag = ET.SubElement(body_tag, "h1")
         h1_tag.text = "Specifications " + design.get_id()
-        body_tag.append(h1_tag)
 
         # entry list
         h2_tag = ET.SubElement(body_tag, "h2")
