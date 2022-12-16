@@ -81,7 +81,7 @@ def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
         return entry_to_p_tag(entry, True)
 
     p_tag = entry_to_p_tag(entry, True)
-    ul_tag = ET.Element("ul") # , attrib={"class": "collapse"})
+    ul_tag = ET.Element("ul")
     p_tag.append(ul_tag)
     for child in entry.children:
         li_tag = ET.Element("li")
@@ -166,7 +166,6 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         title_tag.text = "Specs report " + design.get_id()
         head_tag.append(title_tag)
 
-        head_tag.append(generate_script_tag())
         head_tag.append(generate_style_tag())
 
         body_tag = ET.Element("body")
@@ -185,34 +184,12 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         ET.indent(tree, "  ")
         tree.write(fout, encoding="unicode", method="html")
 
-def generate_script_tag() -> ET.Element:
-    """Generate a script tag for js code"""
-
-
-    tag = ET.Element("script")
-    tag.text = """
-window.addEventListener("load", () => {
-  // (A) LOOP THOUGH ALL SUB-ITEMS
-  for (let i of document.querySelectorAll(".collapse ul, .collapse ol")) {
-    // (B) CREATE A <DIV ONCLICK="TOGGLE">TEXT</DIV>
-    let toggle = document.createElement("div");
-    toggle.innerHTML = i.previousSibling.textContent;
-    toggle.className = "toggle";
-    toggle.onclick = () => { toggle.classList.toggle("show") };
- 
-    // (C) REPLACE THE "TITLE TEXT" WITH THE <DIV> TOGGLE
-    i.parentElement.removeChild(i.previousSibling);
-    i.parentElement.insertBefore(toggle, i);
-  }
-});
-"""
-    return tag
 
 def generate_style_tag() -> ET.Element:
     """Generate the style tag containing the CSS"""
 
-    tag = ET.Element("style", attrib={"type": "text/css"})
-    tag.text = """
+    style_tag = ET.Element("style", attrib={"type": "text/css"})
+    style_tag.text = """
 table ul {
     list-style: none;
 }
@@ -259,23 +236,5 @@ td.notperformed {
     height: 25px;
     background-color: green;
 }
-
-/* (A) CONTAINER */
-.collapse, .collapse ul, .collapse ol {
-    list-style-type: none;
-    padding-left: 10px;
-}
-
-/* (B) LIST ITEMS */
-.collapse li { padding: 10px; }
-
-/* (C) TOGGLE */
-.toggle { padding: 10px; }
-.toggle::before { content: "+"; }
-.toggle.show::before { content: "-"; }
-
-/* (D) SHOW/HIDE */
-.collapse ul, .collapse ol { display: none; }
-.toggle.show + ul, .toggle.show + ol { display: block; }
 """
-    return tag
+    return style_tag
