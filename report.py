@@ -78,6 +78,7 @@ def entry_to_details_tag(entry: en.Entry, add_id: bool) -> ET.Element:
             details_tag.append(p_tag)
     return details_tag
 
+
 def entry_to_div_tag(entry: en.Entry, add_id: bool) -> List[ET.Element]:
     """Transform an entry into a string: for list"""
     results: List[ET.Element] = []
@@ -90,21 +91,6 @@ def entry_to_div_tag(entry: en.Entry, add_id: bool) -> List[ET.Element]:
     )
     results.append(ET.fromstring("<a>" + text + "</a>"))
     return results
-
-
-def generate_list_tag(entry: en.Entry, level: int) -> ET.Element:
-    """Generate a list tag from entry"""
-    if not entry.get_children():
-        return entry_to_div_tag(entry, True)
-
-    p_tag = entry_to_div_tag(entry, True)
-    ul_tag = ET.Element("ul")
-    p_tag.append(ul_tag)
-    for child in entry.children:
-        li_tag = ET.Element("li")
-        li_tag.append(generate_list_tag(child, level + 1))
-        ul_tag.append(li_tag)
-    return p_tag
 
 
 def generate_table_header() -> ET.Element:
@@ -186,7 +172,6 @@ def write_html_report(output_path: Path, design: en.Design) -> None:
         # entry list
         h2_tag = ET.SubElement(body_tag, "h2")
         h2_tag.text = "Design tree"
-        # body_tag.append(generate_list_tag(design, 1))
         body_tag.append(entry_to_details_tag(design, True))
 
         h2_tag2 = ET.SubElement(body_tag, "h2")

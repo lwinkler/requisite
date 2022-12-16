@@ -1,3 +1,4 @@
 [flake8]
-max-line-length = 200 ; handled by black formatter
+; line length is handled by black formatter
+max-line-length = 200
 extend-ignore = E203
