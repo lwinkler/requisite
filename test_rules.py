@@ -280,7 +280,6 @@ class TestRules(unittest.TestCase):
         )
 
     def test_spec_test_verify_id(self) -> None:
-        pass
         """Test verify spec-statement-id-TODO"""
         self.check_rule(
             ru.check_test_verify_id_mandatory,
