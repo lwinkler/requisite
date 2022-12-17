@@ -8,9 +8,9 @@ import rules as ru
 import yaml_util as yu
 
 
-def get_by_id(all_tests: List[en.Entry], id1: str) -> en.Test:
+def get_by_id(all_entries: List[en.Entry], id1: str) -> en.Test:
     """Search function by id"""
-    for test in all_tests:
+    for test in all_entries:
         if test.id == id1:
             return cast(en.Test, test)
     raise Exception(f"No test found with id {id1}")

@@ -2,40 +2,13 @@
 
 import re
 from xml.etree import ElementTree as ET
-from enum import Enum
 from pathlib import Path
 from typing import List, cast
 import entries as en
 import operations as op
+import verification as ve
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
-
-
-class VerificationType(Enum):
-    """How a statement can be verified"""
-
-    TEST = "test"
-    CHILDREN = "children"
-
-
-# TODO: add method and test
-class Verifier:
-    """Object that contains the verification information of the design"""
-
-    def __init__(self, design: en.Design):
-        self.verified_ids = [
-            test.verify_id
-            for test in cast(List[en.Test], op.extract_entries_of_type(design, en.Test))
-        ]
-
-    def verify(self, statement: en.Statement) -> List[VerificationType]:
-        """Verify a statement"""
-        results: List[VerificationType] = []
-        if statement.id in self.verified_ids:
-            results.append(VerificationType.TEST)
-        if statement.get_children():
-            results.append(VerificationType.CHILDREN)
-        return results
 
 
 def wrap_text(entry: en.Entry) -> ET.Element:
@@ -102,7 +75,7 @@ def generate_table_header() -> ET.Element:
     return tr_tag
 
 
-def get_verification_tag(entry: en.Entry, verifier: Verifier) -> ET.Element:
+def get_verification_tag(entry: en.Entry, verifier: ve.Verifier) -> ET.Element:
     """Return a tag from the verification info of a statement"""
 
     ul_tag = ET.Element("ul")
@@ -113,7 +86,7 @@ def get_verification_tag(entry: en.Entry, verifier: Verifier) -> ET.Element:
     return ul_tag
 
 
-def entry_to_td(entry: en.Entry, verifier: Verifier) -> ET.Element:
+def entry_to_td(entry: en.Entry, verifier: ve.Verifier) -> ET.Element:
     """Convert an id to a td tag"""
     tr_tag = ET.Element("tr")
 
@@ -132,7 +105,7 @@ def entry_to_td(entry: en.Entry, verifier: Verifier) -> ET.Element:
     return tr_tag
 
 
-def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element:
+def entry_to_table_tag(parent_entry: en.Entry, verifier: ve.Verifier) -> ET.Element:
     """Convert an entry to a table tag"""
     p_tag = ET.Element("p")
     for tag in entry_to_div_tag(parent_entry, True):
@@ -149,7 +122,7 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: Verifier) -> ET.Element
 def write_html_report(output_path: Path, design: en.Design) -> None:
     """Write a HTML report to file"""
 
-    verifier = Verifier(design)
+    verifier = ve.Verifier(design)
 
     # if output_path.is_file():
     # print(f"File {output_path.as_posix()} already exists")
