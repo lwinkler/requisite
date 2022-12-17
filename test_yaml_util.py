@@ -1,10 +1,12 @@
 """Unit test for YAML serialization"""
 
+import tempfile
 import unittest
-import yaml_util as yu
+from pathlib import Path
 
 import entries as en
 import expanders as ex
+import yaml_util as yu
 
 DESIGN_STR1 = """!Design
 id: design-id
@@ -87,6 +89,12 @@ class TestYamlUtil(unittest.TestCase):
 
         design.simplify()
         self.assertEqual(yu.dump_entry(design), DESIGN_STR1)
+
+    def test_spec_design_output_yaml(self) -> None:
+        """Test"""
+        design = yu.read_design(Path("specs/requisite.yaml"))
+        design.expand(design, None)
+        self.assertTrue(yu.dump_entry(design) != "")
 
     def test_spec_input_entries_entry(self):
         """Test"""

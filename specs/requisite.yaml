@@ -15,6 +15,10 @@ children:
     text: The full design, after entries have been expanded.
 
   - !Definition
+    id: report
+    text: A comprehensive summary of the <design-document> in a readable format.
+
+  - !Definition
     id: formats
     text: All file formats for input and output.
     children:
@@ -107,78 +111,79 @@ children:
     - !Definition
       id: python-unittest-format
 
-
-# Requirements
-- !Requirement
-  id: req-design-review
-  text: A <design-document> describe the software in a readable, flexible, and structured manner.
+- !Section
+  text: Requirements
   children:
-
-  - !Specification
-    id: spec-entry-types
-    text: A <design-document> is composed of <entry-types>
-
-  - !Specification
-    id: spec-input-entries
-    text: Any <entry-types> can be read from the <yaml-format>
+  - !Requirement
+    id: req-design-review
+    text: A <design-document> describe the software in a readable, flexible, and structured manner.
     children:
-    - !MultiplyByDefinition
-      definition_id: entry-types
 
-  - !Specification
-    id: spec-design-split
-    text: A <design> can be split into several files
+    - !Specification
+      id: spec-entry-types
+      text: A <design-document> is composed of <entry-types>
 
-  - !Specification
-    id: spec-syntax-check
-    text: The <design-document> is checked against a set of <syntax-rule>s
-    children:
-      - !Include
-        path: specs/rules.yaml
-
-- !Requirement
-  id: req-design-output
-  text: After processing the <expanded-design> is written to output for future use
-  children:
-
-  - !Specification
-    id: spec-design-output-yaml
-    text: The <expanded-design> can be written to <yaml-format>
-
-  - !Specification
-    id: spec-design-output-html
-    text: The <expanded-design> can be written as a report to the <html-format>
-
-  - !Specification
-    id: spec-output-tests
-    text: All tests required by a design can be written to output
-
-- !Requirement
-  id: req-extract-tests
-  text: Links between <test>s and <statement>s can be extracted from the sources of the tests (if properly annotated)
-  children:
-
-  - !Specification
-    id: spec-extract-tests
-    text: Links between <test>s and <statement>s can be extracted from the sources of the tests in different <supported-code-annotations>
-    children: 
+    - !Specification
+      id: spec-input-entries
+      text: Any <entry-types> can be read from the <yaml-format>
+      children:
       - !MultiplyByDefinition
-        definition_id: supported-code-annotations
+        definition_id: entry-types
 
-  - !Specification
-    id: spec-verify-statements
-    text: A notification can be displayed for each unverified statement.
+    - !Specification
+      id: spec-design-split
+      text: A <design> can be split into several files
 
-- !Requirement
-  id: req-code-quality
-  text: Application code follows high quality standard.
-  children:
-  - !Specification
-    id: spec-code-check
-    text: Python source code is checked with static checks
+    - !Specification
+      id: spec-syntax-check
+      text: The <design-document> is checked against a set of <syntax-rule>s
+      children:
+        - !Include
+          path: specs/rules.yaml
+
+  - !Requirement
+    id: req-design-output
+    text: After processing the <expanded-design> is written to output for future use
     children:
-    - !MultiplyByDefinition
-      definition_id: code-checkers
+
+    - !Specification
+      id: spec-design-output-yaml
+      text: The <expanded-design> can be written to <yaml-format>
+
+    - !Specification
+      id: spec-report
+      text: The <expanded-design> can be written as a <report> to the <html-format>
+
+    - !Specification
+      id: spec-output-tests
+      text: All tests required by a design can be written to output
+
+  - !Requirement
+    id: req-extract-tests
+    text: Links between <test>s and <statement>s can be extracted from the sources of the tests (if properly annotated)
+    children:
+
+    - !Specification
+      id: spec-extract-tests
+      text: Links between <test>s and <statement>s can be extracted from the sources of the tests in different <supported-code-annotations>
+      children: 
+        - !MultiplyByDefinition
+          definition_id: supported-code-annotations
+
+    - !Specification
+      id: spec-verify-statements
+      text: A notification can be displayed for each unverified statement.
+
+  - !Requirement
+    id: req-code-quality
+    text: Application code follows high quality standard.
+    children:
+    - !Specification
+      id: spec-code-check
+      text: Python source code is checked with static checks
+      children:
+      - !MultiplyByDefinition
+        definition_id: code-checkers
 
 # Test lists
 - !TestList
@@ -187,11 +192,10 @@ children:
   children:
 
   - !Test
-    id: test-design-review # TODO delete
-    # labels: non-functional
-    text: Verify that a design can be reviewed manually
+    id: test-report
+    text: Generate a <report>, open it with a web browser, and check that the output is readable and represents the <design-document>.
     type: manual
-    verify_id: req-design-review
+    verify_id: spec-report
 
   - !Test
     id: test-design-made-of-entries

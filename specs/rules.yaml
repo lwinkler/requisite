@@ -12,8 +12,8 @@
   text: Any <statement> must have an id.
 
 - !Specification
-  id: spec-test-verify_id-mandatory
-  text: Any <test> must have a verify_id.
+  id: spec-test-verify_id
+  text: Any <test> must have a verify_id refering to a <specification>.
 
 - !Specification
   id: spec-id-unique

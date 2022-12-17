@@ -279,6 +279,16 @@ class TestRules(unittest.TestCase):
             ],
         )
 
+    def test_spec_test_verify_id_mandatory(self) -> None:
+        """Test verify spec-statement-id-mandatory"""
+        self.check_rule(
+            ru.check_test_verify_id_mandatory,
+            TEST_ID_MANDATORY,
+            [
+                # TODO
+            ],
+        )
+
     def test_spec_id_unique(self) -> None:
         """Test verify spec-id-unique"""
         self.check_rule(
