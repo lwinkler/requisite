@@ -33,7 +33,7 @@ def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
     """Apply all existing rules to the entry and its children"""
     messages = check_entry_attributes_non_null(entry)
     messages += check_definition_id_mandatory(entry)
-    messages += check_verify_id(entry)
+    messages += check_statement_id_mandatory(entry)
     messages += check_id_unique(entry)
     messages += check_id_valid(entry)
     messages += check_id_spec(entry)
@@ -42,7 +42,7 @@ def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
     messages += check_child_statements(entry)
     messages += check_child_definition(entry)
     messages += check_child_test_list(entry)
-    messages += check_test_verify_id(entry)
+    messages += check_test_verify_id_mandatory(entry)
     return messages
 
 
@@ -77,7 +77,7 @@ def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMe
     return messages
 
 
-def check_verify_id(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-statement-id-mandatory"""
 
     messages: List[EntryErrorMessage] = []
@@ -213,7 +213,7 @@ def check_child_test_list(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_test_verify_id(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_test_verify_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-test-statement-id"""
 
     all_ids = op.gather_all_ids(entry_to_check, en.Entry)
@@ -224,7 +224,6 @@ def check_test_verify_id(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
             and entry.verify_id
             and entry.verify_id not in all_ids
         ):
-            assert False
             messages.append(
                 EntryErrorMessage(
                     entry,
