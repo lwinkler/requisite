@@ -2,11 +2,11 @@
 
 import unittest
 from typing import List, cast
-import yaml
 
 import entries as en
 import operations as op
 from verification import Verifier, VerificationType
+import yaml_util as yu
 
 TEST_VERIF = """
 !Design
@@ -59,7 +59,7 @@ class TestVerification(unittest.TestCase):
     def test_verify(self) -> None:
         """Test"""
 
-        design = yaml.safe_load(TEST_VERIF)
+        design = yu.load_entry(TEST_VERIF)
         verifier = Verifier(design)
 
         all_statements = op.extract_entries_of_type(design, en.Statement)
@@ -80,10 +80,10 @@ class TestVerification(unittest.TestCase):
             [VerificationType.TEST],
         )
 
-    def test_list_verify(self) -> None:
-        """Test"""
+    def test_spec_verify_statements(self) -> None:
+        """Test list_verify and list_unverify as well as the matching specification"""
 
-        design = yaml.safe_load(TEST_VERIF)
+        design = yu.load_entry(TEST_VERIF)
         verifier = Verifier(design)
         all_statements = op.extract_entries_of_type(design, en.Statement)
 

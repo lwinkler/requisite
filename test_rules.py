@@ -2,9 +2,9 @@
 
 import unittest
 from typing import List, Any
-import yaml
 
 import rules as ru
+import yaml_util as yu
 
 
 TEST_ID_NON_NULL = """
@@ -171,6 +171,43 @@ children:
     id: one
 """
 
+TEST_CHILDREN = """
+!Design
+id: design-requisite1
+text: Link with <asdf>s
+children:
+
+- !Specification
+  id: asdf
+  children:
+  - !Definition
+    id: bladbvda
+    children:
+    - !Requirement
+      id: req-error
+  - !Requirement
+    id: 44z
+  - !Specification
+    id: req-format
+    text: <Text> with a failing link and a successful <one>
+    children:
+    - !Section
+      id: error
+- !Section
+  children:
+  - !Requirement
+    id: req-abc-asdf
+    text: <another> text with a failing link and a successful <one>
+  - !Requirement
+    id: one
+- !TestList
+  children:
+  - !Requirement
+    id: req-bla
+  - !Test
+    id: mytest
+"""
+
 
 class TestRules(unittest.TestCase):
     """Test rules"""
@@ -179,7 +216,7 @@ class TestRules(unittest.TestCase):
         self, func: Any, design_str: str, expected_messages: List[ru.EntryErrorMessage]
     ) -> None:
         """Test any checking function"""
-        design = yaml.safe_load(design_str)
+        design = yu.load_entry(design_str)
         messages = func(design)
         self.assertListEqual(messages, expected_messages)
         # check that global check also finds our messages
@@ -336,4 +373,33 @@ class TestRules(unittest.TestCase):
                     text="Linked id 'another' does not exist.",
                 ),
             ],
+        )
+
+    def test_spec_child_statement(self) -> None:
+        """Test verify spec-child-statement"""
+        self.check_rule(
+            ru.check_child_statements,
+            TEST_CHILDREN,
+            [
+                ru.EntryErrorMessage(related_id='asdf', type_str='Specification', text='Statement can only have statements as children'),
+                ru.EntryErrorMessage(related_id='req-format', type_str='Specification', text='Statement can only have statements as children'),
+            ]
+        )
+
+    def test_spec_child_test_list(self) -> None:
+        """Test verify spec-child-test-list"""
+        self.check_rule(
+            ru.check_child_test_list,
+            TEST_CHILDREN,
+            [
+                ru.EntryErrorMessage(related_id='', type_str='TestList', text='TestList can only have tests as children')
+            ]
+        )
+
+    def test_spec_child_definition(self) -> None:
+        """Test verify spec-child-definition-list"""
+        self.check_rule(
+            ru.check_child_definition,
+            TEST_CHILDREN,
+            [ru.EntryErrorMessage(related_id='bladbvda', type_str='Definition', text='Definitions can only have definitions or expanders as children')]
         )

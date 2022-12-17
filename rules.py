@@ -41,7 +41,7 @@ def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
     messages += check_links(entry)
     messages += check_child_statements(entry)
     messages += check_child_definition(entry)
-    messages += check_child_test(entry)
+    messages += check_child_test_list(entry)
     messages += check_test_statement_id(entry)
     return messages
 
@@ -146,7 +146,7 @@ def check_id_req(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
 
 
 def check_links(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
-    """Check rule spec-statement-id-req"""
+    """Check rule spec-valid-links"""
 
     all_ids = op.gather_all_ids(entry_to_check, en.Entry)
 
@@ -199,7 +199,7 @@ def check_child_definition(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_child_test(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_child_test_list(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-child-test-list"""
 
     messages: List[EntryErrorMessage] = []

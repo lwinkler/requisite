@@ -2,10 +2,10 @@
 
 import unittest
 from typing import cast
-import yaml
 
 import entries as en
 import operations as op
+import yaml_util as yu
 
 DESIGN_STR1 = """
 !Design
@@ -56,7 +56,7 @@ class TestOperations(unittest.TestCase):
 
     def test_extract_entries_of_type(self) -> None:
         """Test function"""
-        design1 = yaml.safe_load(DESIGN_STR1)
+        design1 = yu.load_entry(DESIGN_STR1)
 
         designs = op.extract_entries_of_type(design1, en.Design)
         statements = op.extract_entries_of_type(design1, en.Statement)
@@ -72,7 +72,7 @@ class TestOperations(unittest.TestCase):
 
     def test_find_entry_by_type_and_id(self) -> None:
         """Test function"""
-        design = yaml.safe_load(DESIGN_STR1)
+        design = yu.load_entry(DESIGN_STR1)
 
         entry = op.find_entry_by_type_and_id(design, en.Entry, "test-design-review")
         self.assertEqual(cast(en.Test, entry).verify_id, "req-design-review")

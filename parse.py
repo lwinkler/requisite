@@ -15,6 +15,7 @@ import entries as en
 import expanders
 import rules as ru
 import report as rp
+import verification as ve
 import parsers.doxygen
 import parsers.python_unittest
 
@@ -79,17 +80,28 @@ def check_for_errors(design: en.Design) -> None:
 if __name__ == "__main__":
 
     args = arguments_parser()
-    product_design = yu.read_design(args.input)
-    check_for_errors(product_design)
+    design = yu.read_design(args.input)
+    check_for_errors(design)
     if args.expand:
-        product_design.expand(product_design, None)
-    check_for_errors(product_design)
-    # product_design.print()
+        design.expand(design, None)
+    check_for_errors(design)
+    # design.print()
 
     if args.output:
         print(f"Create {args.output.as_posix()}")
-        yu.write_design(args.output, product_design)
+        yu.write_design(args.output, design)
 
     if args.report:
         print(f"Create {args.report.as_posix()}")
-        rp.write_html_report(args.report, product_design)
+        rp.write_html_report(args.report, design)
+
+    verifier = ve.Verifier(design)
+    unverified = verifier.list_unverified(design)
+
+    print(f"WARNING: The following {len(unverified)} statement(s) are not verified:")
+    for statement in unverified:
+        statement.print()
+
+
+
+

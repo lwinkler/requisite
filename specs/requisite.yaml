@@ -77,26 +77,26 @@ children:
       id: test-list
       text: A list of tests
 
+  - !Definition
+    id: code-checkers
+    text: Tools to check Python code quality
+    children:
+
     - !Definition
-      id: code-checkers
-      text: Tools to check Python code quality
-      children:
+      id: pylint
+      text: The pylint static code checker
 
-      - !Definition
-        id: pylint
-        text: The pylint static code checker
+    - !Definition
+      id: mypy
+      text: The mypy static code checker
 
-      - !Definition
-        id: mypy
-        text: The mypy static code checker
+    - !Definition
+      id: flake8
+      text: The flake8 code checker
 
-      - !Definition
-        id: flake8
-        text: The flake8 code checker
-
-      - !Definition
-        id: black
-        text: The black code formatter
+    - !Definition
+      id: black
+      text: The black code formatter
 
   - !Definition
     id: supported-code-annotations
@@ -121,6 +121,9 @@ children:
   - !Specification
     id: spec-input-entries
     text: Any <entry-types> can be read from the <yaml-format>
+    children:
+    - !MultiplyByDefinition
+      definition_id: entry-types
 
   - !Specification
     id: spec-design-split
@@ -161,6 +164,10 @@ children:
     children: 
       - !MultiplyByDefinition
         definition_id: supported-code-annotations
+
+  - !Specification
+    id: spec-verify-statements
+    text: A notification can be displayed for each unverified statement.
 
 - !Requirement
   id: req-code-quality
