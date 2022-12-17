@@ -85,10 +85,10 @@ class TestVerification(unittest.TestCase):
 
         design = yu.load_design(TEST_VERIF)
         verifier = Verifier(design)
-        all_statements = op.extract_entries_of_type(design, en.Statement)
 
         self.assertEqual(
-            [entry.id for entry in verifier.list_verified(design)], ["stat-parent", "req-1", "spec-2", "spec-3", "spec-1"]
+            [entry.id for entry in verifier.list_verified(design)],
+            ["stat-parent", "req-1", "spec-2", "spec-3", "spec-1"],
         )
 
         self.assertEqual(

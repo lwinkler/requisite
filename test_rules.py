@@ -381,9 +381,17 @@ class TestRules(unittest.TestCase):
             ru.check_child_statements,
             TEST_CHILDREN,
             [
-                ru.EntryErrorMessage(related_id='asdf', type_str='Specification', text='Statement can only have statements as children'),
-                ru.EntryErrorMessage(related_id='req-format', type_str='Specification', text='Statement can only have statements as children'),
-            ]
+                ru.EntryErrorMessage(
+                    related_id="asdf",
+                    type_str="Specification",
+                    text="Statement can only have statements as children",
+                ),
+                ru.EntryErrorMessage(
+                    related_id="req-format",
+                    type_str="Specification",
+                    text="Statement can only have statements as children",
+                ),
+            ],
         )
 
     def test_spec_child_test_list(self) -> None:
@@ -392,8 +400,12 @@ class TestRules(unittest.TestCase):
             ru.check_child_test_list,
             TEST_CHILDREN,
             [
-                ru.EntryErrorMessage(related_id='', type_str='TestList', text='TestList can only have tests as children')
-            ]
+                ru.EntryErrorMessage(
+                    related_id="",
+                    type_str="TestList",
+                    text="TestList can only have tests as children",
+                )
+            ],
         )
 
     def test_spec_child_definition(self) -> None:
@@ -401,5 +413,11 @@ class TestRules(unittest.TestCase):
         self.check_rule(
             ru.check_child_definition,
             TEST_CHILDREN,
-            [ru.EntryErrorMessage(related_id='bladbvda', type_str='Definition', text='Definitions can only have definitions or expanders as children')]
+            [
+                ru.EntryErrorMessage(
+                    related_id="bladbvda",
+                    type_str="Definition",
+                    text="Definitions can only have definitions or expanders as children",
+                )
+            ],
         )

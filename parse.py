@@ -67,10 +67,10 @@ def arguments_parser() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def check_for_errors(design: en.Design) -> None:
+def check_for_errors(design1: en.Design) -> None:
     """Check for all syntax errors in design and abort on error"""
 
-    errors = ru.check_all_rules(design)
+    errors = ru.check_all_rules(design1)
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
@@ -101,7 +101,3 @@ if __name__ == "__main__":
     print(f"WARNING: The following {len(unverified)} statement(s) are not verified:")
     for statement in unverified:
         statement.print()
-
-
-
-

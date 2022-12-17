@@ -88,91 +88,114 @@ class TestYamlUtil(unittest.TestCase):
         design.simplify()
         self.assertEqual(yu.dump_entry(design), DESIGN_STR1)
 
-
-
     def test_spec_input_entries_entry(self):
         """Test"""
-        self.entry_read_write("""!Entry
+        self.entry_read_write(
+            """!Entry
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Entry)
+""",
+            en.Entry,
+        )
 
     def test_spec_input_entries_design(self):
         """Test"""
-        self.entry_read_write("""!Design
+        self.entry_read_write(
+            """!Design
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Design)
+""",
+            en.Design,
+        )
 
     def test_spec_input_entries_section(self):
         """Test"""
-        self.entry_read_write("""!Section
+        self.entry_read_write(
+            """!Section
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Section)
+""",
+            en.Section,
+        )
 
     def test_spec_input_entries_expander(self):
         """Test"""
-        self.entry_read_write("""!Expander
+        self.entry_read_write(
+            """!Expander
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", ex.Expander)
+""",
+            ex.Expander,
+        )
 
     def test_spec_input_entries_definition(self):
         """Test"""
-        self.entry_read_write("""!Definition
+        self.entry_read_write(
+            """!Definition
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Definition)
+""",
+            en.Definition,
+        )
 
     def test_spec_input_entries_statement(self):
         """Test"""
-        self.entry_read_write("""!Statement
+        self.entry_read_write(
+            """!Statement
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Statement)
+""",
+            en.Statement,
+        )
 
     def test_spec_input_entries_requirement(self):
         """Test"""
-        self.entry_read_write("""!Requirement
+        self.entry_read_write(
+            """!Requirement
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Requirement)
+""",
+            en.Requirement,
+        )
 
     def test_spec_input_entries_specification(self):
         """Test"""
-        self.entry_read_write("""!Specification
+        self.entry_read_write(
+            """!Specification
 id: myid
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.Specification)
+""",
+            en.Specification,
+        )
 
     def test_spec_input_entries_test(self):
         """Test"""
-        self.entry_read_write("""!Test
+        self.entry_read_write(
+            """!Test
 id: myid
 text: My text
 type: manual
@@ -180,15 +203,20 @@ verify_id: spec-some-spec
 children:
 - !Entry
   id: child-id
-""", en.Test)
+""",
+            en.Test,
+        )
 
     def test_spec_input_entries_test_list(self):
         """Test"""
-        self.entry_read_write("""!TestList
+        self.entry_read_write(
+            """!TestList
 id: myid
 engine: my_engine
 text: My text
 children:
 - !Entry
   id: child-id
-""", en.TestList)
+""",
+            en.TestList,
+        )
