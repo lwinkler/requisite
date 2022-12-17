@@ -33,10 +33,10 @@ class Verifier:
 
     def list_verified(self, design: en.Entry) -> List[en.Statement]:
         """List all verified statements"""
-        all_statements = op.extract_entries_of_type(design, en.Statement)
-        return [statement for statement in all_statements if self.verify(statement) != []]
+        all_statements = cast(List[en.Statement], op.extract_entries_of_type(design, en.Statement))
+        return cast(List[en.Statement], [statement for statement in all_statements if self.verify(statement) != []])
 
     def list_unverified(self, design: en.Entry) -> List[en.Statement]:
         """List all verified statements"""
-        all_statements = op.extract_entries_of_type(design, en.Statement)
-        return [statement for statement in all_statements if self.verify(statement) == []]
+        all_statements = cast(List[en.Statement], op.extract_entries_of_type(design, en.Statement))
+        return cast(List[en.Statement], [statement for statement in all_statements if self.verify(statement) == []])

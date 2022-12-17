@@ -7,10 +7,18 @@ import yaml
 import entries as en
 
 
-def read_design(path: Path) -> en.Design:
+def read_entry(path: Path) -> en.Entry:
     """Read a full design document in YAML format"""
     with open(path, encoding="utf-8") as fin:
-        return cast(en.Design, yaml.safe_load(fin.read()))
+        return cast(en.Entry, yaml.safe_load(fin.read()))
+
+def read_design(path: Path) -> en.Design:
+    """Read a full design document in YAML format"""
+    return cast(en.Design, read_entry(path))
+
+def load_design(str_value: str) -> en.Design:
+    """Read a full design document in YAML format"""
+    return cast(en.Design, load_entry(str_value))
 
 def load_entry(str_value: str) -> en.Entry:
     """Read a full design document in YAML format"""
@@ -22,10 +30,10 @@ def read_entries(path: Path) -> List[en.Entry]:
         return cast(List[en.Entry], yaml.safe_load(fin.read()))
 
 def dump_entry(entry: en.Entry) -> str:
-
+    """Dump and entry to a string"""
     return yaml.dump(entry, width=1000, sort_keys=False)
 
-def write_design(path: Path, design: en.Design) -> None:
+def write_entry(path: Path, design: en.Entry) -> None:
     """Write a full design document in YAML format"""
 
     design.simplify()

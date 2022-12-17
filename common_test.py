@@ -28,11 +28,11 @@ class TestCommon(unittest.TestCase):
 
     def parse_and_compare(self, data_path: Path) -> None:
         """Parse an input YAML, expand and compare with expected YAML"""
-        design = yu.read_design(data_path / "input.yaml")
+        design = yu.read_entry(data_path / "input.yaml")
         self.assertEqual(ru.check_all_rules(design), [])
         design.expand(design, None)
         self.assertEqual(ru.check_all_rules(design), [])
-        yu.write_design(data_path / "output.yaml", design)
+        yu.write_entry(data_path / "output.yaml", design)
         self.compare_text_files(
             data_path / "output.expected.yaml", data_path / "output.yaml"
         )

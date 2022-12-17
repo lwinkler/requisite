@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     if args.output:
         print(f"Create {args.output.as_posix()}")
-        yu.write_design(args.output, design)
+        yu.write_entry(args.output, design)
 
     if args.report:
         print(f"Create {args.report.as_posix()}")

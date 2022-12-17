@@ -59,7 +59,7 @@ class TestVerification(unittest.TestCase):
     def test_verify(self) -> None:
         """Test"""
 
-        design = yu.load_entry(TEST_VERIF)
+        design = yu.load_design(TEST_VERIF)
         verifier = Verifier(design)
 
         all_statements = op.extract_entries_of_type(design, en.Statement)
@@ -83,7 +83,7 @@ class TestVerification(unittest.TestCase):
     def test_spec_verify_statements(self) -> None:
         """Test list_verify and list_unverify as well as the matching specification"""
 
-        design = yu.load_entry(TEST_VERIF)
+        design = yu.load_design(TEST_VERIF)
         verifier = Verifier(design)
         all_statements = op.extract_entries_of_type(design, en.Statement)
 
