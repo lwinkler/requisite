@@ -3,7 +3,7 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
-from typing import List, Optional
+from typing import List, Optional, TextIO
 from enum import Enum
 
 import re
@@ -56,14 +56,17 @@ class Entry(yaml.YAMLObject):
             print(f"Exception while expanding {self.get_id()}:", exc)
             raise
 
-    def print(self, indent: int = 0) -> None:
+    def print(self, output_stream: TextIO, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
         text_str = f", text: {self.get_text()}"
         children_str = f", (nb_children: {len(self.get_children())})"
-        print(f"{indent * 2 * ' '}id: {self.get_id()}" + text_str + children_str)
+        print(
+            f"{indent * 2 * ' '}id: {self.get_id()}" + text_str + children_str,
+            file=output_stream,
+        )
 
         for child in self.get_children():
-            child.print(indent + 1)
+            child.print(output_stream, indent + 1)
 
     def extract_links(self) -> List[str]:
         """Extract all the links mentioned in the associated text"""

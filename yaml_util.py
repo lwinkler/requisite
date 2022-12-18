@@ -25,7 +25,7 @@ def load_design(str_value: str) -> en.Design:
 
 def load_entry(str_value: str) -> en.Entry:
     """Read a full design document in YAML format"""
-    return yaml.safe_load(str_value)
+    return cast(en.Entry, yaml.safe_load(str_value))
 
 
 def read_entries(path: Path) -> List[en.Entry]:
@@ -36,7 +36,7 @@ def read_entries(path: Path) -> List[en.Entry]:
 
 def dump_entry(entry: en.Entry) -> str:
     """Dump and entry to a string"""
-    return yaml.dump(entry, width=1000, sort_keys=False)
+    return cast(str, yaml.dump(entry, width=1000, sort_keys=False))
 
 
 def write_entry(path: Path, design: en.Entry) -> None:

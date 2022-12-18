@@ -70,6 +70,20 @@ children:
 - !Statement
   text: Some statement
 
+- !Statement
+  text: Another statement
+  id: stat-another
+
+- !TestList
+  children:
+  - !Test
+    id: test1
+  - !Test
+    id: test2
+    verify_id: stat-error
+  - !Test
+    id: test3
+    verify_id: stat-another
 """
 
 TEST_ID_UNIQUE = """
@@ -285,7 +299,16 @@ class TestRules(unittest.TestCase):
             ru.check_test_verify_id_mandatory,
             TEST_ID_MANDATORY,
             [
-                # TODO
+                ru.EntryErrorMessage(
+                    related_id="test1",
+                    type_str="Test",
+                    text="Test must have attribute verify_id",
+                ),
+                ru.EntryErrorMessage(
+                    related_id="test2",
+                    type_str="Test",
+                    text="Test refers to an unvalid id: verify_id=stat-error",
+                ),
             ],
         )
 

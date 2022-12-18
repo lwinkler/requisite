@@ -98,6 +98,9 @@ if __name__ == "__main__":
     verifier = ve.Verifier(design)
     unverified = verifier.list_unverified(design)
 
-    print(f"WARNING: The following {len(unverified)} statement(s) are not verified:")
+    print(
+        f"WARNING: The following {len(unverified)} statement(s) are not verified:",
+        file=sys.stderr,
+    )
     for statement in unverified:
-        statement.print()
+        statement.print(sys.stderr)

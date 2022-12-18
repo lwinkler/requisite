@@ -18,7 +18,7 @@ class EntryErrorMessage:
         entry: Optional[en.Entry] = None,
         text: str = "",
         related_id: str = "",
-        type_str="",
+        type_str: str = "",
     ):
         self.related_id = entry.get_id() if entry else related_id
         self.type_str = str(type(entry).__name__) if entry else type_str
@@ -213,17 +213,20 @@ def check_child_test_list(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_test_verify_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_test_verify_id_mandatory(design: en.Entry) -> List[EntryErrorMessage]:
     """Check rule spec-test-statement-id"""
 
-    all_ids = op.gather_all_ids(entry_to_check, en.Entry)
+    all_ids = op.gather_all_ids(design, en.Entry)
     messages: List[EntryErrorMessage] = []
-    for entry in op.extract_entries_of_type(entry_to_check, en.Test):
-        if (
-            hasattr(entry, "verify_id")
-            and entry.verify_id
-            and entry.verify_id not in all_ids
-        ):
+    for entry in op.extract_entries_of_type(design, en.Test):
+        if not hasattr(entry, "verify_id") or not entry.verify_id:
+            messages.append(
+                EntryErrorMessage(
+                    entry,
+                    "Test must have attribute verify_id",
+                )
+            )
+        elif entry.verify_id not in all_ids:
             messages.append(
                 EntryErrorMessage(
                     entry,

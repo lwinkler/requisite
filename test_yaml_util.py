@@ -1,6 +1,5 @@
 """Unit test for YAML serialization"""
 
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -23,7 +22,7 @@ children:
 class TestYamlUtil(unittest.TestCase):
     """Test"""
 
-    def entry_read_write(self, str_value: str, object_type: type[en.Entry]):
+    def entry_read_write(self, str_value: str, object_type: type[en.Entry]) -> None:
         """Test the serialization of an entry"""
         entry = yu.load_entry(str_value)
         self.assertEqual(type(entry), object_type)
@@ -96,7 +95,7 @@ class TestYamlUtil(unittest.TestCase):
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")
 
-    def test_spec_input_entries_entry(self):
+    def test_spec_input_entries_entry(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Entry
@@ -109,7 +108,7 @@ children:
             en.Entry,
         )
 
-    def test_spec_input_entries_design(self):
+    def test_spec_input_entries_design(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Design
@@ -122,7 +121,7 @@ children:
             en.Design,
         )
 
-    def test_spec_input_entries_section(self):
+    def test_spec_input_entries_section(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Section
@@ -135,7 +134,7 @@ children:
             en.Section,
         )
 
-    def test_spec_input_entries_expander(self):
+    def test_spec_input_entries_expander(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Expander
@@ -148,7 +147,7 @@ children:
             ex.Expander,
         )
 
-    def test_spec_input_entries_definition(self):
+    def test_spec_input_entries_definition(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Definition
@@ -161,7 +160,7 @@ children:
             en.Definition,
         )
 
-    def test_spec_input_entries_statement(self):
+    def test_spec_input_entries_statement(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Statement
@@ -174,7 +173,7 @@ children:
             en.Statement,
         )
 
-    def test_spec_input_entries_requirement(self):
+    def test_spec_input_entries_requirement(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Requirement
@@ -187,7 +186,7 @@ children:
             en.Requirement,
         )
 
-    def test_spec_input_entries_specification(self):
+    def test_spec_input_entries_specification(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Specification
@@ -200,7 +199,7 @@ children:
             en.Specification,
         )
 
-    def test_spec_input_entries_test(self):
+    def test_spec_input_entries_test(self) -> None:
         """Test"""
         self.entry_read_write(
             """!Test
@@ -215,7 +214,7 @@ children:
             en.Test,
         )
 
-    def test_spec_input_entries_test_list(self):
+    def test_spec_input_entries_test_list(self) -> None:
         """Test"""
         self.entry_read_write(
             """!TestList

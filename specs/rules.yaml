@@ -13,7 +13,7 @@
 
 - !Specification
   id: spec-test-verify_id
-  text: Any <test> must have a verify_id refering to a <specification>.
+  text: Any <test> must have a verify_id refering to a valid <specification>.
 
 - !Specification
   id: spec-id-unique
@@ -46,8 +46,3 @@
 - !Specification
   id: spec-child-test-list
   text: A <test-list> can only have <test>s as children
-
-- !Specification
-  id: spec-test-statement-id
-  text: A <test> must refer to a valid <statement>
-
