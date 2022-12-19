@@ -119,10 +119,8 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: ve.Verifier) -> ET.Elem
     return p_tag
 
 
-def write_html_report(output_path: Path, design: en.Design) -> None:
+def write_html_report(output_path: Path, design: en.Design, verifier: ve.Verifier) -> None:
     """Write a HTML report to file"""
-
-    verifier = ve.Verifier(design)
 
     # if output_path.is_file():
     # print(f"File {output_path.as_posix()} already exists")

@@ -91,12 +91,12 @@ if __name__ == "__main__":
         print(f"Create {args.output.as_posix()}")
         yu.write_entry(args.output, design)
 
-    if args.report:
-        print(f"Create {args.report.as_posix()}")
-        rp.write_html_report(args.report, design)
-
     verifier = ve.Verifier(design)
     unverified = verifier.list_unverified(design)
+
+    if args.report:
+        print(f"Create {args.report.as_posix()}")
+        rp.write_html_report(args.report, design, verifier)
 
     print(
         f"WARNING: The following {len(unverified)} statement(s) are not verified:",
