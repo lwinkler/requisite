@@ -8,6 +8,7 @@ import misc_util as mu
 
 PY = mu.get_python_executable().as_posix()
 
+EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
 class TestDesignUtil(unittest.TestCase):
     """Test"""
@@ -15,7 +16,7 @@ class TestDesignUtil(unittest.TestCase):
     def test_spec_code_check_pylint(self) -> None:
         """Test"""
         self.assertEqual(
-            mu.run_on_all_git_files(f"{PY} -m pylint", Path("."), ["py"], False), 0
+            mu.run_on_all_files(f"{PY} -m pylint", Path("."), ["py"], EXCLUDED_PATHS, False), 0
         )
 
     def test_spec_code_check_flake8(self) -> None:

@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List
 import misc_util as mu
 
+EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
 class TestMiscUtil(unittest.TestCase):
     """Test"""
@@ -34,6 +35,38 @@ class TestMiscUtil(unittest.TestCase):
         self.assertEqual(
             command, 'git ls-files some/path | grep -e "\\.ext$" -e "\\.md$"'
         )
+
+    def test_contain(self) -> None:
+        """Test"""
+        self.assertTrue(mu.contain(Path("__pycache__/common_test.cpython-39.pyc"), EXCLUDED_PATHS))
+        self.assertTrue(mu.contain(Path("__pycache__/some_unexisting_file"), EXCLUDED_PATHS))
+        self.assertFalse(mu.contain(Path("README.md"), EXCLUDED_PATHS))
+        self.assertFalse(mu.contain(Path("some_unexisting_file"), EXCLUDED_PATHS))
+
+    def test_list_all_files(self) -> None:
+        """Test"""
+        all_files1 = mu.list_all_files(Path("test_data/misc"), [], EXCLUDED_PATHS)
+        all_files2 = mu.list_all_files(Path("."), [], EXCLUDED_PATHS)
+        all_files3 = mu.list_all_files(Path("."), ["myext"], EXCLUDED_PATHS)
+        all_files4 = mu.list_all_files(Path("."), ["py"], EXCLUDED_PATHS)
+        all_files5 = mu.list_all_files(Path("."), ["py", "myext"], EXCLUDED_PATHS)
+
+        self.assertTrue(
+            self.contain_path(all_files1, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files2, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files3, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertFalse(
+            self.contain_path(all_files4, Path("test_data/misc/myfile.myext"))
+        )
+        self.assertTrue(
+            self.contain_path(all_files5, Path("test_data/misc/myfile.myext"))
+        )
+
 
     def test_list_all_git_files(self) -> None:
         """Test"""
@@ -66,6 +99,19 @@ class TestMiscUtil(unittest.TestCase):
             subprocess.run("false", check=True)
 
         subprocess.run("false", check=False)
+        self.assertRaises(Exception, failing)
+
+    def test_run_on_all_files(self) -> None:
+        """Execute a command on all files using git and xargs"""
+
+        mu.run_on_all_files("echo py files: ", Path("."), ["py"], EXCLUDED_PATHS)
+        mu.run_on_all_files("echo myext files: ", Path("."), ["myext"], EXCLUDED_PATHS)
+        mu.run_on_all_files("echo myext and md files: ", Path("."), ["md"], EXCLUDED_PATHS)
+        mu.run_on_all_files("echo myext and md files: ", Path("."), ["md", "myext"], EXCLUDED_PATHS)
+
+        def failing() -> None:
+            mu.run_on_all_files("false", Path("."), ["myext"], EXCLUDED_PATHS)
+
         self.assertRaises(Exception, failing)
 
     def test_run_on_all_git_files(self) -> None:

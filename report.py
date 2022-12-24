@@ -119,7 +119,9 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: ve.Verifier) -> ET.Elem
     return p_tag
 
 
-def write_html_report(output_path: Path, design: en.Design, verifier: ve.Verifier) -> None:
+def write_html_report(
+    output_path: Path, design: en.Design, verifier: ve.Verifier
+) -> None:
     """Write a HTML report to file"""
 
     # if output_path.is_file():
