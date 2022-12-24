@@ -101,6 +101,20 @@ class TestMiscUtil(unittest.TestCase):
         subprocess.run("false", check=False)
         self.assertRaises(Exception, failing)
 
+    def test_command_length(self) -> None:
+        """Test"""
+
+        command1 = ["echo"] + [30000*"."]
+
+        print("command1 length:", len(" ".join(command1)))
+
+        def failing1() -> None:
+            subprocess.run(command1, check=True, shell=True, stdout=subprocess.DEVNULL)
+
+        subprocess.run(command1, check=True, shell=False, stdout=subprocess.DEVNULL)
+        self.assertRaises(Exception, failing1)
+
+
     def test_run_on_all_files(self) -> None:
         """Execute a command on all files using git and xargs"""
 

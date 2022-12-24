@@ -55,7 +55,8 @@ def list_all_files(path: Path, extensions: List[str], excluded_paths: List[Path]
 def run_on_all_files(
         command: str, path: Path, extensions: List[str], excluded_paths: List[Path], check: bool = True
 ) -> int:
-    """Execute a command on all files"""
+    """Execute a command on all files. With this function we still have the issue of max command length 
+    (although it is higher that by using the shell, on Windows)"""
 
     files = list_all_files(path, extensions, excluded_paths, check)
     full_command = command + " ".join([file1.as_posix() for file1 in files])
