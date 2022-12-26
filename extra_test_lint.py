@@ -7,16 +7,21 @@ from pathlib import Path
 import misc_util as mu
 
 PY = mu.get_python_executable().as_posix()
+print("Python path:", PY)
 
 EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
-class TestDesignUtil(unittest.TestCase):
+
+class TestLint(unittest.TestCase):
     """Test"""
 
     def test_spec_code_check_pylint(self) -> None:
         """Test"""
         self.assertEqual(
-            mu.run_on_all_files(f"{PY} -m pylint", Path("."), ["py"], EXCLUDED_PATHS, False), 0
+            mu.run_on_all_files(
+                f"{PY} -m pylint", Path("."), ["py"], EXCLUDED_PATHS, False
+            ),
+            0,
         )
 
     def test_spec_code_check_flake8(self) -> None:

@@ -8,6 +8,7 @@ import misc_util as mu
 
 EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
+
 class TestMiscUtil(unittest.TestCase):
     """Test"""
 
@@ -38,8 +39,12 @@ class TestMiscUtil(unittest.TestCase):
 
     def test_contain(self) -> None:
         """Test"""
-        self.assertTrue(mu.contain(Path("__pycache__/common_test.cpython-39.pyc"), EXCLUDED_PATHS))
-        self.assertTrue(mu.contain(Path("__pycache__/some_unexisting_file"), EXCLUDED_PATHS))
+        self.assertTrue(
+            mu.contain(Path("__pycache__/common_test.cpython-39.pyc"), EXCLUDED_PATHS)
+        )
+        self.assertTrue(
+            mu.contain(Path("__pycache__/some_unexisting_file"), EXCLUDED_PATHS)
+        )
         self.assertFalse(mu.contain(Path("README.md"), EXCLUDED_PATHS))
         self.assertFalse(mu.contain(Path("some_unexisting_file"), EXCLUDED_PATHS))
 
@@ -66,7 +71,6 @@ class TestMiscUtil(unittest.TestCase):
         self.assertTrue(
             self.contain_path(all_files5, Path("test_data/misc/myfile.myext"))
         )
-
 
     def test_list_all_git_files(self) -> None:
         """Test"""
@@ -104,7 +108,7 @@ class TestMiscUtil(unittest.TestCase):
     def test_command_length(self) -> None:
         """Test"""
 
-        command1 = ["echo"] + [30000*"."]
+        command1 = ["echo"] + [30000 * "."]
 
         print("command1 length:", len(" ".join(command1)))
 
@@ -114,14 +118,17 @@ class TestMiscUtil(unittest.TestCase):
         subprocess.run(command1, check=True, shell=False, stdout=subprocess.DEVNULL)
         self.assertRaises(Exception, failing1)
 
-
     def test_run_on_all_files(self) -> None:
         """Execute a command on all files using git and xargs"""
 
         mu.run_on_all_files("echo py files: ", Path("."), ["py"], EXCLUDED_PATHS)
         mu.run_on_all_files("echo myext files: ", Path("."), ["myext"], EXCLUDED_PATHS)
-        mu.run_on_all_files("echo myext and md files: ", Path("."), ["md"], EXCLUDED_PATHS)
-        mu.run_on_all_files("echo myext and md files: ", Path("."), ["md", "myext"], EXCLUDED_PATHS)
+        mu.run_on_all_files(
+            "echo myext and md files: ", Path("."), ["md"], EXCLUDED_PATHS
+        )
+        mu.run_on_all_files(
+            "echo myext and md files: ", Path("."), ["md", "myext"], EXCLUDED_PATHS
+        )
 
         def failing() -> None:
             mu.run_on_all_files("false", Path("."), ["myext"], EXCLUDED_PATHS)
