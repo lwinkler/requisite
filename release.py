@@ -5,11 +5,14 @@
 import os
 import sys
 import argparse
+import yaml
 from datetime import datetime
 from pathlib import Path
+from typing import List
 
 import yaml_util as yu
 import entries as en
+import operations as op
 import expanders
 import rules as ru
 import report as rp
@@ -61,12 +64,58 @@ def check_for_errors(design1: en.Design) -> None:
     if errors:
         sys.exit(1)
 
+def datetime_to_string(dt: datetime) -> str:
+    return dt.strftime('%Y-%m-%d.%H%M%S')
+
 def generate_test_dir_path(releases_path: Path) -> Path:
     """Generate the test dir path with current time stamp"""
-    dt = datetime.now()
-    time_str = dt.strftime('%Y-%m-%d.%H%M%S')
-    print(dt, time_str)
-    return releases_path / time_str
+    return releases_path / datetime_to_string(datetime.now())
+
+
+# -----
+
+class TestExecution(en.Entry):
+    """The execution of a test"""
+
+    short_type = "ex"
+    yaml_tag = "!TestExecution"
+
+    def __init__(self, test_id: str, date: str, result: str):
+        self.test_id = test_id
+        self.date = date
+        self.result = result
+
+class TestListExecution(en.Entry):
+    """The execution of a test list"""
+
+    short_type = "lex"
+    yaml_tag = "!TestListExecution"
+
+    def __init__(self, test_list_id: str, date: str, children: List[TestExecution], result: str):
+        self.test_list_id = test_list_id
+        self.date = date
+        self.result = result
+        self.children = children
+
+class TestEngine: # (en.Entry):
+
+    # short_type = "ten"
+    # yaml_tag = "!TestEngine"
+
+    def execute_test(self, test: en.Test) -> TestExecution:
+        # TODO
+        print("Execute", test.get_id())
+        result = self.run_test(test)
+        return TestExecution(test.get_id(), datetime_to_string(datetime.now()), result)
+
+    def execute_test_list(self, test_list: en.TestList) -> List[TestExecution]:
+        results : List[TestExecution] = []
+        for test in op.extract_entries_of_type(test_list, en.Test):
+            results.append(self.execute_test(test))
+        return results
+
+    def run_test(self, test: en.Test) -> str:
+        return "TODO"
 
 
 if __name__ == "__main__":
@@ -95,6 +144,13 @@ if __name__ == "__main__":
 
     verifier = ve.Verifier(design)
     # unverified = verifier.list_unverified(design)
+
+    engine = TestEngine()
+    for entry in op.extract_entries_of_type(design, en.TestList):
+        test_executions = engine.execute_test_list(entry)
+        test_list_execution = TestListExecution(entry.get_id(), datetime_to_string(datetime.now()), test_executions, "TODO")
+        yu.write_entry(test_directory / (entry.get_id() + ".yaml"), test_list_execution)
+
 
     
     print(f"Create report")
