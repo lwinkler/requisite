@@ -26,7 +26,7 @@ format_black:
 	${PYTHON} -m black .
 
 run:
-	${PYTHON} parse.py -e specs/requisite.yaml -o out.yaml -O report.html
+	${PYTHON} check.py -e specs/requisite.yaml -o out.yaml -O report.html
 
 tests:
 	${PYTHON} -m unittest discover

@@ -65,6 +65,7 @@ def check_for_errors(design1: en.Design) -> None:
         sys.exit(1)
 
 def datetime_to_string(dt: datetime) -> str:
+    """Convert datetime into a string"""
     return dt.strftime('%Y-%m-%d.%H%M%S')
 
 def generate_test_dir_path(releases_path: Path) -> Path:
@@ -81,6 +82,7 @@ class TestExecution(en.Entry):
     yaml_tag = "!TestExecution"
 
     def __init__(self, test_id: str, date: str, result: str):
+        super().__init__("", "", []) # TODO: is there a better way ?
         self.test_id = test_id
         self.date = date
         self.result = result
@@ -92,29 +94,26 @@ class TestListExecution(en.Entry):
     yaml_tag = "!TestListExecution"
 
     def __init__(self, test_list_id: str, date: str, children: List[TestExecution], result: str):
+        super().__init__("", "", children) # TODO: is there a better way ?
         self.test_list_id = test_list_id
         self.date = date
         self.result = result
-        self.children = children
 
 class TestEngine: # (en.Entry):
 
     # short_type = "ten"
     # yaml_tag = "!TestEngine"
 
-    def execute_test(self, test: en.Test) -> TestExecution:
-        # TODO
-        print("Execute", test.get_id())
-        result = self.run_test(test)
-        return TestExecution(test.get_id(), datetime_to_string(datetime.now()), result)
-
-    def execute_test_list(self, test_list: en.TestList) -> List[TestExecution]:
+    def run_test_list(self, test_list: en.TestList) -> List[TestExecution]:
+        """Run the tests of a test list"""
         results : List[TestExecution] = []
         for test in op.extract_entries_of_type(test_list, en.Test):
-            results.append(self.execute_test(test))
+            result = self.run_test(test)
+            results.append(TestExecution(test.get_id(), datetime_to_string(datetime.now()), result))
         return results
 
     def run_test(self, test: en.Test) -> str:
+        """Run one test"""
         return "TODO"
 
 
@@ -133,7 +132,7 @@ if __name__ == "__main__":
         print(f"Create output directory {test_directory.as_posix()}")
         if not releases_path.is_dir():
             os.mkdir(releases_path)
-            
+
         os.mkdir(test_directory.as_posix())
         yu.write_entry(test_directory / "expanded_design.yml", design)
     # TODO else warn if not identical
