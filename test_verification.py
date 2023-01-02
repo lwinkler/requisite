@@ -1,7 +1,7 @@
 """Unit test for doxygen test extraction"""
 
 import unittest
-from typing import List, cast
+from typing import cast
 
 import entries as en
 import operations as op
@@ -45,7 +45,7 @@ children:
 """
 
 
-def get_by_id(all_statements: List[en.Entry], id1: str) -> en.Statement:
+def get_by_id(all_statements: list[en.Entry], id1: str) -> en.Statement:
     """Search function by id"""
     for test in all_statements:
         if test.id == id1:

@@ -2,13 +2,13 @@
 
 import unittest
 from pathlib import Path
-from typing import List, cast
+from typing import cast
 import entries as en
 import rules as ru
 import yaml_util as yu
 
 
-def get_by_id(all_entries: List[en.Entry], id1: str) -> en.Test:
+def get_by_id(all_entries: list[en.Entry], id1: str) -> en.Test:
     """Search function by id"""
     for test in all_entries:
         if test.id == id1:

@@ -1,16 +1,14 @@
 """Operations on design and entries"""
 
-from typing import List
-
 import entries as en
 
 
 def extract_entries_of_type(
     entry: en.Entry, parent_class: type[en.Entry]
-) -> List[en.Entry]:
+) -> list[en.Entry]:
     """Extract all instances that inherit from the type"""
 
-    res: List[en.Entry] = []
+    res: list[en.Entry] = []
 
     if isinstance(entry, parent_class):
         res.append(entry)
@@ -32,9 +30,9 @@ def find_entry_by_type_and_id(
     raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
 
 
-def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> List[str]:
+def gather_all_ids(entry_to_check: en.Entry, parent_class: type[en.Entry]) -> list[str]:
     """Return all ids from the own and children entries"""
-    all_ids: List[str] = []
+    all_ids: list[str] = []
     for entry in extract_entries_of_type(entry_to_check, parent_class):
         if entry.get_id():
             all_ids.append(entry.id)

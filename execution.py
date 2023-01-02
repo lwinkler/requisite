@@ -1,7 +1,6 @@
 """Code related to test execution"""
 
 from datetime import datetime
-from typing import List
 
 import entries as en
 import operations as op
@@ -32,7 +31,7 @@ class TestListExecution(en.Entry):
     yaml_tag = "!TestListExecution"
 
     def __init__(
-        self, test_list_id: str, date: str, children: List[en.Entry], result: str
+        self, test_list_id: str, date: str, children: list[en.Entry], result: str
     ):
         super().__init__("", "", children)  # TODO: is there a better way ?
         self.test_list_id = test_list_id
@@ -45,9 +44,9 @@ class TestEngine:  # (en.Entry):
     # short_type = "ten"
     # yaml_tag = "!TestEngine"
 
-    def run_test_list(self, test_list: en.TestList) -> List[TestExecution]:
+    def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
-        results: List[TestExecution] = []
+        results: list[TestExecution] = []
         for test in op.extract_entries_of_type(test_list, en.Test):
             result = self.run_test(test)
             results.append(
@@ -57,4 +56,4 @@ class TestEngine:  # (en.Entry):
 
     def run_test(self, test: en.Test) -> str:
         """Run one test"""
-        return "TODO"
+        raise NotImplementedError()

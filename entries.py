@@ -3,7 +3,7 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
-from typing import List, Optional, TextIO
+from typing import Optional, TextIO
 from enum import Enum
 
 import re
@@ -20,7 +20,7 @@ class Entry(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Entry"
 
-    def __init__(self, id1: str, text: str, children: List[Entry]):
+    def __init__(self, id1: str, text: str, children: list[Entry]):
         self.id = id1  # pylint: disable=C0103
         self.text = text
         self.children = children
@@ -33,7 +33,7 @@ class Entry(yaml.YAMLObject):
         """Return the text if applicable else None"""
         return self.text if hasattr(self, "text") and self.text is not None else ""
 
-    def get_children(self) -> List[Entry]:
+    def get_children(self) -> list[Entry]:
         """Return the children if applicable else []"""
         return (
             self.children
@@ -41,7 +41,7 @@ class Entry(yaml.YAMLObject):
             else []
         )
 
-    def expand(self, design: Entry, _parent: Optional[Entry]) -> List[Entry]:
+    def expand(self, design: Entry, _parent: Optional[Entry]) -> list[Entry]:
         """Processing: Nothing to do by default but call on children"""
         try:
             if self.get_children():
@@ -68,13 +68,13 @@ class Entry(yaml.YAMLObject):
         for child in self.get_children():
             child.print(output_stream, indent + 1)
 
-    def extract_links(self) -> List[str]:
+    def extract_links(self) -> list[str]:
         """Extract all the links mentioned in the associated text"""
         return LINK_EXPRESSION.findall(self.get_text())
 
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
-        keys_to_delete: List[str] = []
+        keys_to_delete: list[str] = []
         for attribute_name in self.__dict__:
             if hasattr(self, attribute_name) and not getattr(self, attribute_name):
                 keys_to_delete.append(attribute_name)
@@ -157,7 +157,7 @@ class TestList(Entry):
         self,
         id1: str,
         text: str,
-        children: List[Entry],
+        children: list[Entry],
         engine: str,
     ):
         super().__init__(id1, text, children)

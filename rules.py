@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 import entries as en
 import operations as op
@@ -29,7 +29,7 @@ class EntryErrorMessage:
     text: str
 
 
-def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
+def check_all_rules(entry: en.Entry) -> list[EntryErrorMessage]:
     """Apply all existing rules to the entry and its children"""
     messages = check_entry_attributes_non_null(entry)
     messages += check_definition_id_mandatory(entry)
@@ -48,10 +48,10 @@ def check_all_rules(entry: en.Entry) -> List[EntryErrorMessage]:
 
 def check_entry_attributes_non_null(
     entry_to_check: en.Entry,
-) -> List[EntryErrorMessage]:
+) -> list[EntryErrorMessage]:
     """Check rule spec-entry-attributes-non-null"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         for attribute_name in entry.__dict__.keys():
             if (
@@ -67,31 +67,31 @@ def check_entry_attributes_non_null(
     return messages
 
 
-def check_definition_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_definition_id_mandatory(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-definition-id-mandatory"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Definition):
         if not entry.get_id():
             messages.append(EntryErrorMessage(entry, "Definition id is missing"))
     return messages
 
 
-def check_statement_id_mandatory(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_statement_id_mandatory(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-statement-id-mandatory"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Statement):
         if not entry.get_id():
             messages.append(EntryErrorMessage(entry, "Statement id is missing"))
     return messages
 
 
-def check_id_unique(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_id_unique(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-statement-id-unique"""
 
-    known_ids: List[str] = []
-    messages: List[EntryErrorMessage] = []
+    known_ids: list[str] = []
+    messages: list[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         if entry.get_id():
@@ -102,10 +102,10 @@ def check_id_unique(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_id_valid(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_id_valid(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-statement-id-valid"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         if entry.get_id():
@@ -116,10 +116,10 @@ def check_id_valid(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_id_spec(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_id_spec(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-statement-id-spec"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
 
     for entry in op.extract_entries_of_type(entry_to_check, en.Specification):
         if entry.get_id():
@@ -132,10 +132,10 @@ def check_id_spec(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_id_req(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_id_req(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-statement-id-req"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Requirement):
         if entry.get_id():
             if not entry.id.startswith("req-"):
@@ -145,12 +145,12 @@ def check_id_req(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_links(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_links(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-valid-links"""
 
     all_ids = op.gather_all_ids(entry_to_check, en.Entry)
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         links = entry.extract_links()
         for link in links:
@@ -162,10 +162,10 @@ def check_links(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_child_statements(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_child_statements(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-child-statement"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Statement):
         for child in entry.get_children():
             if not isinstance(child, en.Statement) and not isinstance(
@@ -180,10 +180,10 @@ def check_child_statements(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_child_definition(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_child_definition(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-child-definition"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Definition):
         for child in entry.get_children():
             if not isinstance(child, en.Definition) and not isinstance(
@@ -199,10 +199,10 @@ def check_child_definition(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_child_test_list(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
+def check_child_test_list(entry_to_check: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-child-test-list"""
 
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.TestList):
         for child in entry.get_children():
             if not isinstance(child, en.Test) and not isinstance(child, ex.Expander):
@@ -213,11 +213,11 @@ def check_child_test_list(entry_to_check: en.Entry) -> List[EntryErrorMessage]:
     return messages
 
 
-def check_test_verify_id_mandatory(design: en.Entry) -> List[EntryErrorMessage]:
+def check_test_verify_id_mandatory(design: en.Entry) -> list[EntryErrorMessage]:
     """Check rule spec-test-statement-id"""
 
     all_ids = op.gather_all_ids(design, en.Entry)
-    messages: List[EntryErrorMessage] = []
+    messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(design, en.Test):
         if not hasattr(entry, "verify_id") or not entry.verify_id:
             messages.append(

@@ -2,7 +2,7 @@
 
 import unittest
 
-from typing import List, Union, Optional
+from typing import Union, Optional
 from pathlib import Path
 import entries as en
 import expanders as ex
@@ -12,7 +12,7 @@ TEST_PREFIX = "test_"
 
 
 def extract_verify_id_from_function_name(
-    name: str, all_ids: List[str]
+    name: str, all_ids: list[str]
 ) -> Optional[str]:
     """Extract the statement id from the function name"""
 
@@ -21,7 +21,7 @@ def extract_verify_id_from_function_name(
 
     assert name.startswith(TEST_PREFIX)
     simplified_id = simplify_id(name[len(TEST_PREFIX) :])
-    possible_ids: List[str] = []
+    possible_ids: list[str] = []
     for id1 in all_ids:
         if simplify_id(id1) == simplified_id:
             possible_ids.append(id1)
@@ -37,13 +37,13 @@ def extract_verify_id_from_function_name(
 
 
 def extract_python_unittest_tests(
-    path: Path, pattern: str, all_ids: List[str]
-) -> List[en.Entry]:
+    path: Path, pattern: str, all_ids: list[str]
+) -> list[en.Entry]:
     """Extract the unit tests from python unittest module"""
 
     def extract_test_cases(
         test_suite_or_case: Union[unittest.TestSuite, unittest.TestCase],
-    ) -> List[en.Entry]:
+    ) -> list[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
             verify_id = extract_verify_id_from_function_name(
                 test_suite_or_case._testMethodName, all_ids  # pylint: disable=W0212
@@ -77,13 +77,13 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
     yaml_tag = "!ExtractTestsFromPythonUnitTest"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, children: List[en.Entry], path: Path, pattern: str
+        self, id1: str, text: str, children: list[en.Entry], path: Path, pattern: str
     ):
         super().__init__(id1, text, children)
         self.path = path
         self.pattern = pattern
 
-    def create_entries(self, design: en.Entry, parent: en.Entry) -> List[en.Entry]:
+    def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         all_ids = op.gather_all_ids(design, en.Statement)
         return extract_python_unittest_tests(self.get_path(), self.pattern, all_ids)
 

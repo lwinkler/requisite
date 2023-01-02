@@ -27,6 +27,7 @@ format_black:
 
 run:
 	${PYTHON} check.py -e specs/requisite.yaml -o out.yaml -O report.html
+	${PYTHON} release.py specs/requisite.yaml -d releases/dummy
 
 tests:
 	${PYTHON} -m unittest discover
