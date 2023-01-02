@@ -1,6 +1,7 @@
 """Rules for entries"""
 
 import re
+import sys
 from dataclasses import dataclass
 from typing import Optional
 
@@ -235,3 +236,5 @@ def check_test_verify_id_mandatory(design: en.Entry) -> list[EntryErrorMessage]:
             )
 
     return messages
+
+

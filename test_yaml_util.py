@@ -7,6 +7,8 @@ import entries as en
 import expanders as ex
 import yaml_util as yu
 
+import parsers.python_unittest
+
 DESIGN_STR1 = """!Design
 id: design-id
 children:

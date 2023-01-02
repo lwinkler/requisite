@@ -8,12 +8,13 @@ import misc_util as mu
 import operations as op
 
 
-class TestExecutionResult(Enum):
+class TestResult(Enum):
     """The result of a test execution"""
 
     PASSED = "passed"
     SKIPPED = "skipped"
     FAILED = "failed"
+
 
 class TestExecution(en.Entry):
     """The execution of a test"""
@@ -21,7 +22,7 @@ class TestExecution(en.Entry):
     short_type = "ex"
     yaml_tag = "!TestExecution"
 
-    def __init__(self, test_id: str, date: str, result: TestExecutionResult):
+    def __init__(self, test_id: str, date: str, result: TestResult):
         super().__init__("", "", [])  # TODO: is there a better way ?
         self.test_id = test_id
         self.date = date
@@ -35,7 +36,7 @@ class TestListExecution(en.Entry):
     yaml_tag = "!TestListExecution"
 
     def __init__(
-        self, test_list_id: str, date: str, children: list[en.Entry], result: str
+        self, test_list_id: str, date: str, children: list[en.Entry], result: TestResult
     ):
         super().__init__("", "", children)  # TODO: is there a better way ?
         self.test_list_id = test_list_id
@@ -43,10 +44,12 @@ class TestListExecution(en.Entry):
         self.result = result
 
 
-class TestEngine:  # (en.Entry):
+class TestEngine(en.Entry):
+    short_type = "ten"
+    yaml_tag = "!TestEngine"
 
-    # short_type = "ten"
-    # yaml_tag = "!TestEngine"
+    def __init__(self):
+        super().__init__("", "", [])  # TODO: is there a better way ?
 
     def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
@@ -54,11 +57,12 @@ class TestEngine:  # (en.Entry):
         for test in op.extract_entries_of_type(test_list, en.Test):
             result = self.run_test(test)
             results.append(
-                TestExecution(test.get_id(), mu.datetime_to_string(datetime.now()), result)
+                TestExecution(
+                    test.get_id(), mu.datetime_to_string(datetime.now()), result
+                )
             )
         return results
 
-    def run_test(self, test: en.Test) -> TestExecutionResult:
+    def run_test(self, test: en.Test) -> TestResult:
         """Run one test"""
         raise NotImplementedError()
-

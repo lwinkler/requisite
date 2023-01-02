@@ -17,19 +17,8 @@ import testing as te
 import rules as ru
 import report as rp
 import verification as ve
-import engines.engine_python_unittest
-import parsers.doxygen # TODO rename
-import parsers.python_unittest # TODO rename
 
 # TODO: Typing list vs sequences
-
-# use modules to avoid warning
-_ = (
-    expanders.Expander,
-    parsers.doxygen.ExtractTestsFromDoxygen,
-    parsers.python_unittest.ExtractTestsFromPythonUnitTest,
-)
-del _
 
 if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")
@@ -58,20 +47,18 @@ def arguments_parser() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-
-def check_for_errors(design1: en.Design) -> None:
+def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
     """Check for all syntax errors in design and abort on error"""
 
-    errors = ru.check_all_rules(design1)
     for error in errors:
         print("ERROR: ", error.related_id, error.text)
     if errors:
         sys.exit(1)
 
 
-def generate_test_dir_path(releases_path: Path) -> Path:
+def generate_test_dir_path(path: Path) -> Path:
     """Generate the test dir path with current time stamp"""
-    return releases_path / mu.datetime_to_string(datetime.now())
+    return path / mu.datetime_to_string(datetime.now())
 
 
 # -----
@@ -79,11 +66,14 @@ def generate_test_dir_path(releases_path: Path) -> Path:
 
 if __name__ == "__main__":
 
+    with open("specs/setup.py", encoding="utf-8") as file:
+        exec(file.read())  # TODO
+
     args = arguments_parser()
     design = yu.read_design(args.input)
-    check_for_errors(design)
+    print_errors(ru.check_all_rules(design))
     design.expand(design, None)
-    check_for_errors(design)
+    print_errors(ru.check_all_rules(design))
 
     releases_path = Path(".") / "releases"
     test_directory = (
@@ -104,11 +94,13 @@ if __name__ == "__main__":
     # unverified = verifier.list_unverified(design)
 
     # TODO: Move this code ?
-    engine = engines.engine_python_unittest.TestEnginePythonUnittest()
     for entry in op.extract_entries_of_type(design, en.TestList):
-        test_executions = engine.run_test_list(entry)
+        test_executions = entry.engine.run_test_list(entry)
         test_list_execution = te.TestListExecution(
-            entry.get_id(), mu.datetime_to_string(datetime.now()), test_executions, "TODO"
+            entry.get_id(),
+            mu.datetime_to_string(datetime.now()),
+            test_executions,
+            te.TestResult.SKIPPED, # TODO
         )
         yu.write_entry(test_directory / (entry.get_id() + ".yaml"), test_list_execution)
 
