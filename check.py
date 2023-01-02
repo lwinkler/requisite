@@ -9,6 +9,7 @@
 import sys
 import argparse
 from pathlib import Path
+from typing import Sequence
 
 import misc_util as mu
 import yaml_util as yu
@@ -56,7 +57,7 @@ def arguments_parser() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
+def print_errors(errors: Sequence[ru.EntryErrorMessage]) -> None:
     """Check for all syntax errors in design and abort on error"""
 
     for error in errors:

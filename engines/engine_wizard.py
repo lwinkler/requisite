@@ -1,6 +1,5 @@
 """Test engine to run tests manually through a wizard"""
 
-import misc_util as mu
 import entries as en
 import testing as te
 

@@ -5,7 +5,7 @@ import tempfile
 import shutil
 import xml.etree.ElementTree as ET
 
-from typing import Optional
+from typing import Optional, Sequence
 from pathlib import Path
 from dataclasses import dataclass
 import entries as en
@@ -27,10 +27,10 @@ def function_to_id(path: Path, name: str) -> str:
     return path.as_posix().replace("/", "-").replace(".", "-") + "-" + name
 
 
-def extract_tests_from_functions(path: Path) -> list[en.Entry]:
+def extract_tests_from_functions(path: Path) -> Sequence[en.Entry]:
     """Parse the source code to extract the test information"""
 
-    def get_all_xml_files(xml_dir: Path) -> list[Path]:
+    def get_all_xml_files(xml_dir: Path) -> Sequence[Path]:
         res = []
         for path in xml_dir.iterdir():
             if path.as_posix().endswith(".xml") and not path.as_posix().endswith(
@@ -76,7 +76,7 @@ def extract_tests_from_functions(path: Path) -> list[en.Entry]:
             int(location.attrib["line"]),
         )
 
-    def execute(command: list[str], tmp_dir: Path) -> None:
+    def execute(command: Sequence[str], tmp_dir: Path) -> None:
         ret = subprocess.run(
             command,
             cwd=tmp_dir.as_posix(),
@@ -91,11 +91,11 @@ def extract_tests_from_functions(path: Path) -> list[en.Entry]:
         if ret.returncode != 0:
             raise Exception(f"Command '{command}' failed with code {ret.returncode}")
 
-    def extract_all_functions(xml_file: Path) -> list[Function]:
+    def extract_all_functions(xml_file: Path) -> Sequence[Function]:
 
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        res: list[Function] = []
+        res: Sequence[Function] = []
         # print(xml_file.as_posix())
         for memberdef in root.iter("memberdef"):
             if memberdef.attrib["kind"] == "function":
@@ -156,12 +156,12 @@ class ExtractTestsFromDoxygen(ex.Expander):
     yaml_tag = "!ExtractTestsFromDoxygen"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, children: list[en.Entry], path: Path
+        self, id1: str, text: str, children: Sequence[en.Entry], path: Path
     ):
         super().__init__(id1, text, children)
         self.path = path
 
-    def create_entries(self, _design: en.Entry, parent: en.Entry) -> list[en.Entry]:
+    def create_entries(self, _design: en.Entry, parent: en.Entry) -> Sequence[en.Entry]:
         return extract_tests_from_functions(self.get_path())
 
     def get_path(self) -> Path:

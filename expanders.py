@@ -2,7 +2,7 @@
 
 import copy
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Sequence
 
 import yaml_util as yu
 import operations as op
@@ -14,11 +14,11 @@ class Expander(Entry):
 
     yaml_tag = "!Expander"
 
-    def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
+    def create_entries(self, design: Entry, parent: Entry) -> Sequence[Entry]:
         """Create the entries to be added in the parent's child"""
         raise NotImplementedError()
 
-    def expand(self, design: Entry, parent: Optional[Entry]) -> list[Entry]:
+    def expand(self, design: Entry, parent: Optional[Entry]) -> Sequence[Entry]:
         """Processing: extract child tests"""
         if parent is None:
             raise Exception("Cannot use expanders at top level")
@@ -43,7 +43,7 @@ class Include(Expander):
         super().__init__(id1, text, [])
         self.path = path
 
-    def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
+    def create_entries(self, design: Entry, parent: Entry) -> Sequence[Entry]:
         return yu.read_entries(self.get_path())
 
     def get_path(self) -> Path:
@@ -62,8 +62,8 @@ class MultiplyByDefinition(Expander):
         super().__init__(id1, text, [])
         self.definition_id = definition_id
 
-    def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
-        ret: list[Entry] = []
+    def create_entries(self, design: Entry, parent: Entry) -> Sequence[Entry]:
+        ret: Sequence[Entry] = []
         definition = op.find_entry_by_type_and_id(
             design, Definition, self.definition_id
         )

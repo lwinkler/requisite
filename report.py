@@ -3,7 +3,7 @@
 import re
 from xml.etree import ElementTree as ET
 from pathlib import Path
-from typing import cast
+from typing import cast, Sequence
 import entries as en
 import operations as op
 import verification as ve
@@ -52,9 +52,9 @@ def entry_to_details_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     return details_tag
 
 
-def entry_to_div_tag(entry: en.Entry, add_id: bool) -> list[ET.Element]:
+def entry_to_div_tag(entry: en.Entry, add_id: bool) -> Sequence[ET.Element]:
     """Transform an entry into a string: for list"""
-    results: list[ET.Element] = []
+    results: Sequence[ET.Element] = []
     results.append(class_to_tag(entry))
     results.append(id_to_a_tag(entry, add_id))
     text = (

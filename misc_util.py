@@ -4,6 +4,7 @@ import sys
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from typing import Sequence
 
 
 def get_python_executable() -> Path:
@@ -19,9 +20,9 @@ def datetime_to_string(some_date: datetime) -> str:
 def import_source(path: Path) -> None:
     """Import a python source file, used before YAML deserialization"""
     with open(path, encoding="utf-8") as file:
-        exec(file.read())
+        exec(file.read())   # pylint: disable=W0122
 
-def generate_all_git_files_command(path: Path, extensions: list[str]) -> str:
+def generate_all_git_files_command(path: Path, extensions: Sequence[str]) -> str:
     """Generate a command to list all files with git+grep"""
     grep = (
         " | grep "
@@ -32,8 +33,8 @@ def generate_all_git_files_command(path: Path, extensions: list[str]) -> str:
     return "git ls-files " + path.as_posix() + grep
 
 
-def list_all_git_files(path: Path, extensions: list[str]) -> list[Path]:
-    """list all files with git ls-files and grep"""
+def list_all_git_files(path: Path, extensions: Sequence[str]) -> Sequence[Path]:
+    """List all files with git ls-files and grep"""
     command = generate_all_git_files_command(path, extensions)
     ret = subprocess.run(
         command, capture_output=True, encoding="utf-8", check=True, shell=True
@@ -41,7 +42,7 @@ def list_all_git_files(path: Path, extensions: list[str]) -> list[Path]:
     return [Path(path) for path in ret.stdout.splitlines()]
 
 
-def contain(path: Path, parent_paths: list[Path]) -> bool:
+def contain(path: Path, parent_paths: Sequence[Path]) -> bool:
     """Check if a path is contained by a list of potential parents"""
     for parent_path in parent_paths:
         if parent_path in path.parents:
@@ -50,8 +51,8 @@ def contain(path: Path, parent_paths: list[Path]) -> bool:
 
 
 def list_all_files(
-    path: Path, extensions: list[str], excluded_paths: list[Path], check: bool = True
-) -> list[Path]:
+    path: Path, extensions: Sequence[str], excluded_paths: Sequence[Path], check: bool = True
+) -> Sequence[Path]:
     """List all files with one extension"""
     if contain(path, excluded_paths):
         return []
@@ -59,7 +60,7 @@ def list_all_files(
     if path.is_file():
         return [path] if not extensions or path.suffix[1:] in extensions else []
 
-    results: list[Path] = []
+    results: Sequence[Path] = []
     if path.is_dir():
         for child_path in path.iterdir():
             results += list_all_files(child_path, extensions, excluded_paths, check)
@@ -70,8 +71,8 @@ def list_all_files(
 def run_on_all_files(
     command: str,
     path: Path,
-    extensions: list[str],
-    excluded_paths: list[Path],
+    extensions: Sequence[str],
+    excluded_paths: Sequence[Path],
     check: bool = True,
 ) -> int:
     """Execute a command on all files. With this function we still have the issue
@@ -85,7 +86,7 @@ def run_on_all_files(
 
 
 def run_on_all_git_files(
-    command: str, path: Path, extensions: list[str], check: bool = True
+    command: str, path: Path, extensions: Sequence[str], check: bool = True
 ) -> int:
     """Execute a command on all files using git and xargs"""
 

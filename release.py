@@ -7,18 +7,16 @@ import sys
 import argparse
 from datetime import datetime
 from pathlib import Path
+from typing import Sequence
 
 import yaml_util as yu
 import entries as en
 import operations as op
-import expanders
 import misc_util as mu
 import testing as te
 import rules as ru
 import report as rp
 import verification as ve
-
-# TODO: Typing list vs sequences
 
 if sys.version_info[0] < 3:
     print("Error: This script requires Python 3")
@@ -53,7 +51,7 @@ def arguments_parser() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
+def print_errors(errors: Sequence[ru.EntryErrorMessage]) -> None:
     """Check for all syntax errors in design and abort on error"""
 
     for error in errors:

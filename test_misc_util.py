@@ -3,6 +3,7 @@
 import unittest
 import subprocess
 from pathlib import Path
+from typing import Sequence
 import misc_util as mu
 
 EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
@@ -11,7 +12,7 @@ EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 class TestMiscUtil(unittest.TestCase):
     """Test"""
 
-    def contain_path(self, paths: list[Path], path_to_search: Path) -> bool:
+    def contain_path(self, paths: Sequence[Path], path_to_search: Path) -> bool:
         """Check if path is contained"""
         for path in paths:
             if path.as_posix() == path_to_search.as_posix():

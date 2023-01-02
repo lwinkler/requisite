@@ -1,7 +1,7 @@
 """Unit test for rules.py"""
 
 import unittest
-from typing import Any
+from typing import Any, Sequence
 
 import rules as ru
 import yaml_util as yu
@@ -227,7 +227,7 @@ class TestRules(unittest.TestCase):
     """Test rules"""
 
     def check_rule(
-        self, func: Any, design_str: str, expected_messages: list[ru.EntryErrorMessage]
+        self, func: Any, design_str: str, expected_messages: Sequence[ru.EntryErrorMessage]
     ) -> None:
         """Test any checking function"""
         design = yu.load_entry(design_str)
