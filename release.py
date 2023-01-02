@@ -12,7 +12,7 @@ import yaml_util as yu
 import entries as en
 import operations as op
 import expanders
-import execution as ex
+import testing as te
 import rules as ru
 import report as rp
 import verification as ve
@@ -67,7 +67,7 @@ def check_for_errors(design1: en.Design) -> None:
 
 def generate_test_dir_path(releases_path: Path) -> Path:
     """Generate the test dir path with current time stamp"""
-    return releases_path / ex.datetime_to_string(datetime.now())
+    return releases_path / te.datetime_to_string(datetime.now())
 
 
 # -----
@@ -100,11 +100,11 @@ if __name__ == "__main__":
     # unverified = verifier.list_unverified(design)
 
     # TODO: Move this code ?
-    engine = ex.TestEngine()
+    engine = te.TestEngine()
     for entry in op.extract_entries_of_type(design, en.TestList):
         test_executions = engine.run_test_list(entry)
-        test_list_execution = ex.TestListExecution(
-            entry.get_id(), ex.datetime_to_string(datetime.now()), test_executions, "TODO"
+        test_list_execution = te.TestListExecution(
+            entry.get_id(), te.datetime_to_string(datetime.now()), test_executions, "TODO"
         )
         yu.write_entry(test_directory / (entry.get_id() + ".yaml"), test_list_execution)
 
