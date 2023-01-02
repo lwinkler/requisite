@@ -193,8 +193,7 @@ children:
 - !TestList
   id: tests-system
   engine:
-    !TestEngineWizard
-       id: 
+    !TestEngineWizard {}
   children:
 
   - !Test
@@ -212,8 +211,7 @@ children:
 - !TestList
   id: tests-python-unittest
   engine:
-    !TestEnginePythonUnitTest
-    id: 
+    !TestEnginePythonUnitTest {}
   children:
     - !ExtractTestsFromPythonUnitTest
       path: .
