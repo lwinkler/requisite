@@ -38,12 +38,12 @@ def extract_verify_id_from_function_name(
 
 def extract_python_unittest_tests(
     path: Path, pattern: str, all_ids: Sequence[str]
-) -> Sequence[en.Entry]:
+) -> list[en.Entry]:
     """Extract the unit tests from python unittest module"""
 
     def extract_test_cases(
         test_suite_or_case: Union[unittest.TestSuite, unittest.TestCase],
-    ) -> Sequence[en.Entry]:
+    ) -> list[en.Entry]:
         if isinstance(test_suite_or_case, unittest.TestCase):
             verify_id = extract_verify_id_from_function_name(
                 test_suite_or_case._testMethodName, all_ids  # pylint: disable=W0212
@@ -83,7 +83,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self.path = path
         self.pattern = pattern
 
-    def create_entries(self, design: en.Entry, parent: en.Entry) -> Sequence[en.Entry]:
+    def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         all_ids = op.gather_all_ids(design, en.Statement)
         return extract_python_unittest_tests(self.get_path(), self.pattern, all_ids)
 

@@ -28,7 +28,7 @@ def load_entry(str_value: str) -> en.Entry:
     return cast(en.Entry, yaml.safe_load(str_value))
 
 
-def read_entries(path: Path) -> Sequence[en.Entry]:
+def read_entries(path: Path) -> list[en.Entry]:
     """Read a list of entries in YAML format"""
     with open(path, encoding="utf-8") as fin:
         return cast(Sequence[en.Entry], yaml.safe_load(fin.read()))

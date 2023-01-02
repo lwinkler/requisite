@@ -52,9 +52,9 @@ def entry_to_details_tag(entry: en.Entry, add_id: bool) -> ET.Element:
     return details_tag
 
 
-def entry_to_div_tag(entry: en.Entry, add_id: bool) -> Sequence[ET.Element]:
+def entry_to_div_tag(entry: en.Entry, add_id: bool) -> list[ET.Element]:
     """Transform an entry into a string: for list"""
-    results: Sequence[ET.Element] = []
+    results: list[ET.Element] = []
     results.append(class_to_tag(entry))
     results.append(id_to_a_tag(entry, add_id))
     text = (

@@ -33,7 +33,7 @@ class Entry(yaml.YAMLObject):
         """Return the text if applicable else None"""
         return self.text if hasattr(self, "text") and self.text is not None else ""
 
-    def get_children(self) -> Sequence[Entry]:
+    def get_children(self) -> list[Entry]:
         """Return the children if applicable else []"""
         return (
             self.children
@@ -41,7 +41,7 @@ class Entry(yaml.YAMLObject):
             else []
         )
 
-    def expand(self, design: Entry, _parent: Optional[Entry]) -> Sequence[Entry]:
+    def expand(self, design: Entry, _parent: Optional[Entry]) -> list[Entry]:
         """Processing: Nothing to do by default but call on children"""
         try:
             if self.get_children():
@@ -68,7 +68,7 @@ class Entry(yaml.YAMLObject):
         for child in self.get_children():
             child.print(output_stream, indent + 1)
 
-    def extract_links(self) -> Sequence[str]:
+    def extract_links(self) -> list[str]:
         """Extract all the links mentioned in the associated text"""
         return LINK_EXPRESSION.findall(self.get_text())
 

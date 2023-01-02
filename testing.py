@@ -53,9 +53,9 @@ class TestEngine(en.Entry):
     def __init__(self):
         super().__init__("", "", [])  # TODO: is there a better way ?
 
-    def run_test_list(self, test_list: en.TestList) -> Sequence[TestExecution]:
+    def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
-        results: Sequence[TestExecution] = []
+        results: list[TestExecution] = []
         for test in op.extract_entries_of_type(test_list, en.Test):
             result = self.run_test(test)
             results.append(

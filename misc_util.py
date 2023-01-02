@@ -33,7 +33,7 @@ def generate_all_git_files_command(path: Path, extensions: Sequence[str]) -> str
     return "git ls-files " + path.as_posix() + grep
 
 
-def list_all_git_files(path: Path, extensions: Sequence[str]) -> Sequence[Path]:
+def list_all_git_files(path: Path, extensions: Sequence[str]) -> list[Path]:
     """List all files with git ls-files and grep"""
     command = generate_all_git_files_command(path, extensions)
     ret = subprocess.run(
@@ -52,7 +52,7 @@ def contain(path: Path, parent_paths: Sequence[Path]) -> bool:
 
 def list_all_files(
     path: Path, extensions: Sequence[str], excluded_paths: Sequence[Path], check: bool = True
-) -> Sequence[Path]:
+) -> list[Path]:
     """List all files with one extension"""
     if contain(path, excluded_paths):
         return []
@@ -60,7 +60,7 @@ def list_all_files(
     if path.is_file():
         return [path] if not extensions or path.suffix[1:] in extensions else []
 
-    results: Sequence[Path] = []
+    results: list[Path] = []
     if path.is_dir():
         for child_path in path.iterdir():
             results += list_all_files(child_path, extensions, excluded_paths, check)
