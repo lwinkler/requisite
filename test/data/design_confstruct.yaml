@@ -65,6 +65,7 @@ children:
     id: reqQQQ
     text: a cs::structure can contain a child cs::attribute inside a parent cs::attribute type (abstract or concrete)
 
+    # TODO Remove this file !
 #- compatible type
   - !Statement
     id: reqQQQ

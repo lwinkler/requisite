@@ -2,6 +2,7 @@
 
 import sys
 import subprocess
+from datetime import datetime
 from pathlib import Path
 
 
@@ -9,6 +10,9 @@ def get_python_executable() -> Path:
     """Return the path to the Python executable"""
     return Path(sys.executable)
 
+def datetime_to_string(dt: datetime) -> str:
+    """Convert datetime into a string"""
+    return dt.strftime("%Y-%m-%d.%H%M%S")
 
 def generate_all_git_files_command(path: Path, extensions: list[str]) -> str:
     """Generate a command to list all files with git+grep"""

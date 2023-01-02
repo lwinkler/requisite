@@ -1,15 +1,19 @@
 """Code related to test execution"""
 
 from datetime import datetime
+from enum import Enum
 
 import entries as en
+import misc_util as mu
 import operations as op
 
 
-def datetime_to_string(dt: datetime) -> str:
-    """Convert datetime into a string"""
-    return dt.strftime("%Y-%m-%d.%H%M%S")
+class TestExecutionResult(Enum):
+    """The result of a test execution"""
 
+    PASSED = "passed"
+    SKIPPED = "skipped"
+    FAILED = "failed"
 
 class TestExecution(en.Entry):
     """The execution of a test"""
@@ -17,7 +21,7 @@ class TestExecution(en.Entry):
     short_type = "ex"
     yaml_tag = "!TestExecution"
 
-    def __init__(self, test_id: str, date: str, result: str):
+    def __init__(self, test_id: str, date: str, result: TestExecutionResult):
         super().__init__("", "", [])  # TODO: is there a better way ?
         self.test_id = test_id
         self.date = date
@@ -50,10 +54,11 @@ class TestEngine:  # (en.Entry):
         for test in op.extract_entries_of_type(test_list, en.Test):
             result = self.run_test(test)
             results.append(
-                TestExecution(test.get_id(), datetime_to_string(datetime.now()), result)
+                TestExecution(test.get_id(), mu.datetime_to_string(datetime.now()), result)
             )
         return results
 
-    def run_test(self, test: en.Test) -> str:
+    def run_test(self, test: en.Test) -> TestExecutionResult:
         """Run one test"""
         raise NotImplementedError()
+
