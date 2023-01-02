@@ -7,7 +7,7 @@ import sys
 import argparse
 from datetime import datetime
 from pathlib import Path
-from typing import Sequence
+from typing import cast, Sequence
 
 import yaml_util as yu
 import entries as en
@@ -70,7 +70,6 @@ def generate_test_dir_path(path: Path) -> Path:
 
 if __name__ == "__main__":
 
-
     args = arguments_parser()
     mu.import_source(args.setup)
     design = yu.read_design(args.input)
@@ -97,7 +96,9 @@ if __name__ == "__main__":
     # unverified = verifier.list_unverified(design)
 
     # TODO: Move this code ?
-    for entry in op.extract_entries_of_type(design, en.TestList):
+    for entry in cast(
+        Sequence[en.TestList], op.extract_entries_of_type(design, en.TestList)
+    ):
         test_executions = entry.engine.run_test_list(entry)
         test_list_execution = te.TestListExecution(
             entry.get_id(),

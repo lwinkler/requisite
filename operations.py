@@ -1,6 +1,5 @@
 """Operations on design and entries"""
 
-from typing import Sequence
 import entries as en
 
 

@@ -19,10 +19,12 @@ class Verifier:
     def __init__(self, design: en.Design):
         self.verified_ids = [
             test.verify_id
-            for test in cast(Sequence[en.Test], op.extract_entries_of_type(design, en.Test))
+            for test in cast(
+                Sequence[en.Test], op.extract_entries_of_type(design, en.Test)
+            )
         ]
 
-    def verify(self, statement: en.Statement) -> list[VerificationType]:
+    def verify(self, statement: en.Statement) -> Sequence[VerificationType]:
         """Verify a statement"""
         results: list[VerificationType] = []
         if statement.id in self.verified_ids:
@@ -31,7 +33,7 @@ class Verifier:
             results.append(VerificationType.CHILDREN)
         return results
 
-    def list_verified(self, design: en.Entry) -> list[en.Statement]:
+    def list_verified(self, design: en.Entry) -> Sequence[en.Statement]:
         """List all verified statements"""
         all_statements = cast(
             Sequence[en.Statement], op.extract_entries_of_type(design, en.Statement)
@@ -41,7 +43,7 @@ class Verifier:
             [statement for statement in all_statements if self.verify(statement)],
         )
 
-    def list_unverified(self, design: en.Entry) -> list[en.Statement]:
+    def list_unverified(self, design: en.Entry) -> Sequence[en.Statement]:
         """List all verified statements"""
         all_statements = cast(
             Sequence[en.Statement], op.extract_entries_of_type(design, en.Statement)

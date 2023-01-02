@@ -17,10 +17,12 @@ def datetime_to_string(some_date: datetime) -> str:
     return some_date.strftime("%Y-%m-%d.%H%M%S")
     # TODO unit test
 
+
 def import_source(path: Path) -> None:
     """Import a python source file, used before YAML deserialization"""
     with open(path, encoding="utf-8") as file:
-        exec(file.read())   # pylint: disable=W0122
+        exec(file.read())  # pylint: disable=W0122
+
 
 def generate_all_git_files_command(path: Path, extensions: Sequence[str]) -> str:
     """Generate a command to list all files with git+grep"""
@@ -51,7 +53,10 @@ def contain(path: Path, parent_paths: Sequence[Path]) -> bool:
 
 
 def list_all_files(
-    path: Path, extensions: Sequence[str], excluded_paths: Sequence[Path], check: bool = True
+    path: Path,
+    extensions: Sequence[str],
+    excluded_paths: Sequence[Path],
+    check: bool = True,
 ) -> list[Path]:
     """List all files with one extension"""
     if contain(path, excluded_paths):

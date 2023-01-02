@@ -21,7 +21,7 @@ def extract_verify_id_from_function_name(
 
     assert name.startswith(TEST_PREFIX)
     simplified_id = simplify_id(name[len(TEST_PREFIX) :])
-    possible_ids: Sequence[str] = []
+    possible_ids: list[str] = []
     for id1 in all_ids:
         if simplify_id(id1) == simplified_id:
             possible_ids.append(id1)
@@ -77,7 +77,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
     yaml_tag = "!ExtractTestsFromPythonUnitTest"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, children: Sequence[en.Entry], path: Path, pattern: str
+        self, id1: str, text: str, children: list[en.Entry], path: Path, pattern: str
     ):
         super().__init__(id1, text, children)
         self.path = path

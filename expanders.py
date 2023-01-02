@@ -2,7 +2,7 @@
 
 import copy
 from pathlib import Path
-from typing import Optional, Sequence
+from typing import Optional
 
 import yaml_util as yu
 import operations as op

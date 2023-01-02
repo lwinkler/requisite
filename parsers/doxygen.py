@@ -156,7 +156,7 @@ class ExtractTestsFromDoxygen(ex.Expander):
     yaml_tag = "!ExtractTestsFromDoxygen"
 
     def __init__(  # pylint: disable=R0913
-        self, id1: str, text: str, children: Sequence[en.Entry], path: Path
+        self, id1: str, text: str, children: list[en.Entry], path: Path
     ):
         super().__init__(id1, text, children)
         self.path = path

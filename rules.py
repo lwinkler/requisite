@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass
-from typing import Optional, Sequence
+from typing import Optional
 
 import entries as en
 import operations as op

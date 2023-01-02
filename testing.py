@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Sequence
+from typing import cast, Sequence
 
 import entries as en
 import misc_util as mu
@@ -37,7 +37,7 @@ class TestListExecution(en.Entry):
     yaml_tag = "!TestListExecution"
 
     def __init__(
-        self, test_list_id: str, date: str, children: Sequence[en.Entry], result: TestResult
+        self, test_list_id: str, date: str, children: list[en.Entry], result: TestResult
     ):
         super().__init__("", "", children)  # TODO: is there a better way ?
         self.test_list_id = test_list_id
@@ -47,16 +47,19 @@ class TestListExecution(en.Entry):
 
 class TestEngine(en.Entry):
     """The test engine parent: subclass it to define how to run a test list"""
+
     short_type = "ten"
     yaml_tag = "!TestEngine"
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("", "", [])  # TODO: is there a better way ?
 
     def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
         results: list[TestExecution] = []
-        for test in op.extract_entries_of_type(test_list, en.Test):
+        for test in cast(
+            Sequence[en.Test], op.extract_entries_of_type(test_list, en.Test)
+        ):
             result = self.run_test(test)
             results.append(
                 TestExecution(

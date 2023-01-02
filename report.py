@@ -3,7 +3,7 @@
 import re
 from xml.etree import ElementTree as ET
 from pathlib import Path
-from typing import cast, Sequence
+from typing import cast
 import entries as en
 import operations as op
 import verification as ve

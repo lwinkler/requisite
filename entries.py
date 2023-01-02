@@ -3,7 +3,7 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
-from typing import Optional, TextIO, Sequence
+from typing import Any, Optional, TextIO
 from enum import Enum
 
 import re
@@ -20,7 +20,7 @@ class Entry(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = "!Entry"
 
-    def __init__(self, id1: str, text: str, children: Sequence[Entry]):
+    def __init__(self, id1: str, text: str, children: list[Entry]):
         self.id = id1  # pylint: disable=C0103
         self.text = text
         self.children = children
@@ -74,7 +74,7 @@ class Entry(yaml.YAMLObject):
 
     def simplify(self) -> None:
         """Remove fields that are empty, to simplify writing to YAML"""
-        keys_to_delete: Sequence[str] = []
+        keys_to_delete: list[str] = []
         for attribute_name in self.__dict__:
             if hasattr(self, attribute_name) and not getattr(self, attribute_name):
                 keys_to_delete.append(attribute_name)
@@ -157,8 +157,8 @@ class TestList(Entry):
         self,
         id1: str,
         text: str,
-        children: Sequence[Entry],
-        engine: str,
+        children: list[Entry],
+        engine: Any,
     ):
         super().__init__(id1, text, children)
         self.engine = engine

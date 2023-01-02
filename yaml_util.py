@@ -1,7 +1,7 @@
 """Utilities for YAML file format"""
 
 from pathlib import Path
-from typing import cast, Sequence
+from typing import cast
 
 import yaml
 import entries as en
@@ -31,7 +31,7 @@ def load_entry(str_value: str) -> en.Entry:
 def read_entries(path: Path) -> list[en.Entry]:
     """Read a list of entries in YAML format"""
     with open(path, encoding="utf-8") as fin:
-        return cast(Sequence[en.Entry], yaml.safe_load(fin.read()))
+        return cast(list[en.Entry], yaml.safe_load(fin.read()))
 
 
 def dump_entry(entry: en.Entry) -> str:

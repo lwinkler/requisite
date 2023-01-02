@@ -14,10 +14,11 @@ flake8:
 	${PYTHON} -m flake8 .
 
 mypy:
-	${PYTHON} -m mypy .
+	# TODO
+	${PYTHON} -m mypy . --explicit-package-bases
 
 mypy-strict:
-	${PYTHON} -m mypy --strict .
+	${PYTHON} -m mypy --strict . --explicit-package-bases
 
 black:
 	${PYTHON} -m black --check .
