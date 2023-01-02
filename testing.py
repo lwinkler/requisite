@@ -24,7 +24,7 @@ class TestExecution(en.Entry):
     yaml_tag = "!TestExecution"
 
     def __init__(self, test_id: str, date: str, result: TestResult):
-        super().__init__("", "", [])  # TODO: is there a better way ?
+        super().__init__("", "", [])
         self.test_id = test_id
         self.date = date
         self.result = result
@@ -39,7 +39,7 @@ class TestListExecution(en.Entry):
     def __init__(
         self, test_list_id: str, date: str, children: list[en.Entry], result: TestResult
     ):
-        super().__init__("", "", children)  # TODO: is there a better way ?
+        super().__init__("", "", children)
         self.test_list_id = test_list_id
         self.date = date
         self.result = result
@@ -51,8 +51,8 @@ class TestEngine(en.Entry):
     short_type = "ten"
     yaml_tag = "!TestEngine"
 
-    def __init__(self) -> None:
-        super().__init__("", "", [])  # TODO: is there a better way ?
+    def __init__(self, id1: str, text:str) -> None:
+        super().__init__(id1, text, [])
 
     def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
@@ -60,10 +60,11 @@ class TestEngine(en.Entry):
         for test in cast(
             Sequence[en.Test], op.extract_entries_of_type(test_list, en.Test)
         ):
+            timestamp = mu.datetime_to_string(datetime.now())
             result = self.run_test(test)
             results.append(
                 TestExecution(
-                    test.get_id(), mu.datetime_to_string(datetime.now()), result
+                    test.get_id(), timestamp, result
                 )
             )
         return results
