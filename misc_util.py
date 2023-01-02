@@ -14,7 +14,12 @@ def get_python_executable() -> Path:
 def datetime_to_string(some_date: datetime) -> str:
     """Convert datetime into a string"""
     return some_date.strftime("%Y-%m-%d.%H%M%S")
+    # TODO unit test
 
+def import_source(path: Path) -> None:
+    """Import a python source file, used before YAML deserialization"""
+    with open(path, encoding="utf-8") as file:
+        exec(file.read())
 
 def generate_all_git_files_command(path: Path, extensions: list[str]) -> str:
     """Generate a command to list all files with git+grep"""

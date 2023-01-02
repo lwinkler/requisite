@@ -9,9 +9,9 @@ import testing as te
 
 class TestEnginePythonUnitTest(te.TestEngine):
     """Class to run tests in the python unittest framework"""
+
     short_type = "ten_pu"
     yaml_tag = "!TestEnginePythonUnitTest"
-
 
     def run_test(self, test: en.Test) -> te.TestResult:
         """Run a test"""

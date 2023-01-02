@@ -34,6 +34,11 @@ def arguments_parser() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "setup",
+        type=Path,
+        help="The setup.py file that imports the python classes needed by the design",
+    )
+    parser.add_argument(
         "input",
         type=Path,
         help="The input design in YAML format",
@@ -46,6 +51,7 @@ def arguments_parser() -> argparse.Namespace:
         help="The test directory. If empty it will be generated.",
     )
     return parser.parse_args()
+
 
 def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
     """Check for all syntax errors in design and abort on error"""
@@ -66,10 +72,9 @@ def generate_test_dir_path(path: Path) -> Path:
 
 if __name__ == "__main__":
 
-    with open("specs/setup.py", encoding="utf-8") as file:
-        exec(file.read())  # TODO
 
     args = arguments_parser()
+    mu.import_source(args.setup)
     design = yu.read_design(args.input)
     print_errors(ru.check_all_rules(design))
     design.expand(design, None)
@@ -100,7 +105,7 @@ if __name__ == "__main__":
             entry.get_id(),
             mu.datetime_to_string(datetime.now()),
             test_executions,
-            te.TestResult.SKIPPED, # TODO
+            te.TestResult.SKIPPED,  # TODO
         )
         yu.write_entry(test_directory / (entry.get_id() + ".yaml"), test_list_execution)
 

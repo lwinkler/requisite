@@ -5,9 +5,8 @@ from pathlib import Path
 
 import entries as en
 import expanders as ex
+import misc_util as mu
 import yaml_util as yu
-
-import parsers.python_unittest
 
 DESIGN_STR1 = """!Design
 id: design-id
@@ -93,6 +92,7 @@ class TestYamlUtil(unittest.TestCase):
 
     def test_spec_design_output_yaml(self) -> None:
         """Test"""
+        mu.import_source("specs/setup.py")
         design = yu.read_design(Path("specs/requisite.yaml"))
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")

@@ -10,6 +10,7 @@ import sys
 import argparse
 from pathlib import Path
 
+import misc_util as mu
 import yaml_util as yu
 import rules as ru
 import report as rp
@@ -30,6 +31,11 @@ def arguments_parser() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "setup",
+        type=Path,
+        help="The setup.py file that imports the python classes needed by the design",
+    )
+    parser.add_argument(
         "input",
         type=Path,
         help="The input design in YAML format",
@@ -41,12 +47,6 @@ def arguments_parser() -> argparse.Namespace:
         help="Output the expanded design in YAML format.",
     )
     parser.add_argument(
-        "-e",
-        "--expand",
-        action="store_true",
-        help="Expand the design: will process all expander nodes, also file inclusion.",
-    )
-    parser.add_argument(
         "-O",
         "--report",
         type=Path,
@@ -54,6 +54,7 @@ def arguments_parser() -> argparse.Namespace:
     )
 
     return parser.parse_args()
+
 
 def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
     """Check for all syntax errors in design and abort on error"""
@@ -63,16 +64,14 @@ def print_errors(errors: list[ru.EntryErrorMessage]) -> None:
     if errors:
         sys.exit(1)
 
+
 if __name__ == "__main__":
 
-    with open("specs/setup.py", encoding="utf-8") as file:
-        exec(file.read())  # TODO
-
     args = arguments_parser()
+    mu.import_source(args.setup)
     design = yu.read_design(args.input)
     print_errors(ru.check_all_rules(design))
-    if args.expand:
-        design.expand(design, None)
+    design.expand(design, None)
     print_errors(ru.check_all_rules(design))
     # design.print()
 

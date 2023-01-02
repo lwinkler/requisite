@@ -26,10 +26,10 @@ format_black:
 	${PYTHON} -m black .
 
 check:
-	${PYTHON} check.py -e specs/requisite.yaml -o out.yaml -O report.html
+	${PYTHON} check.py specs/setup.py specs/requisite.yaml -o out.yaml -O report.html
 
 testing:
-	${PYTHON} release.py specs/requisite.yaml -d releases/dummy
+	${PYTHON} release.py specs/setup.py specs/requisite.yaml -d releases/dummy
 
 tests:
 	${PYTHON} -m unittest discover
