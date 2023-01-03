@@ -22,7 +22,7 @@ class TestTestListFromPythonUnitTest(ct.TestCommon):
 
         self.assertTrue(len(all_tests) > 0)
         self.assertEqual(
-            ct.get_by_id(
+            ct.find_test_by_id(
                 all_tests,
                 "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
                 ".test_spec_extract_tests_python_unittest_format",

@@ -45,7 +45,7 @@ children:
 """
 
 
-def get_by_id(all_statements: Sequence[en.Entry], id1: str) -> en.Statement: # TODO Replace
+def find_statement_by_id(all_statements: Sequence[en.Entry], id1: str) -> en.Statement:
     """Search function by id"""
     for test in all_statements:
         if test.id == id1:
@@ -64,19 +64,19 @@ class TestVerification(unittest.TestCase):
 
         all_statements = op.extract_entries_of_type(design, en.Statement)
         self.assertEqual(
-            verifier.verify(get_by_id(all_statements, "req-1")),
+            verifier.verify(find_statement_by_id(all_statements, "req-1")),
             [VerificationType.CHILDREN],
         )
         self.assertEqual(
-            verifier.verify(get_by_id(all_statements, "spec-1")),
+            verifier.verify(find_statement_by_id(all_statements, "spec-1")),
             [VerificationType.TEST],
         )
         self.assertEqual(
-            verifier.verify(get_by_id(all_statements, "spec-2")),
+            verifier.verify(find_statement_by_id(all_statements, "spec-2")),
             [VerificationType.TEST, VerificationType.CHILDREN],
         )
         self.assertEqual(
-            verifier.verify(get_by_id(all_statements, "spec-3")),
+            verifier.verify(find_statement_by_id(all_statements, "spec-3")),
             [VerificationType.TEST],
         )
 
