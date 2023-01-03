@@ -25,7 +25,7 @@ class TestYamlUtil(unittest.TestCase):
 
     def entry_read_write(self, str_value: str, object_type: type[en.Entry]) -> None:
         """Test the serialization of an entry"""
-        entry = yu.load_entry(str_value)
+        entry = yu.load_object(en.Entry, str_value)
         self.assertEqual(type(entry), object_type)
         self.assertEqual(str_value, yu.dump_entry(entry))
 
@@ -49,8 +49,8 @@ class TestYamlUtil(unittest.TestCase):
     def test_unserialize(self) -> None:
         """Test"""
 
-        statement = yu.load_entry("!Statement\nid: id2\ntext: Some text\n")
-        definition = yu.load_entry("!Definition\nid: id3\ntext: Some text\n")
+        statement = yu.load_object(en.Statement, "!Statement\nid: id2\ntext: Some text\n")
+        definition = yu.load_object(en.Definition, "!Definition\nid: id3\ntext: Some text\n")
 
         self.assertEqual(statement.id, "id2")
         self.assertEqual(definition.id, "id3")
@@ -79,7 +79,7 @@ class TestYamlUtil(unittest.TestCase):
     def test_unserialize_design(self) -> None:
         """Test"""
 
-        design = yu.load_entry(DESIGN_STR1)
+        design = yu.load_object(en.Entry, DESIGN_STR1)
 
         self.assertTrue(isinstance(design.children[1], en.Statement))
         self.assertEqual(design.children[1].id, "id2")
@@ -93,7 +93,7 @@ class TestYamlUtil(unittest.TestCase):
     def test_spec_design_output_yaml(self) -> None:
         """Test"""
         mu.import_source(Path("specs/setup.py"))
-        design = yu.read_design(Path("specs/requisite.yaml"))
+        design = yu.read_object(en.Design, Path("specs/requisite.yaml"))
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")
 

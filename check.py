@@ -11,6 +11,7 @@ import argparse
 from pathlib import Path
 from typing import Sequence
 
+from entries import Design
 import misc_util as mu
 import yaml_util as yu
 import rules as ru
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     args = arguments_parser()
     mu.import_source(args.setup)
-    design = yu.read_design(args.input)
+    design = yu.read_object(Design, args.input)
     print_errors(ru.check_all_rules(design))
     design.expand(design, None)
     print_errors(ru.check_all_rules(design))

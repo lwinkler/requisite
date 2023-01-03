@@ -44,7 +44,7 @@ class Include(Expander):
         self.path = path
 
     def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
-        return yu.read_entries(self.get_path())
+        return yu.read_objects(Entry, self.get_path())
 
     def get_path(self) -> Path:
         """Return a Path object"""

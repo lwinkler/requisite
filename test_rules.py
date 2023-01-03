@@ -3,6 +3,7 @@
 import unittest
 from typing import Any
 
+from entries import Entry
 import rules as ru
 import yaml_util as yu
 
@@ -230,7 +231,7 @@ class TestRules(unittest.TestCase):
         self, func: Any, design_str: str, expected_messages: list[ru.EntryErrorMessage]
     ) -> None:
         """Test any checking function"""
-        design = yu.load_entry(design_str)
+        design = yu.load_object(Entry, design_str)
         messages = func(design)
         self.assertListEqual(messages, expected_messages)
         # check that global check also finds our messages

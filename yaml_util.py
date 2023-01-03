@@ -1,39 +1,27 @@
 """Utilities for YAML file format"""
 
 from pathlib import Path
-from typing import cast
+from typing import cast, TypeVar
 
 import yaml
 import entries as en
 
+T = TypeVar('T')
 
 # TODO: Read, verify and cast
-def read_entry(path: Path) -> en.Entry:
+def read_object(object_type: type[T], path: Path) -> T:
     """Read a full design document in YAML format"""
     with open(path, encoding="utf-8") as fin:
-        return cast(en.Entry, yaml.safe_load(fin.read()))
+        return cast(T, yaml.safe_load(fin.read()))
 
-
-def read_design(path: Path) -> en.Design:
+def load_object(object_type: type[T], str_value: str) -> T:
     """Read a full design document in YAML format"""
-    return cast(en.Design, read_entry(path))
+    return cast(T, yaml.safe_load(str_value))
 
-
-def load_design(str_value: str) -> en.Design:
-    """Read a full design document in YAML format"""
-    return cast(en.Design, load_entry(str_value))
-
-
-def load_entry(str_value: str) -> en.Entry:
-    """Read a full design document in YAML format"""
-    return cast(en.Entry, yaml.safe_load(str_value))
-
-
-def read_entries(path: Path) -> list[en.Entry]:
+def read_objects(object_type: type[T], path: Path) -> list[T]:
     """Read a list of entries in YAML format"""
     with open(path, encoding="utf-8") as fin:
-        return cast(list[en.Entry], yaml.safe_load(fin.read()))
-
+        return cast(list[T], yaml.safe_load(fin.read()))
 
 def dump_entry(entry: en.Entry) -> str:
     """Dump and entry to a string"""
@@ -41,21 +29,10 @@ def dump_entry(entry: en.Entry) -> str:
 
 
 def write_entry(path: Path, design: en.Entry) -> None:
-    """Write a full design document in YAML format"""
+    """Write a full full design or entry in YAML format"""
 
     design.simplify()
 
     with open(path, "w", encoding="utf-8") as fout:
         # so far we set a very high line width
         fout.write(dump_entry(design))
-
-
-# def write_entries(path: Path, entries: Sequence[en.Entry]) -> None:
-# """Write a full design document in YAML format"""
-#
-# for entry in entries:
-# entry.simplify()
-#
-# with open(path, "w", encoding="utf-8") as fout:
-# # so far we set a very high line width
-# fout.write(yaml.dump(entries, width=1000, sort_keys=False)))
