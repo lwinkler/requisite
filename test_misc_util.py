@@ -2,6 +2,7 @@
 
 import unittest
 import subprocess
+from datetime import datetime
 from pathlib import Path
 from typing import Sequence
 import misc_util as mu
@@ -11,6 +12,7 @@ EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
 class TestMiscUtil(unittest.TestCase):
     """Test"""
+
 
     def contain_path(self, paths: Sequence[Path], path_to_search: Path) -> bool:
         """Check if path is contained"""
@@ -25,6 +27,11 @@ class TestMiscUtil(unittest.TestCase):
 
         self.assertTrue(exe.is_file())
         self.assertTrue("python" in exe.as_posix())
+
+    def test_datetime_to_string(self) -> None:
+        """Test"""
+        datetime1 = datetime(2023, 1, 3, 22, 21, 15, 333)
+        self.assertEqual(mu.datetime_to_string(datetime1), "2023-01-03_22.21.15")
 
     def test_generate_all_git_files_command(self) -> None:
         """Test"""

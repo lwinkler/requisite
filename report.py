@@ -85,7 +85,9 @@ def get_verification_tag(entry: en.Statement, verifier: ve.Verifier) -> ET.Eleme
     return ul_tag
 
 
-def entry_to_td(entry: en.Statement, verifier: ve.Verifier) -> ET.Element: # TODO: rename
+def entry_to_td(
+    entry: en.Statement, verifier: ve.Verifier
+) -> ET.Element:  # TODO: rename
     """Convert an id to a td tag"""
     tr_tag = ET.Element("tr")
 

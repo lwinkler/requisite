@@ -49,8 +49,12 @@ class TestYamlUtil(unittest.TestCase):
     def test_unserialize(self) -> None:
         """Test"""
 
-        statement = yu.load_object(en.Statement, "!Statement\nid: id2\ntext: Some text\n")
-        definition = yu.load_object(en.Definition, "!Definition\nid: id3\ntext: Some text\n")
+        statement = yu.load_object(
+            en.Statement, "!Statement\nid: id2\ntext: Some text\n"
+        )
+        definition = yu.load_object(
+            en.Definition, "!Definition\nid: id3\ntext: Some text\n"
+        )
 
         self.assertEqual(statement.id, "id2")
         self.assertEqual(definition.id, "id3")

@@ -3,11 +3,10 @@
 from typing import cast, TypeVar
 import entries as en
 
-T = TypeVar('T')
+T = TypeVar("T")
 
-def extract_entries_of_type(
-    entry: en.Entry, parent_class: type[T]
-) -> list[T]:
+
+def extract_entries_of_type(entry: en.Entry, parent_class: type[T]) -> list[T]:
     """Extract all instances that inherit from the type"""
 
     res: list[T] = []

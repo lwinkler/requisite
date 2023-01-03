@@ -7,7 +7,7 @@ import sys
 import argparse
 from datetime import datetime
 from pathlib import Path
-from typing import cast, Sequence
+from typing import Sequence
 
 import yaml_util as yu
 import entries as en
@@ -28,7 +28,7 @@ def arguments_parser() -> argparse.Namespace:
 
     # Main parser
     parser = argparse.ArgumentParser(
-        description="Generate reports for a stock portfolio"
+        description="Create a release folder"
     )
 
     parser.add_argument(

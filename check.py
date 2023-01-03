@@ -29,7 +29,7 @@ def arguments_parser() -> argparse.Namespace:
 
     # Main parser
     parser = argparse.ArgumentParser(
-        description="Generate reports for a stock portfolio"
+        description="Checks a design and writes a report"
     )
 
     parser.add_argument(

@@ -18,8 +18,7 @@ class Verifier:
 
     def __init__(self, design: en.Design):
         self.verified_ids = [
-            test.verify_id
-            for test in op.extract_entries_of_type(design, en.Test)
+            test.verify_id for test in op.extract_entries_of_type(design, en.Test)
         ]
 
     def verify(self, statement: en.Statement) -> Sequence[VerificationType]:

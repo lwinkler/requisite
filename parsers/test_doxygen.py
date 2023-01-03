@@ -19,16 +19,20 @@ class TestTestListFromDoxygen(ct.TestCommon):
 
         self.assertEqual(len(all_tests), 8)
         self.assertEqual(
-            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test1a").verify_id, "req-1a"
+            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test1a").verify_id,
+            "req-1a",
         )
         self.assertEqual(
-            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test1b").verify_id, "req-1b"
+            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test1b").verify_id,
+            "req-1b",
         )
         self.assertEqual(
-            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test2a").verify_id, "req-2a"
+            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test2a").verify_id,
+            "req-2a",
         )
         self.assertEqual(
-            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test2b").verify_id, "req-2b"
+            ct.find_test_by_id(all_tests, "test1-simplest-cpp-test2b").verify_id,
+            "req-2b",
         )
         self.assertEqual(
             ct.find_test_by_id(all_tests, "subdir-test2-simplest-cpp-test3a").verify_id,

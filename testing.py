@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Sequence
 
 import entries as en
 import misc_util as mu
@@ -37,7 +36,11 @@ class TestListExecution(en.Entry):
     yaml_tag = "!TestListExecution"
 
     def __init__(
-        self, test_list_id: str, date: str, children: list[en.Entry], result: TestResult
+        self,
+        test_list_id: str,
+        date: str,
+        children: list[en.Entry],
+        result: TestResult,
     ):
         super().__init__("", "", children)
         self.test_list_id = test_list_id
@@ -51,7 +54,7 @@ class TestEngine(en.Entry):
     short_type = "ten"
     yaml_tag = "!TestEngine"
 
-    def __init__(self, id1: str, text:str) -> None:
+    def __init__(self, id1: str, text: str) -> None:
         super().__init__(id1, text, [])
 
     def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
@@ -60,11 +63,7 @@ class TestEngine(en.Entry):
         for test in op.extract_entries_of_type(test_list, en.Test):
             timestamp = mu.datetime_to_string(datetime.now())
             result = self.run_test(test)
-            results.append(
-                TestExecution(
-                    test.get_id(), timestamp, result
-                )
-            )
+            results.append(TestExecution(test.get_id(), timestamp, result))
         return results
 
     def run_test(self, test: en.Test) -> TestResult:

@@ -14,7 +14,7 @@ flake8:
 	${PYTHON} -m flake8 .
 
 mypy:
-	# TODO
+	# TODO: fix properly ?
 	${PYTHON} -m mypy . --explicit-package-bases
 
 mypy-strict:
