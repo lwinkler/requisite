@@ -75,18 +75,18 @@ def generate_table_header() -> ET.Element:
     return tr_tag
 
 
-def get_verification_tag(entry: en.Entry, verifier: ve.Verifier) -> ET.Element:
+def get_verification_tag(entry: en.Statement, verifier: ve.Verifier) -> ET.Element:
     """Return a tag from the verification info of a statement"""
 
     ul_tag = ET.Element("ul")
 
-    for verification_type in verifier.verify(cast(en.Statement, entry)):
+    for verification_type in verifier.verify(entry):
         li_tag = ET.SubElement(ul_tag, "li")
         li_tag.text = verification_type.value
     return ul_tag
 
 
-def entry_to_td(entry: en.Entry, verifier: ve.Verifier) -> ET.Element:
+def entry_to_td(entry: en.Statement, verifier: ve.Verifier) -> ET.Element: # TODO: rename
     """Convert an id to a td tag"""
     tr_tag = ET.Element("tr")
 
@@ -113,8 +113,8 @@ def entry_to_table_tag(parent_entry: en.Entry, verifier: ve.Verifier) -> ET.Elem
     table_tag = ET.SubElement(p_tag, "table")
     table_tag.append(generate_table_header())
 
-    for entry in op.extract_entries_of_type(parent_entry, en.Statement):
-        table_tag.append(entry_to_td(entry, verifier))
+    for statement in op.extract_entries_of_type(parent_entry, en.Statement):
+        table_tag.append(entry_to_td(statement, verifier))
 
     return p_tag
 

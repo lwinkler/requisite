@@ -57,9 +57,7 @@ class TestEngine(en.Entry):
     def run_test_list(self, test_list: en.TestList) -> list[TestExecution]:
         """Run the tests of a test list"""
         results: list[TestExecution] = []
-        for test in cast(
-            Sequence[en.Test], op.extract_entries_of_type(test_list, en.Test)
-        ):
+        for test in op.extract_entries_of_type(test_list, en.Test):
             timestamp = mu.datetime_to_string(datetime.now())
             result = self.run_test(test)
             results.append(
