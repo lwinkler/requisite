@@ -1,14 +1,16 @@
 """Operations on design and entries"""
 
+from typing import TypeVar
 import entries as en
 
+T = TypeVar('T')
 
 def extract_entries_of_type(
-    entry: en.Entry, parent_class: type[en.Entry]
-) -> list[en.Entry]:
+    entry: en.Entry, parent_class: type[T]
+) -> list[T]:
     """Extract all instances that inherit from the type"""
 
-    res: list[en.Entry] = []
+    res: list[T] = []
 
     if isinstance(entry, parent_class):
         res.append(entry)

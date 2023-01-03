@@ -96,9 +96,7 @@ if __name__ == "__main__":
     # unverified = verifier.list_unverified(design)
 
     # TODO: Move this code ?
-    for entry in cast(
-        Sequence[en.TestList], op.extract_entries_of_type(design, en.TestList)
-    ):
+    for entry in op.extract_entries_of_type(design, en.TestList):
         test_executions = entry.engine.run_test_list(entry)
         test_list_execution = te.TestListExecution(
             entry.get_id(),
