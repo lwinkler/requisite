@@ -78,7 +78,7 @@ class TestOperations(unittest.TestCase):
         self.assertEqual(cast(en.Test, entry).verify_id, "req-design-review")
 
         entry = op.find_entry_by_type_and_id(design, en.Test, "test-design-review")
-        self.assertEqual(cast(en.Test, entry).verify_id, "req-design-review") # TODO: Avoid cast
+        self.assertEqual(entry.verify_id, "req-design-review")
 
         def failing() -> None:
             op.find_entry_by_type_and_id(design, en.Statement, "test-design-review")

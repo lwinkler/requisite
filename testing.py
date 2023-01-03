@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import cast, Sequence
+from typing import Sequence
 
 import entries as en
 import misc_util as mu

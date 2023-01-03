@@ -1,7 +1,7 @@
 """Verification of design"""
 
 from enum import Enum
-from typing import cast, Sequence
+from typing import Sequence
 import entries as en
 import operations as op
 

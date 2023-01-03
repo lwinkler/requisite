@@ -1,6 +1,6 @@
 """Operations on design and entries"""
 
-from typing import TypeVar
+from typing import cast, TypeVar
 import entries as en
 
 T = TypeVar('T')
@@ -22,12 +22,12 @@ def extract_entries_of_type(
 
 
 def find_entry_by_type_and_id(
-    main_entry: en.Entry, parent_class: type[en.Entry], id1: str
-) -> en.Entry:
+    main_entry: en.Entry, parent_class: type[T], id1: str
+) -> T:
     """Find an entry by type and id"""
 
     for entry in extract_entries_of_type(main_entry, parent_class):
-        if entry.get_id() == id1:
+        if cast(en.Entry, entry).get_id() == id1:
             return entry
     raise Exception(f"Cannot find entry of type {parent_class.__name__} and id {id1}")
 

@@ -7,6 +7,7 @@ import yaml
 import entries as en
 
 
+# TODO: Read, verify and cast
 def read_entry(path: Path) -> en.Entry:
     """Read a full design document in YAML format"""
     with open(path, encoding="utf-8") as fin:

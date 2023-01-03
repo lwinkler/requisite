@@ -45,7 +45,7 @@ children:
 """
 
 
-def get_by_id(all_statements: Sequence[en.Entry], id1: str) -> en.Statement:
+def get_by_id(all_statements: Sequence[en.Entry], id1: str) -> en.Statement: # TODO Replace
     """Search function by id"""
     for test in all_statements:
         if test.id == id1:
