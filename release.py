@@ -95,16 +95,9 @@ if __name__ == "__main__":
     verifier = ve.Verifier(design)
     # unverified = verifier.list_unverified(design)
 
-    # TODO: Move this code ?
-    for entry in op.extract_entries_of_type(design, en.TestList):
-        test_executions = entry.engine.run_test_list(entry)
-        test_list_execution = te.TestListExecution(
-            entry.get_id(),
-            mu.datetime_to_string(datetime.now()),
-            test_executions,
-            te.TestResult.SKIPPED,  # TODO
-        )
-        yu.write_entry(test_directory / (entry.get_id() + ".yaml"), test_list_execution)
+    executions = te.run_all_test_lists(design)
+    for execution in executions:
+        yu.write_entry(test_directory / (execution.test_list_id + ".yaml"), execution)
 
     print("Create report")
     rp.write_html_report(test_directory / "report.html", design, verifier)

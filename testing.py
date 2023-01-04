@@ -7,7 +7,6 @@ import entries as en
 import misc_util as mu
 import operations as op
 
-
 class TestResult(Enum):
     """The result of a test execution"""
 
@@ -69,3 +68,18 @@ class TestEngine(en.Entry):
     def run_test(self, test: en.Test) -> TestResult:
         """Run one test"""
         raise NotImplementedError()
+
+def run_all_test_lists(design: en.Design) -> list[TestListExecution]:
+    test_list_executions = []
+    for entry in op.extract_entries_of_type(design, en.TestList):
+        test_executions = entry.engine.run_test_list(entry)
+        test_list_executions.append(
+            TestListExecution(
+                entry.get_id(),
+                mu.datetime_to_string(datetime.now()),
+                test_executions,
+                TestResult.SKIPPED,  # TODO
+            )
+        )
+    return test_list_executions
+
