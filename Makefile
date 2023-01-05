@@ -27,7 +27,7 @@ format_black:
 	${PYTHON} -m black .
 
 check:
-	${PYTHON} check.py specs/setup.py specs/requisite.yaml -o out.yaml -O report.html
+	${PYTHON} release.py specs/setup.py specs/requisite.yaml -o out.yaml -O report.html
 
 testing:
 	${PYTHON} release.py specs/setup.py specs/requisite.yaml -d releases/dummy
