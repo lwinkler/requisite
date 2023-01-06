@@ -43,16 +43,24 @@ def arguments_parser() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-d",
-        "--test_dir",
+        "-r",
+        "--release-path",
         type=Path,
-        help="The test directory. If empty it will be generated.",
+        help="The release directory. If empty it will be generated.",
     )
+
+    parser.add_argument(
+        "-R",
+        "--releases-path",
+        type=Path,
+        help="The directory containing the releases. A subdirectory is automatically created with the current date.",
+    )
+
 
     parser.add_argument(
         "--output-yaml",
         type=Path,
-        help="Output the expanded design in YAML format.",
+        help="Output the expanded design in YAML format and exit.",
     )
 
     parser.add_argument(
@@ -72,31 +80,30 @@ def exit_if_errors(errors: Sequence[ru.EntryErrorMessage]) -> None:
         sys.exit(1)
 
 
-def generate_test_dir_path(path: Path) -> Path:
-    """Generate the test dir path with current time stamp"""
+def generate_release_dir_path(path: Path) -> Path:
+    """Generate the release dir path with current time stamp"""
     return path / mu.datetime_to_string(datetime.now())
 
-
-def create_release(test_directory: Path) -> None:
+def create_release(release_directory: Path, design: en.Design, verifier: ve.Verifier) -> None:
     """Create a release in a directory"""
 
-    if not test_directory.is_dir():
-        print(f"Create output directory {test_directory.as_posix()}")
-        if not releases_path.is_dir():
-            os.mkdir(releases_path)
+    print(f"Create a release in {release_directory.as_posix()}")
 
-        os.mkdir(test_directory.as_posix())
-        yu.write_entry(test_directory / "expanded_design.yml", design)
+    if not release_directory.is_dir():
+        print(f"Create release directory {release_directory.as_posix()}")
+        os.makedirs(release_directory.as_posix())
+        assert release_directory.is_dir()
+        yu.write_entry(release_directory / "expanded_design.yml", design)
+
     # TODO else warn if not identical
     # TODO: Add generation/expansion date to design
-    assert releases_path in test_directory.parents
 
     executions = te.run_all_test_lists(design)
     for execution in executions:
-        yu.write_entry(test_directory / (execution.test_list_id + ".yaml"), execution)
+        yu.write_entry(release_directory / (execution.test_list_id + ".yaml"), execution)
 
-    print("Create report")
-    rp.write_html_report(test_directory / "report.html", design, verifier)
+    print("Write report")
+    rp.write_html_report(release_directory / "report.html", design, verifier)
 
 if __name__ == "__main__":
 
@@ -119,17 +126,21 @@ if __name__ == "__main__":
             statement.print(sys.stderr)
 
     if args.output_yaml:
-        print(f"Write {args.output.as_posix()}")
-        yu.write_entry(args.output, design)
+        print(f"Write {args.output_yaml.as_posix()}")
+        yu.write_entry(args.output_yaml, design)
+        exit(0)
 
     if args.report:
         print(f"Write {args.report.as_posix()}")
         rp.write_html_report(args.report, design, verifier)
         exit(0)
 
+    if args.release_path:
+        create_release(args.release_path, design, verifier)
+        exit(0)
 
-    releases_path = Path(".") / "releases"
-    test_directory = (
-        args.test_dir if args.test_dir else generate_test_dir_path(releases_path)
-    )
-    create_release(test_directory)
+    if args.releases_path:
+        create_release(generate_release_dir_path(args.releases_path), design, verifier)
+        exit(0)
+
+    print("No action was selected. Exiting.")

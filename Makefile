@@ -1,7 +1,7 @@
 PYTHON=python3
 ALL_FILES=$(shell git ls-files | grep "\.py\>")
 
-all: check testing tests
+all: check release tests
 
 lint: pylint flake8 mypy black
 format: black_format
@@ -27,10 +27,11 @@ format_black:
 	${PYTHON} -m black .
 
 check:
-	${PYTHON} release.py specs/setup.py specs/requisite.yaml -o out.yaml -O report.html
+	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml --output-yaml out.yaml
+	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml --report report.html
 
-testing:
-	${PYTHON} release.py specs/setup.py specs/requisite.yaml -d releases/dummy
+release:
+	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml -r releases/dummy
 
 tests:
 	${PYTHON} -m unittest discover

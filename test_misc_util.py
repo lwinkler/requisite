@@ -9,6 +9,7 @@ import misc_util as mu
 
 EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
+TEST_DATA = Path("test/misc")
 
 class TestMiscUtil(unittest.TestCase):
     """Test"""
@@ -57,50 +58,50 @@ class TestMiscUtil(unittest.TestCase):
 
     def test_list_all_files(self) -> None:
         """Test"""
-        all_files1 = mu.list_all_files(Path("test_data/misc"), [], EXCLUDED_PATHS)
+        all_files1 = mu.list_all_files(TEST_DATA, [], EXCLUDED_PATHS)
         all_files2 = mu.list_all_files(Path("."), [], EXCLUDED_PATHS)
         all_files3 = mu.list_all_files(Path("."), ["myext"], EXCLUDED_PATHS)
         all_files4 = mu.list_all_files(Path("."), ["py"], EXCLUDED_PATHS)
         all_files5 = mu.list_all_files(Path("."), ["py", "myext"], EXCLUDED_PATHS)
 
         self.assertTrue(
-            self.contain_path(all_files1, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files1, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files2, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files2, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files3, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files3, TEST_DATA / "myfile.myext")
         )
         self.assertFalse(
-            self.contain_path(all_files4, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files4, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files5, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files5, TEST_DATA / "myfile.myext")
         )
 
     def test_list_all_git_files(self) -> None:
         """Test"""
-        all_files1 = mu.list_all_git_files(Path("test_data/misc"), [])
+        all_files1 = mu.list_all_git_files(TEST_DATA, [])
         all_files2 = mu.list_all_git_files(Path("."), [])
         all_files3 = mu.list_all_git_files(Path("."), ["myext"])
         all_files4 = mu.list_all_git_files(Path("."), ["py"])
         all_files5 = mu.list_all_git_files(Path("."), ["py", "myext"])
 
         self.assertTrue(
-            self.contain_path(all_files1, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files1, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files2, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files2, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files3, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files3, TEST_DATA / "myfile.myext")
         )
         self.assertFalse(
-            self.contain_path(all_files4, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files4, TEST_DATA / "myfile.myext")
         )
         self.assertTrue(
-            self.contain_path(all_files5, Path("test_data/misc/myfile.myext"))
+            self.contain_path(all_files5, TEST_DATA / "myfile.myext")
         )
 
     def test_failing_command(self) -> None:
