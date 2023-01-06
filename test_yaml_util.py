@@ -3,7 +3,9 @@
 import unittest
 from pathlib import Path
 
+import yaml
 import entries as en
+import operations as op
 import expanders as ex
 import misc_util as mu
 import yaml_util as yu
@@ -100,6 +102,22 @@ class TestYamlUtil(unittest.TestCase):
         design = yu.read_object(en.Design, Path("specs/requisite.yaml"))
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")
+
+    def not_test_spec_design_output_yaml2(self) -> None:
+        """Test issue with python 3.11: https://github.com/yaml/pyyaml/issues/692"""
+
+        class MyClass(yaml.YAMLObject):
+            """Any entry: this is the parent class for all other. Virtual."""
+
+            yaml_loader = yaml.SafeLoader
+            yaml_tag = "!MyClass"
+
+            def __init__(self):
+                pass # self.engine = 44
+
+        test_object = MyClass()
+        yaml.dump(test_object)
+
 
     def test_spec_input_entries_entry(self) -> None:
         """Test"""

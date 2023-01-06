@@ -7,6 +7,7 @@ from typing import Any, Optional, TextIO
 from enum import Enum
 
 import re
+import sys
 import yaml
 
 
@@ -56,7 +57,7 @@ class Entry(yaml.YAMLObject):
             print(f"Exception while expanding {self.get_id()}:", exc)
             raise
 
-    def print(self, output_stream: TextIO, indent: int = 0) -> None:
+    def print(self, output_stream: TextIO = sys.stdout, indent: int = 0) -> None:
         """Print to stdout (for debug)"""
         text_str = f", text: {self.get_text()}"
         children_str = f", (nb_children: {len(self.get_children())})"

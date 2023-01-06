@@ -193,7 +193,8 @@ children:
 - !TestList
   id: tests-system
   engine:
-    !TestEngineWizard {}
+    !TestEngineWizard
+    id: fake-id # https://github.com/yaml/pyyaml/issues/692
   children:
 
   - !Test
@@ -211,7 +212,8 @@ children:
 - !TestList
   id: tests-python-unittest
   engine:
-    !TestEnginePythonUnitTest {}
+    !TestEnginePythonUnitTest
+    id: fake-id # https://github.com/yaml/pyyaml/issues/692
   children:
     - !ExtractTestsFromPythonUnitTest
       path: .
