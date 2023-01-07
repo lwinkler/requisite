@@ -1,10 +1,12 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build" #or setup tools
+# requires = ["hatchling"]
+# build-backend = "hatchling.build" #or setup tools
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "requisite_lwinkler"
+name = "requisite.lw"
 version = "0.1.0"
 authors = [
   { name="Laurent Winkler", email="lwinkler888@gmail.com" },
@@ -20,4 +22,4 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://github.com/lwinkler/requisite"
-# "Bug Tracker" = "https://github.com/lwinkler/sampleproject/issues"
+# "Bug Tracker" = "https://github.com/lwinkler/sampleproject/issues" # TODO

@@ -3,7 +3,7 @@
 from pathlib import Path
 
 import common_test as ct
-from parsers.python_unittest import extract_python_unittest_tests
+from parser_python_unittest import extract_python_unittest_tests
 
 
 class TestTestListFromPythonUnitTest(ct.TestCommon):
@@ -24,7 +24,7 @@ class TestTestListFromPythonUnitTest(ct.TestCommon):
         self.assertEqual(
             ct.find_test_by_id(
                 all_tests,
-                "parsers.test_python_unittest.TestTestListFromPythonUnitTest"
+                "test_python_unittest.TestTestListFromPythonUnitTest"
                 ".test_spec_extract_tests_python_unittest_format",
             ).verify_id,
             "spec-extract-tests-python-unittest-format",

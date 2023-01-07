@@ -4,6 +4,6 @@
 
 import entries  # noqa: F401
 import expanders  # noqa: F401
-import parsers.python_unittest  # noqa: F401
-import engines.engine_python_unittest  # noqa: F401
-import engines.engine_wizard  # noqa: F401
+import parser_python_unittest  # noqa: F401
+import engine_python_unittest  # noqa: F401
+import engine_wizard  # noqa: F401

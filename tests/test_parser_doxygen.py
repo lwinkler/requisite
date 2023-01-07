@@ -3,7 +3,7 @@
 from pathlib import Path
 
 import common_test as ct
-from parsers.doxygen import extract_tests_from_functions
+from parser_doxygen import extract_tests_from_functions
 
 
 class TestTestListFromDoxygen(ct.TestCommon):

@@ -31,7 +31,7 @@ children:
     text: Tests with python unittest module
     children:
     - !Test
-      id: parsers.test_python_unittest.TestTestListFromPythonUnitTest.test_spec_extract_tests_python_unittest_format
+      id: test_python_unittest.TestTestListFromPythonUnitTest.test_spec_extract_tests_python_unittest_format
       text: Test
       type: automatic
       verify_id: spec-extract-tests-python-unittest-format
