@@ -6,11 +6,13 @@ from enum import Enum
 import entries as en
 import misc_util as mu
 import operations as op
+from typing import Tuple
+
 
 class TestResult(Enum):
     """The result of a test execution"""
 
-    PASSED = "passed"
+    SUCCESS = "success"
     SKIPPED = "skipped"
     FAILED = "failed"
 
@@ -21,11 +23,15 @@ class TestExecution(en.Entry):
     short_type = "ex"
     yaml_tag = "!TestExecution"
 
-    def __init__(self, test_id: str, date: str, result: TestResult):
+    def __init__(
+        self, test_id: str, date: str, result: TestResult, stdout: str, stderr: str
+    ):
         super().__init__("", "", [])
         self.test_id = test_id
         self.date = date
-        self.result = result
+        self.result = result.value
+        self.stdout = stdout
+        self.stderr = stderr
 
 
 class TestListExecution(en.Entry):
@@ -44,7 +50,7 @@ class TestListExecution(en.Entry):
         super().__init__("", "", children)
         self.test_list_id = test_list_id
         self.date = date
-        self.result = result
+        self.result = result.value
 
 
 class TestEngine(en.Entry):
@@ -61,15 +67,19 @@ class TestEngine(en.Entry):
         results: list[TestExecution] = []
         for test in op.extract_entries_of_type(test_list, en.Test):
             timestamp = mu.datetime_to_string(datetime.now())
-            result = self.run_test(test)
-            results.append(TestExecution(test.get_id(), timestamp, result))
+            result, stdout, stderr = self.run_test(test)
+            results.append(
+                TestExecution(test.get_id(), timestamp, result, stdout, stderr)
+            )
         return results
 
-    def run_test(self, test: en.Test) -> TestResult:
+    def run_test(self, test: en.Test) -> Tuple[TestResult, str, str]:
         """Run one test"""
         raise NotImplementedError()
 
+
 def run_all_test_lists(design: en.Design) -> list[TestListExecution]:
+    """Run all the test lists"""
     test_list_executions = []
     for entry in op.extract_entries_of_type(design, en.TestList):
         test_executions = entry.engine.run_test_list(entry)
@@ -82,4 +92,3 @@ def run_all_test_lists(design: en.Design) -> list[TestListExecution]:
             )
         )
     return test_list_executions
-

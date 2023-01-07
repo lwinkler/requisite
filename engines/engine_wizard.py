@@ -2,6 +2,7 @@
 
 import entries as en
 import testing as te
+from typing import Tuple
 
 
 class TestEngineWizard(te.TestEngine):
@@ -10,7 +11,7 @@ class TestEngineWizard(te.TestEngine):
     short_type = "ten_w"
     yaml_tag = "!TestEngineWizard"
 
-    def run_test(self, test: en.Test) -> te.TestResult:
+    def run_test(self, test: en.Test) -> Tuple[te.TestResult, str, str]:
         """Run a test"""
         # TODO
-        return te.TestResult.SKIPPED
+        return te.TestResult.SKIPPED, "", ""

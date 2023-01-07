@@ -5,7 +5,6 @@ from pathlib import Path
 
 import yaml
 import entries as en
-import operations as op
 import expanders as ex
 import misc_util as mu
 import yaml_util as yu
@@ -113,11 +112,10 @@ class TestYamlUtil(unittest.TestCase):
             yaml_tag = "!MyClass"
 
             def __init__(self):
-                pass # self.engine = 44
+                pass  # self.engine = 44
 
         test_object = MyClass()
         yaml.dump(test_object)
-
 
     def test_spec_input_entries_entry(self) -> None:
         """Test"""

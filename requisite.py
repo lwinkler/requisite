@@ -11,7 +11,6 @@ from typing import Sequence
 
 import yaml_util as yu
 import entries as en
-import operations as op
 import misc_util as mu
 import testing as te
 import rules as ru
@@ -27,9 +26,7 @@ def arguments_parser() -> argparse.Namespace:
     """Define the parser and parse arguments"""
 
     # Main parser
-    parser = argparse.ArgumentParser(
-        description="Create a release folder"
-    )
+    parser = argparse.ArgumentParser(description="Create a release folder")
 
     parser.add_argument(
         "setup",
@@ -53,9 +50,9 @@ def arguments_parser() -> argparse.Namespace:
         "-R",
         "--releases-path",
         type=Path,
-        help="The directory containing the releases. A subdirectory is automatically created with the current date.",
+        help="The directory containing the releases. "
+        "A subdirectory is automatically created with the current date.",
     )
-
 
     parser.add_argument(
         "--output-yaml",
@@ -84,7 +81,10 @@ def generate_release_dir_path(path: Path) -> Path:
     """Generate the release dir path with current time stamp"""
     return path / mu.datetime_to_string(datetime.now())
 
-def create_release(release_directory: Path, design: en.Design, verifier: ve.Verifier) -> None:
+
+def create_release(
+    release_directory: Path, design: en.Design, verifier: ve.Verifier
+) -> None:
     """Create a release in a directory"""
 
     print(f"Create a release in {release_directory.as_posix()}")
@@ -93,20 +93,22 @@ def create_release(release_directory: Path, design: en.Design, verifier: ve.Veri
         print(f"Create release directory {release_directory.as_posix()}")
         os.makedirs(release_directory.as_posix())
         assert release_directory.is_dir()
-        yu.write_entry(release_directory / "expanded_design.yml", design)
+        yu.write_entry(release_directory / "expanded_design.yaml", design)
 
     # TODO else warn if not identical
     # TODO: Add generation/expansion date to design
 
     executions = te.run_all_test_lists(design)
     for execution in executions:
-        yu.write_entry(release_directory / (execution.test_list_id + ".yaml"), execution)
+        yu.write_entry(
+            release_directory / (execution.test_list_id + ".yaml"), execution
+        )
 
     print("Write report")
     rp.write_html_report(release_directory / "report.html", design, verifier)
 
-if __name__ == "__main__":
 
+def main():
     args = arguments_parser()
     mu.import_source(args.setup)
     design = yu.read_object(en.Design, args.input)
@@ -128,19 +130,23 @@ if __name__ == "__main__":
     if args.output_yaml:
         print(f"Write {args.output_yaml.as_posix()}")
         yu.write_entry(args.output_yaml, design)
-        exit(0)
+        sys.exit(0)
 
     if args.report:
         print(f"Write {args.report.as_posix()}")
         rp.write_html_report(args.report, design, verifier)
-        exit(0)
+        sys.exit(0)
 
     if args.release_path:
         create_release(args.release_path, design, verifier)
-        exit(0)
+        sys.exit(0)
 
     if args.releases_path:
         create_release(generate_release_dir_path(args.releases_path), design, verifier)
-        exit(0)
+        sys.exit(0)
 
     print("No action was selected. Exiting.")
+
+
+if __name__ == "__main__":
+    main()

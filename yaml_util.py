@@ -14,6 +14,7 @@ def read_object(_: type[T], path: Path) -> T:
     with open(path, encoding="utf-8") as fin:
         return cast(T, yaml.safe_load(fin.read()))
 
+
 def read_object_from_string(_: type[T], str1: str) -> T:
     """Read a full design document in YAML format"""
     return cast(T, yaml.safe_load(str1))
@@ -33,7 +34,7 @@ def read_objects(_: type[T], path: Path) -> list[T]:
 def dump_entry(entry: en.Entry) -> str:
     """Dump and entry to a string"""
     # so far we set a very high line width
-    return cast(str, yaml.dump(entry, width=1000, sort_keys=False))
+    return cast(str, yaml.dump(entry, width=1000, sort_keys=False, default_style="|"))
 
 
 def write_entry(path: Path, design: en.Entry) -> None:

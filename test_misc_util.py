@@ -11,9 +11,9 @@ EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
 TEST_DATA = Path("test/misc")
 
+
 class TestMiscUtil(unittest.TestCase):
     """Test"""
-
 
     def contain_path(self, paths: Sequence[Path], path_to_search: Path) -> bool:
         """Check if path is contained"""
@@ -64,21 +64,11 @@ class TestMiscUtil(unittest.TestCase):
         all_files4 = mu.list_all_files(Path("."), ["py"], EXCLUDED_PATHS)
         all_files5 = mu.list_all_files(Path("."), ["py", "myext"], EXCLUDED_PATHS)
 
-        self.assertTrue(
-            self.contain_path(all_files1, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files2, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files3, TEST_DATA / "myfile.myext")
-        )
-        self.assertFalse(
-            self.contain_path(all_files4, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files5, TEST_DATA / "myfile.myext")
-        )
+        self.assertTrue(self.contain_path(all_files1, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files2, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files3, TEST_DATA / "myfile.myext"))
+        self.assertFalse(self.contain_path(all_files4, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files5, TEST_DATA / "myfile.myext"))
 
     def test_list_all_git_files(self) -> None:
         """Test"""
@@ -88,21 +78,11 @@ class TestMiscUtil(unittest.TestCase):
         all_files4 = mu.list_all_git_files(Path("."), ["py"])
         all_files5 = mu.list_all_git_files(Path("."), ["py", "myext"])
 
-        self.assertTrue(
-            self.contain_path(all_files1, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files2, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files3, TEST_DATA / "myfile.myext")
-        )
-        self.assertFalse(
-            self.contain_path(all_files4, TEST_DATA / "myfile.myext")
-        )
-        self.assertTrue(
-            self.contain_path(all_files5, TEST_DATA / "myfile.myext")
-        )
+        self.assertTrue(self.contain_path(all_files1, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files2, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files3, TEST_DATA / "myfile.myext"))
+        self.assertFalse(self.contain_path(all_files4, TEST_DATA / "myfile.myext"))
+        self.assertTrue(self.contain_path(all_files5, TEST_DATA / "myfile.myext"))
 
     def test_failing_command(self) -> None:
         """Test"""

@@ -16,6 +16,7 @@ def datetime_to_string(some_date: datetime) -> str:
     """Convert datetime into a string"""
     return some_date.strftime("%Y-%m-%d_%H.%M.%S")
 
+
 def import_source(path: Path) -> None:
     """Import a python source file, used before YAML deserialization"""
     with open(path, encoding="utf-8") as file:
