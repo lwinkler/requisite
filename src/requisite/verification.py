@@ -2,6 +2,7 @@
 
 from enum import Enum
 from typing import Sequence
+import common_test
 import entries as en
 import operations as op
 

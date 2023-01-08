@@ -7,6 +7,14 @@ import entries as en
 import rules as ru
 import yaml_util as yu
 
+def get_module_path() -> Path:
+    """Return module path"""
+    current_path = Path(os.path.abspath(__file__))
+    return current_path.parent / "../src/requisite"
+
+def insert_module_path():
+    """Insert the path to requisite module"""
+    sys.path.insert(1, get_module_path().as_posix())
 
 def find_test_by_id(all_entries: Sequence[en.Entry], id1: str) -> en.Test:
     """Search function by id"""

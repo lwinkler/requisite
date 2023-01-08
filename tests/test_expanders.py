@@ -1,6 +1,7 @@
 """Unit test for expander classes"""
 
 from pathlib import Path
+import common_test as ct
 
 import expanders
 import common_test as ct
@@ -14,8 +15,8 @@ class TestExpanders(ct.TestCommon):
 
     def test_spec_design_split(self) -> None:
         """Test"""
-        self.parse_and_compare(Path("test/include"))
+        self.parse_and_compare(Path("tests/data/include"))
 
     def test_multiply_by_definition(self) -> None:
         """Test"""
-        self.parse_and_compare(Path("test/multiply_by_definition"))
+        self.parse_and_compare(Path("tests/data/multiply_by_definition"))

@@ -9,7 +9,7 @@ import misc_util as mu
 
 EXCLUDED_PATHS = [Path(".git"), Path(".mypy_cache"), Path("__pycache__")]
 
-TEST_DATA = Path("test/misc")
+TEST_DATA = Path("tests/data/misc")
 
 
 class TestMiscUtil(unittest.TestCase):

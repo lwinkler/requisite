@@ -216,9 +216,9 @@ children:
     id: fake-id # https://github.com/yaml/pyyaml/issues/692
   children:
     - !ExtractTestsFromPythonUnitTest
-      path: tests
+      path: tests/
       pattern: "test_*"
 
     - !ExtractTestsFromPythonUnitTest
-      path: tests
+      path: tests/
       pattern: "extra_test_*"
