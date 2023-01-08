@@ -213,7 +213,7 @@ children:
   id: tests-python-unittest
   engine:
     !TestEnginePythonUnitTest
-    id: fake-id # https://github.com/yaml/pyyaml/issues/692
+      path: tests/
   children:
     - !ExtractTestsFromPythonUnitTest
       path: tests/

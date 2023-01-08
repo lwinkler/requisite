@@ -1,6 +1,7 @@
 """Test engine to run Python unittest tests"""
 
 import subprocess
+from pathlib import Path
 from typing import Tuple
 
 import misc_util as mu
@@ -14,6 +15,10 @@ class TestEnginePythonUnitTest(te.TestEngine):
     short_type = "ten_pu"
     yaml_tag = "!TestEnginePythonUnitTest"
 
+    def __init__(self, id1: str, text: str, path: Path) -> None:
+        super().__init__(id1, text, [])
+        self.path = path
+
     def run_test(self, test: en.Test) -> Tuple[te.TestResult, str, str]:
         """Run a test"""
 
@@ -23,7 +28,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
             raise Exception("Test id must be defined")
         command = f"{exe} -m unittest {test.id}"
         # TODO: Handle stdout and stderr
-        completed_process = subprocess.run(command, capture_output=True, check=False)
+        completed_process = subprocess.run(command, capture_output=True, check=False, cwd=self.path)
         if completed_process.returncode != 0:
             print(
                 f"Test execution of {test_id} ended with code {completed_process.returncode}"

@@ -31,11 +31,11 @@ format_black:
 	${PYTHON} -m black .
 
 check:
-	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml --output-yaml out.yaml
-	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml --report report.html
+	${PYTHON} src/requisite/__main__.py specs/setup.py specs/requisite.yaml --output-yaml out.yaml
+	${PYTHON} src/requisite/__main__.py specs/setup.py specs/requisite.yaml --report report.html
 
 release:
-	${PYTHON} requisite.py specs/setup.py specs/requisite.yaml -r releases/dummy
+	${PYTHON} src/requisite/__main__.py specs/setup.py specs/requisite.yaml -r releases/dummy
 
 run_tests:
 	PYTHONPATH=./src/requisite ${PYTHON} -m unittest discover
