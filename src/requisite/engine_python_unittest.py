@@ -1,11 +1,11 @@
 """Test engine to run Python unittest tests"""
 
 import subprocess
+from typing import Tuple
 
 import misc_util as mu
 import entries as en
 import testing as te
-from typing import Tuple
 
 
 class TestEnginePythonUnitTest(te.TestEngine):

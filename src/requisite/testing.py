@@ -2,11 +2,11 @@
 
 from datetime import datetime
 from enum import Enum
+from typing import Tuple
 
 import entries as en
 import misc_util as mu
 import operations as op
-from typing import Tuple
 
 
 class TestResult(Enum):

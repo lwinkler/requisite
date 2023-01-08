@@ -111,7 +111,7 @@ class TestYamlUtil(unittest.TestCase):
             yaml_loader = yaml.SafeLoader
             yaml_tag = "!MyClass"
 
-            def __init__(self):
+            def __init__(self) -> None:
                 pass  # self.engine = 44
 
         test_object = MyClass()

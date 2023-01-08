@@ -108,7 +108,8 @@ def create_release(
     rp.write_html_report(release_directory / "report.html", design, verifier)
 
 
-def main():
+def main() -> None:
+    """Main routine of requisite"""
     args = arguments_parser()
     mu.import_source(args.setup)
     design = yu.read_object(en.Design, args.input)

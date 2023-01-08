@@ -1,8 +1,8 @@
 """Test engine to run tests manually through a wizard"""
 
+from typing import Tuple
 import entries as en
 import testing as te
-from typing import Tuple
 
 
 class TestEngineWizard(te.TestEngine):

@@ -4,7 +4,6 @@ from pathlib import Path
 import common_test as ct
 
 import expanders
-import common_test as ct
 
 _ = expanders.Expander
 del _

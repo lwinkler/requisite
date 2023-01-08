@@ -10,17 +10,19 @@ format: black_format
 
 
 pylint:
-	${PYTHON} -m pylint ${ALL_FILES}
+	PYTHONPATH=./src/requisite ${PYTHON} -m pylint ${ALL_FILES}
 
 flake8:
 	${PYTHON} -m flake8 .
 
 mypy:
-	# TODO: fix properly ?
-	${PYTHON} -m mypy . --explicit-package-bases
+	MYPYPATH=./src/requisite ${PYTHON} -m mypy src
+	# --explicit-package-bases
+	MYPYPATH=./src/requisite ${PYTHON} -m mypy tests
+	# --explicit-package-bases
 
 mypy-strict:
-	${PYTHON} -m mypy --strict . --explicit-package-bases
+	MYPYPATH=./src/requisite ${PYTHON} -m mypy --strict . --explicit-package-bases
 
 black:
 	${PYTHON} -m black --check .
