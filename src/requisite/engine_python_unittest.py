@@ -29,7 +29,9 @@ class TestEnginePythonUnitTest(te.TestEngine):
                 f"Test execution of {test_id} ended with code {completed_process.returncode}"
             )
         return (
-            te.TestResult.SUCCESS if completed_process.returncode == 0 else te.TestResult.FAILED,
+            te.TestResult.SUCCESS
+            if completed_process.returncode == 0
+            else te.TestResult.FAILED,
             completed_process.stdout.decode("utf-8"),
-            completed_process.stderr.decode("utf-8")
+            completed_process.stderr.decode("utf-8"),
         )

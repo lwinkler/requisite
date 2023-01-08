@@ -34,7 +34,9 @@ def read_objects(_: type[T], path: Path) -> list[T]:
 def dump_entry(entry: en.Entry) -> str:
     """Dump and entry to a string"""
     # so far we set a very high line width
-    return cast(str, yaml.dump(entry, width=1000, sort_keys=False)) # , default_style="|"))
+    return cast(
+        str, yaml.dump(entry, width=1000, sort_keys=False)
+    )  # , default_style="|"))
 
 
 def write_entry(path: Path, design: en.Entry) -> None:

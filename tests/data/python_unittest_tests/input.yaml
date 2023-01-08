@@ -33,4 +33,4 @@ children:
     - !ExtractTestsFromPythonUnitTest
       id: tests-unit
       path: tests/
-      pattern: "test_python_unittest*"
+      pattern: "test_parser_python_unittest*"
