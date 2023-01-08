@@ -24,7 +24,7 @@ class TestTestListFromPythonUnitTest(ct.TestCommon):
         self.assertEqual(
             ct.find_test_by_id(
                 all_tests,
-                "tests.test_parser_python_unittest.TestTestListFromPythonUnitTest"
+                "test_parser_python_unittest.TestTestListFromPythonUnitTest"
                 ".test_spec_extract_tests_python_unittest_format",
             ).verify_id,
             "spec-extract-tests-python-unittest-format",
