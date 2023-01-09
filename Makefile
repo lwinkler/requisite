@@ -17,12 +17,11 @@ flake8:
 
 mypy:
 	MYPYPATH=./src/requisite ${PYTHON} -m mypy src
-	# --explicit-package-bases
-	MYPYPATH=./src/requisite ${PYTHON} -m mypy tests
-	# --explicit-package-bases
+	(cd tests && MYPYPATH=../src/requisite ${PYTHON} -m mypy .)
 
 mypy-strict:
-	MYPYPATH=./src/requisite ${PYTHON} -m mypy --strict . --explicit-package-bases
+	MYPYPATH=./src/requisite ${PYTHON} -m mypy --strict src
+	(cd tests && MYPYPATH=../src/requisite ${PYTHON} -m mypy --strict .)
 
 black:
 	${PYTHON} -m black --check .
