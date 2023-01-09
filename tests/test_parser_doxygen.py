@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-import common_test as ct
 from parser_doxygen import extract_tests_from_functions
+import common_test as ct
 
 
 class TestTestListFromDoxygen(ct.TestCommon):

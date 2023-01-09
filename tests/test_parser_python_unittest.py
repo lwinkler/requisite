@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-import common_test as ct
 from parser_python_unittest import extract_python_unittest_tests
+import common_test as ct
 
 
 class TestTestListFromPythonUnitTest(ct.TestCommon):
