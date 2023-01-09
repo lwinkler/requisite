@@ -4,7 +4,7 @@ import sys
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Sequence
+from typing import Dict, Optional, Sequence
 
 
 def get_python_executable() -> Path:
@@ -78,6 +78,7 @@ def run_on_all_files(
     extensions: Sequence[str],
     excluded_paths: Sequence[Path],
     check: bool = True,
+    env: Optional[Dict[str, str]] = None,
 ) -> int:
     """Execute a command on all files. With this function we still have the issue
     of max command length (although it is higher that by using the shell, on Windows)"""
@@ -85,7 +86,10 @@ def run_on_all_files(
     files = list_all_files(path, extensions, excluded_paths, check)
     full_command = command + " " + " ".join([file1.as_posix() for file1 in files])
     # print("run:", full_command)
-    ret = subprocess.run(full_command, check=check, shell=False)
+    if env is not None:
+        ret = subprocess.run(full_command, check=check, shell=False, env=env)
+    else:
+        ret = subprocess.run(full_command, check=check, shell=False)
     return ret.returncode
 
 

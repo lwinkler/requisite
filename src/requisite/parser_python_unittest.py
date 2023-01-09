@@ -1,6 +1,5 @@
 """Utilities for doxygen test parsing"""
 
-import sys
 import unittest
 
 from typing import Union, Optional, Sequence
@@ -69,9 +68,7 @@ def extract_python_unittest_tests(
         return results
 
     test_loader = unittest.defaultTestLoader
-    return extract_test_cases(
-        test_loader.discover(path.as_posix(), pattern=pattern)
-    )
+    return extract_test_cases(test_loader.discover(path.as_posix(), pattern=pattern))
 
 
 class ExtractTestsFromPythonUnitTest(ex.Expander):
@@ -92,4 +89,6 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         all_ids = op.gather_all_ids(design, en.Statement)
-        return extract_python_unittest_tests(self.get_path(design.get_file_path()), self.pattern, all_ids)
+        return extract_python_unittest_tests(
+            self.get_path(design.get_file_path()), self.pattern, all_ids
+        )

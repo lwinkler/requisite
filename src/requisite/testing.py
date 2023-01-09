@@ -63,7 +63,9 @@ class TestEngine(en.Entry):
     def __init__(self, id1: str, text: str) -> None:
         super().__init__(id1, text, [])
 
-    def run_test_list(self, test_list: en.TestList, design_path: Path) -> list[TestExecution]:
+    def run_test_list(
+        self, test_list: en.TestList, design_path: Path
+    ) -> list[TestExecution]:
         """Run the tests of a test list"""
         results: list[TestExecution] = []
         for test in op.extract_entries_of_type(test_list, en.Test):
