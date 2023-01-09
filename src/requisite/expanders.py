@@ -43,9 +43,12 @@ class Include(Expander):
         super().__init__(id1, text, [])
         self.path = path.as_posix()
 
+    def get_path(self, design_path) -> Path:
+        """Return the path attribute. Since it is relative we need the design_path as well"""
+        return design_path.parent / self.path
+
     def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
-        full_path = design.get_file_path().parent / Path(self.path)
-        return yu.read_objects(Entry, full_path)
+        return yu.read_objects(Entry, self.get_path(design.get_file_path()))
 
 
 class MultiplyByDefinition(Expander):

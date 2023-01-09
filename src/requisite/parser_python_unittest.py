@@ -86,7 +86,10 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self.path = path.as_posix()
         self.pattern = pattern
 
+    def get_path(self, design_path) -> Path:
+        """Return the path attribute. Since it is relative we need the design_path as well"""
+        return design_path.parent / self.path
+
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         all_ids = op.gather_all_ids(design, en.Statement)
-        full_path = design.get_file_path().parent / self.path
-        return extract_python_unittest_tests(full_path, self.pattern, all_ids)
+        return extract_python_unittest_tests(self.get_path(design.get_file_path()), self.pattern, all_ids)

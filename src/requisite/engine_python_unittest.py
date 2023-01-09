@@ -22,6 +22,10 @@ class TestEnginePythonUnitTest(te.TestEngine):
         self.path = path.as_posix()
         self.modules = modules
 
+    def get_path(self, design_path) -> Path:
+        """Return the path attribute. Since it is relative we need the design_path as well"""
+        return design_path.parent / self.path
+
     def run_test(self, test: en.Test, design_path: Path) -> Tuple[te.TestResult, str, str]:
         """Run a test"""
 
@@ -38,15 +42,14 @@ class TestEnginePythonUnitTest(te.TestEngine):
         if not test_id:
             raise Exception("Test id must be defined")
         command = f"{exe} -m unittest {test.id}"
-        full_path = design_path.parent / self.path
 
         if hasattr(self, "modules") and self.modules:
             completed_process = subprocess.run(
-                command, capture_output=True, check=False, cwd=full_path, env=new_env()
+                command, capture_output=True, check=False, cwd=self.get_path(design_path), env=new_env()
             )
         else:
             completed_process = subprocess.run(
-                command, capture_output=True, check=False, cwd=full_path
+                command, capture_output=True, check=False, cwd=self.get_path(design_path)
             )
         if completed_process.returncode != 0:
             print(
