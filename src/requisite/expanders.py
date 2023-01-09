@@ -41,7 +41,7 @@ class Include(Expander):
 
     def __init__(self, id1: str, text: str, path: Path):  # pylint: disable=R0913
         super().__init__(id1, text, [])
-        self.path = path
+        self.path = path.as_posix()
 
     def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
         return yu.read_objects(Entry, self.get_path())

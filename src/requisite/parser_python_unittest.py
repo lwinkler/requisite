@@ -83,7 +83,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self, id1: str, text: str, children: list[en.Entry], path: Path, pattern: str
     ):
         super().__init__(id1, text, children)
-        self.path = path  # TODO: path as string or delete get_path ?
+        self.path = path.as_posix()
         self.pattern = pattern
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:

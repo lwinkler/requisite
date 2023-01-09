@@ -19,7 +19,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
     # TODO: tested ?
     def __init__(self, id1: str, text: str, path: Path, modules: Sequence[str]) -> None:
         super().__init__(id1, text)
-        self.path = path
+        self.path = path.as_posix()
         self.modules = modules
 
     def get_path(self) -> Path:
@@ -42,7 +42,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
         if not test_id:
             raise Exception("Test id must be defined")
         command = f"{exe} -m unittest {test.id}"
-        # TODO: Handle stdout and stderr
+
         if hasattr(self, "modules") and self.modules:
             completed_process = subprocess.run(
                 command, capture_output=True, check=False, cwd=self.get_path(), env=new_env()

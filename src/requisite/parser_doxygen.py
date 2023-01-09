@@ -159,7 +159,7 @@ class ExtractTestsFromDoxygen(ex.Expander):
         self, id1: str, text: str, children: list[en.Entry], path: Path
     ):
         super().__init__(id1, text, children)
-        self.path = path
+        self.path = path.as_posix()
 
     def create_entries(self, _design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         return extract_tests_from_functions(self.get_path())
