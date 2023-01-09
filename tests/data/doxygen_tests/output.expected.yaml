@@ -56,3 +56,4 @@ children:
       id: subdir-test2-simplest-cpp-test4b
       type: automatic
       verify_id: req-4b
+file_path: data/doxygen_tests/input.yaml

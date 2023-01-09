@@ -44,12 +44,8 @@ class Include(Expander):
         self.path = path.as_posix()
 
     def create_entries(self, design: Entry, parent: Entry) -> list[Entry]:
-        full_path = design.get_file_path().parent / self.get_path()
+        full_path = design.get_file_path().parent / Path(self.path)
         return yu.read_objects(Entry, full_path)
-
-    def get_path(self) -> Path:
-        """Return a Path object"""
-        return Path(self.path)
 
 
 class MultiplyByDefinition(Expander):

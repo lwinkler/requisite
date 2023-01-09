@@ -12,7 +12,7 @@ children:
   children:
 
     - !Include
-      path: data/include/input1a.yaml
+      path: input1a.yaml
 
 - !Entry
   id: id4

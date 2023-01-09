@@ -161,9 +161,6 @@ class ExtractTestsFromDoxygen(ex.Expander):
         super().__init__(id1, text, children)
         self.path = path.as_posix()
 
-    def create_entries(self, _design: en.Entry, parent: en.Entry) -> list[en.Entry]:
-        return extract_tests_from_functions(self.get_path())
-
-    def get_path(self) -> Path:
-        """Return a Path object"""
-        return Path(self.path)
+    def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
+        full_path = design.get_file_path().parent / Path(self.path)
+        return extract_tests_from_functions(full_path)

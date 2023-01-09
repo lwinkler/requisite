@@ -14,7 +14,7 @@ class TestTestListFromPythonUnitTest(ct.TestCommon):
 
         all_ids = ["req-asdf", "req-ffff", "spec-extract-tests-python-unittest-format"]
         all_tests = extract_python_unittest_tests(
-            Path("tests"), "test_parser_python_unittest*", all_ids
+            Path("."), "test_parser_python_unittest*", all_ids
         )
 
         # for test in all_tests:

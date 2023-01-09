@@ -70,7 +70,7 @@ def extract_python_unittest_tests(
 
     test_loader = unittest.defaultTestLoader
     return extract_test_cases(
-        test_loader.discover("tests", top_level_dir="tests", pattern=pattern)
+        test_loader.discover(path.as_posix(), pattern=pattern)
     )
 
 
@@ -88,8 +88,5 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         all_ids = op.gather_all_ids(design, en.Statement)
-        return extract_python_unittest_tests(self.get_path(), self.pattern, all_ids)
-
-    def get_path(self) -> Path:
-        """Return a Path object"""
-        return Path(self.path)
+        full_path = design.get_file_path().parent / self.path
+        return extract_python_unittest_tests(full_path, self.pattern, all_ids)

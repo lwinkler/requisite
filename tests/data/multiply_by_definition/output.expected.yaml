@@ -131,3 +131,4 @@ children:
     - !Specification
       id: spec-operations-subtraction-double
       text: Operation should be supported for <supported-operations> and <supported-types> (subtraction) (double)
+file_path: data/multiply_by_definition/input.yaml

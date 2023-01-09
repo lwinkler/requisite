@@ -22,11 +22,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
         self.path = path.as_posix()
         self.modules = modules
 
-    def get_path(self) -> Path:
-        """Return the proper path"""
-        return Path(self.path)
-
-    def run_test(self, test: en.Test) -> Tuple[te.TestResult, str, str]:
+    def run_test(self, test: en.Test, design_path: Path) -> Tuple[te.TestResult, str, str]:
         """Run a test"""
 
         def new_env() -> Dict[str,str]:
@@ -42,14 +38,15 @@ class TestEnginePythonUnitTest(te.TestEngine):
         if not test_id:
             raise Exception("Test id must be defined")
         command = f"{exe} -m unittest {test.id}"
+        full_path = design_path.parent / self.path
 
         if hasattr(self, "modules") and self.modules:
             completed_process = subprocess.run(
-                command, capture_output=True, check=False, cwd=self.get_path(), env=new_env()
+                command, capture_output=True, check=False, cwd=full_path, env=new_env()
             )
         else:
             completed_process = subprocess.run(
-                command, capture_output=True, check=False, cwd=self.get_path()
+                command, capture_output=True, check=False, cwd=full_path
             )
         if completed_process.returncode != 0:
             print(

@@ -213,13 +213,13 @@ children:
   id: tests-python-unittest
   engine:
     !TestEnginePythonUnitTest
-      path: tests/
+      path: ../tests/
       modules: ["../src/requisite"]
   children:
     - !ExtractTestsFromPythonUnitTest
-      path: tests/
+      path: ../tests/
       pattern: "test_*"
 
     - !ExtractTestsFromPythonUnitTest
-      path: tests/
+      path: ../tests/
       pattern: "extra_test_*"

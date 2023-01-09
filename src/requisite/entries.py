@@ -46,6 +46,7 @@ class Entry(yaml.YAMLObject):
 
     def get_file_path(self) -> Path:
         """Return the path to the original file, if available"""
+        assert self.file_path
         return Path(self.file_path)
 
     def expand(self, design: Entry, _parent: Optional[Entry]) -> list[Entry]:

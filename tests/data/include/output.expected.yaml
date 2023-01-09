@@ -14,3 +14,4 @@ children:
     id: id3b
 - !Entry
   id: id4
+file_path: data/include/input.yaml
