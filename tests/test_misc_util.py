@@ -17,6 +17,7 @@ class TestMiscUtil(unittest.TestCase):
 
     def contain_path(self, paths: Sequence[Path], path_to_search: Path) -> bool:
         """Check if path is contained"""
+        # TODO: Use parents ?
         for path in paths:
             if path.as_posix() == path_to_search.as_posix():
                 return True

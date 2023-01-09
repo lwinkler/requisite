@@ -95,6 +95,17 @@ class TestYamlUtil(unittest.TestCase):
         design.simplify()
         self.assertEqual(yu.dump_entry(design), DESIGN_STR1)
 
+    def test_serialize_path(self) -> None:
+        """Test"""
+        path = Path("./my/path")
+        self.assertEqual(path.as_posix(), "my/path")
+        self.assertEqual(yu.dump(), "!Path my/path\n")
+
+    def test_unserialize_path(self) -> None:
+        """Test"""
+        path = yu.load_object(Path, "!Path my/path")
+        self.assertEqual(path.as_posix(), "my/path")
+
     def test_spec_design_output_yaml(self) -> None:
         """Test"""
         mu.import_source(Path("../specs/setup.py"))

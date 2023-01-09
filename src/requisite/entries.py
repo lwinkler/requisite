@@ -26,7 +26,7 @@ class Entry(yaml.YAMLObject):
         self.id = id1  # pylint: disable=C0103
         self.text = text
         self.children = children
-        self.file_path = ""
+        self.file_path : Optional[Path] = None
 
     def get_id(self) -> str:
         """Return the id if applicable else None"""
@@ -46,8 +46,9 @@ class Entry(yaml.YAMLObject):
 
     def get_file_path(self) -> Path:
         """Return the path to the original file, if available"""
-        assert self.file_path
-        return Path(self.file_path)
+        if self.file_path is None:
+            raise Exception("Object has no file path: it was not read from file.")
+        return self.file_path
 
     def expand(self, design: Entry, _parent: Optional[Entry]) -> list[Entry]:
         """Processing: Nothing to do by default but call on children"""

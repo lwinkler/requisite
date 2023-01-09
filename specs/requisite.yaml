@@ -143,7 +143,7 @@ children:
       text: The <design-document> is checked against a set of <syntax-rule>s.
       children:
         - !Include
-          path: rules.yaml
+          path: !Path rules.yaml
 
   - !Requirement
     id: req-design-output
@@ -213,13 +213,13 @@ children:
   id: tests-python-unittest
   engine:
     !TestEnginePythonUnitTest
-      path: ../tests/
+      path: !Path ../tests/
       modules: ["../src/requisite"]
   children:
     - !ExtractTestsFromPythonUnitTest
-      path: ../tests/
+      path: !Path ../tests/
       pattern: "test_*"
 
     - !ExtractTestsFromPythonUnitTest
-      path: ../tests/
+      path: !Path ../tests/
       pattern: "extra_test_*"

@@ -12,7 +12,7 @@ children:
   children:
 
     - !Include
-      path: input1a.yaml
+      path: !Path input1a.yaml
 
 - !Entry
   id: id4

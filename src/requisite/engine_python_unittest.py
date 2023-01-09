@@ -19,7 +19,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
     # TODO: tested ?
     def __init__(self, id1: str, text: str, path: Path, modules: Sequence[str]) -> None:
         super().__init__(id1, text)
-        self.path = path.as_posix()
+        self.path = path
         self.modules = modules
 
     def get_path(self, design_path) -> Path:

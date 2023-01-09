@@ -27,4 +27,4 @@ children:
     text: Tests documented with Doxygen (C++)
     children:
     - !ExtractTestsFromDoxygen
-      path: .
+      path: !Path .

@@ -159,7 +159,7 @@ class ExtractTestsFromDoxygen(ex.Expander):
         self, id1: str, text: str, children: list[en.Entry], path: Path
     ):
         super().__init__(id1, text, children)
-        self.path = path.as_posix()
+        self.path = path
 
     def get_path(self, design_path) -> Path:
         """Return the path attribute. Since it is relative we need the design_path as well"""
