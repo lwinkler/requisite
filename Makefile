@@ -38,4 +38,4 @@ release:
 	${PYTHON} src/requisite/__main__.py specs/setup.py specs/requisite.yaml -r releases/dummy
 
 run_tests:
-	PYTHONPATH=./src/requisite ${PYTHON} -m unittest discover
+	(cd tests/ && PYTHONPATH=../src/requisite ${PYTHON} -m unittest discover)

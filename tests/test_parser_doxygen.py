@@ -12,7 +12,7 @@ class TestTestListFromDoxygen(ct.TestCommon):
     def test_doxygen_test_matching(self) -> None:
         """Test"""
 
-        all_tests = extract_tests_from_functions(Path("tests/data/doxygen_tests"))
+        all_tests = extract_tests_from_functions(Path("data/doxygen_tests"))
 
         # for t in all_tests:
         # print(111, t.id, t.verify_id)
@@ -54,4 +54,4 @@ class TestTestListFromDoxygen(ct.TestCommon):
     def test_spec_extract_tests_doxygen_doc_format(self) -> None:
         """Test"""
 
-        self.parse_and_compare(Path("tests/data/doxygen_tests"))
+        self.parse_and_compare(Path("data/doxygen_tests"))

@@ -3,6 +3,7 @@
 # needed until python 3.10:
 # https://stackoverflow.com/questions/36286894/name-not-defined-in-type-annotation
 from __future__ import annotations
+from pathlib import Path
 from typing import Any, Optional, TextIO
 from enum import Enum
 
@@ -25,6 +26,7 @@ class Entry(yaml.YAMLObject):
         self.id = id1  # pylint: disable=C0103
         self.text = text
         self.children = children
+        self.file_path = ""
 
     def get_id(self) -> str:
         """Return the id if applicable else None"""
@@ -41,6 +43,10 @@ class Entry(yaml.YAMLObject):
             if hasattr(self, "children") and self.children is not None
             else []
         )
+
+    def get_file_path(self) -> Path:
+        """Return the path to the original file, if available"""
+        return Path(self.file_path)
 
     def expand(self, design: Entry, _parent: Optional[Entry]) -> list[Entry]:
         """Processing: Nothing to do by default but call on children"""

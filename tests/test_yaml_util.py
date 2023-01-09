@@ -97,8 +97,8 @@ class TestYamlUtil(unittest.TestCase):
 
     def test_spec_design_output_yaml(self) -> None:
         """Test"""
-        mu.import_source(Path("specs/setup.py"))
-        design = yu.read_object(en.Design, Path("specs/requisite.yaml"))
+        mu.import_source(Path("../specs/setup.py"))
+        design = yu.read_object(en.Design, Path("../specs/requisite.yaml"))
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")
 

@@ -12,7 +12,10 @@ T = TypeVar("T")
 def read_object(_: type[T], path: Path) -> T:
     """Read a full design document in YAML format"""
     with open(path, encoding="utf-8") as fin:
-        return cast(T, yaml.safe_load(fin.read()))
+        obj = yaml.safe_load(fin.read())
+        # note: always keep the path for later
+        obj.file_path = path.as_posix()
+        return cast(T, obj)
 
 
 def read_object_from_string(_: type[T], str1: str) -> T:

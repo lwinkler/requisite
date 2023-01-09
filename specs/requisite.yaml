@@ -143,7 +143,7 @@ children:
       text: The <design-document> is checked against a set of <syntax-rule>s.
       children:
         - !Include
-          path: specs/rules.yaml
+          path: rules.yaml
 
   - !Requirement
     id: req-design-output

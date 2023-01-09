@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE Test1
-#include <boost/tests/data/included/unit_test.hpp>
+#include <data/included/unit_test.hpp>
 
 /** @file test1-simplest.cpp */
 

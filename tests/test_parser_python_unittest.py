@@ -32,4 +32,4 @@ class TestTestListFromPythonUnitTest(ct.TestCommon):
 
     def test_spec_extract_tests_python_unittest_format(self) -> None:
         """Test"""
-        self.parse_and_compare(Path("tests/data/python_unittest_tests"))
+        self.parse_and_compare(Path("data/python_unittest_tests"))
