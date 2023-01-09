@@ -54,6 +54,8 @@ def check_entry_attributes_non_null(
     messages: list[EntryErrorMessage] = []
     for entry in op.extract_entries_of_type(entry_to_check, en.Entry):
         for attribute_name in entry.__dict__.keys():
+            if attribute_name == "file_path":
+                continue
             if (
                 hasattr(entry, attribute_name)
                 and getattr(entry, attribute_name) is None

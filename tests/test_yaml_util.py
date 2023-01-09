@@ -98,7 +98,7 @@ class TestYamlUtil(unittest.TestCase):
         """Test"""
         path = Path("./my/path")
         self.assertEqual(path.as_posix(), "my/path")
-        self.assertEqual(yu.dump_entry(), "!Path my/path")
+        self.assertEqual(yu.dump_entry(path), "!Path my/path")
 
     def test_unserialize_path(self) -> None:
         """Test"""
@@ -112,7 +112,7 @@ class TestYamlUtil(unittest.TestCase):
         design.expand(design, None)
         self.assertTrue(yu.dump_entry(design) != "")
 
-    def not_test_spec_design_output_yaml2(self) -> None:
+    def test_spec_design_output_yaml2(self) -> None:
         """Test issue with python 3.11: https://github.com/yaml/pyyaml/issues/692"""
 
         class MyClass(object):

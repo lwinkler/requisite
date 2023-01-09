@@ -11,8 +11,8 @@ yaml = YAML(typ="safe")
 
 T = TypeVar("T")
 
-# register types
-# ruamel
+# register external types
+# path
 def constr_path(constructor, node):
     return Path(node.value)
 def repr_path(representer, data):
@@ -29,30 +29,6 @@ yaml.register_class(en.Specification)
 yaml.register_class(en.Test)
 yaml.register_class(en.TestList)
 yaml.register_class(en.Design)
-
-# def path_constructor(loader,node):
-    # value = loader.construct_scalar(node)
-    # print(111, value, node)
-    # # someNumber,sep,someString = value.partition("|")
-    # return Path(value)
-# 
-# def path_representer(dumper, data):
-    # return dumper.represent_scalar('!Path', data.as_posix() )
-# 
-# yaml.add_constructor('!Path', path_constructor)
-# yaml.add_representer(WindowsPath, path_representer)
-
-
-# path = Path("./my/path")
-#TODO clean
-# assert(path.as_posix() == "my/path")
-# print(66, yaml.dump(path), yaml.dump(path) == "!Path 'my/path'\n")
-# assert(yaml.dump(path) == "!Path 'my/path'\n")
-# 
-# path = yaml.unsafe_load(yaml.dump(path))
-# assert(path.as_posix() == "my/path")
-# 
-# exit(88)
 
 def read_object(_: type[T], path: Path) -> T:
     """Read a full design document in YAML format"""
