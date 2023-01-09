@@ -46,9 +46,8 @@ class TestLint(unittest.TestCase):
         ret = subprocess.run(f"{PY} -m flake8 .", check=False)
         self.assertEqual(ret.returncode, 0)
 
-    def test_spec_code_check_mypy_src(self) -> None:
+    def test_spec_code_check_mypy(self) -> None:
         """Test"""
-        # TODO test once
         ret = subprocess.run(
             f"{PY} -m mypy src",
             cwd="..",
@@ -57,8 +56,6 @@ class TestLint(unittest.TestCase):
         )
         self.assertEqual(ret.returncode, 0)
 
-    def test_spec_code_check_mypy_tests(self) -> None:
-        """Test"""
         ret = subprocess.run(
             f"{PY} -m mypy .",
             check=False,
