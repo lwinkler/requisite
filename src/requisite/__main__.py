@@ -97,6 +97,7 @@ def create_release(
 
     # TODO else warn if not identical
     # TODO: Add generation/expansion date to design
+    # TODO: Add host information to test list
 
     executions = te.run_all_test_lists(design)
     for execution in executions:

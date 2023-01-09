@@ -42,14 +42,6 @@ def extract_python_unittest_tests(
 ) -> list[en.Entry]:
     """Extract the unit tests from python unittest module"""
 
-    # TODO test multiple subdirectories
-    def get_prefix():
-        """Return the test path if located in sub directory"""
-        prefix = path.as_posix().replace("/", ".")
-
-        print(111, __name__, sys.modules[__name__])
-        return prefix + "." if prefix else ""
-
     def extract_test_cases(
         test_suite_or_case: Union[unittest.TestSuite, unittest.TestCase],
     ) -> list[en.Entry]:
@@ -62,7 +54,6 @@ def extract_python_unittest_tests(
                 if verify_id is None
                 else [
                     en.Test(
-                        #TODO get_prefix() + test_suite_or_case.id(),
                         test_suite_or_case.id(),
                         test_suite_or_case._testMethodDoc,  # pylint: disable=W0212
                         en.TestType.AUTOMATIC,
@@ -78,7 +69,9 @@ def extract_python_unittest_tests(
         return results
 
     test_loader = unittest.defaultTestLoader
-    return extract_test_cases(test_loader.discover("tests", top_level_dir="tests", pattern=pattern))
+    return extract_test_cases(
+        test_loader.discover("tests", top_level_dir="tests", pattern=pattern)
+    )
 
 
 class ExtractTestsFromPythonUnitTest(ex.Expander):
@@ -90,7 +83,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self, id1: str, text: str, children: list[en.Entry], path: Path, pattern: str
     ):
         super().__init__(id1, text, children)
-        self.path = path # TODO: path as string or delete get_path ?
+        self.path = path  # TODO: path as string or delete get_path ?
         self.pattern = pattern
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
