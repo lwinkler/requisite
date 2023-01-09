@@ -8,6 +8,7 @@ from typing import Dict, Sequence, Tuple
 import misc_util as mu
 import entries as en
 import testing as te
+import yaml_util as yu
 
 
 class TestEnginePythonUnitTest(te.TestEngine):
@@ -71,3 +72,5 @@ class TestEnginePythonUnitTest(te.TestEngine):
             completed_process.stdout.decode("utf-8"),
             completed_process.stderr.decode("utf-8"),
         )
+
+yu.yaml.register_class(TestEnginePythonUnitTest)

@@ -77,3 +77,7 @@ class MultiplyByDefinition(Expander):
             last.children = copy.deepcopy(self.get_children())
 
         return ret
+
+yu.yaml.register_class(Expander)
+yu.yaml.register_class(Include)
+yu.yaml.register_class(MultiplyByDefinition)

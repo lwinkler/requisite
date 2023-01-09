@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Tuple
 import entries as en
 import testing as te
+import yaml_util as yu
 
 
 class TestEngineWizard(te.TestEngine):
@@ -18,3 +19,5 @@ class TestEngineWizard(te.TestEngine):
         """Run a test"""
         # TODO
         return te.TestResult.SKIPPED, "", ""
+
+yu.yaml.register_class(TestEngineWizard)

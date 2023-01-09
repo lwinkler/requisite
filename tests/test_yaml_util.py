@@ -3,7 +3,6 @@
 import unittest
 from pathlib import Path
 
-import yaml
 import entries as en
 import expanders as ex
 import misc_util as mu
@@ -99,7 +98,7 @@ class TestYamlUtil(unittest.TestCase):
         """Test"""
         path = Path("./my/path")
         self.assertEqual(path.as_posix(), "my/path")
-        self.assertEqual(yu.dump(), "!Path my/path\n")
+        self.assertEqual(yu.dump_entry(), "!Path my/path")
 
     def test_unserialize_path(self) -> None:
         """Test"""
@@ -116,17 +115,19 @@ class TestYamlUtil(unittest.TestCase):
     def not_test_spec_design_output_yaml2(self) -> None:
         """Test issue with python 3.11: https://github.com/yaml/pyyaml/issues/692"""
 
-        class MyClass(yaml.YAMLObject):
+        class MyClass(object):
             """Any entry: this is the parent class for all other. Virtual."""
 
-            yaml_loader = yaml.SafeLoader
+            # yaml_loader = yaml.SafeLoader
             yaml_tag = "!MyClass"
 
             def __init__(self) -> None:
                 pass  # self.engine = 44
 
+        yu.yaml.register_class(MyClass)
+        
         test_object = MyClass()
-        yaml.dump(test_object)
+        yu.yaml.dump(test_object)
 
     def test_spec_input_entries_entry(self) -> None:
         """Test"""

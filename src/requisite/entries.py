@@ -9,17 +9,16 @@ from enum import Enum
 
 import re
 import sys
-import yaml
 
 
 LINK_EXPRESSION = re.compile("<([a-zA-Z_][a-zA-Z0-9_-]*)>")
 
 
-class Entry(yaml.YAMLObject):
+class Entry(object):
     """Any entry: this is the parent class for all other. Virtual."""
 
     short_type = "en"
-    yaml_loader = yaml.SafeLoader
+    # yaml_loader = yaml.SafeLoader
     yaml_tag = "!Entry"
 
     def __init__(self, id1: str, text: str, children: list[Entry]):

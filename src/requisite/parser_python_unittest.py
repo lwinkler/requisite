@@ -7,6 +7,7 @@ from pathlib import Path
 import entries as en
 import expanders as ex
 import operations as op
+import yaml_util as yu
 
 TEST_PREFIX = "test_"
 
@@ -92,3 +93,5 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         return extract_python_unittest_tests(
             self.get_path(design.get_file_path()), self.pattern, all_ids
         )
+
+yu.yaml.register_class(ExtractTestsFromPythonUnitTest)

@@ -8,6 +8,7 @@ from typing import Tuple
 import entries as en
 import misc_util as mu
 import operations as op
+import yaml_util as yu
 
 
 class TestResult(Enum):
@@ -95,3 +96,7 @@ def run_all_test_lists(design: en.Design) -> list[TestListExecution]:
             )
         )
     return test_list_executions
+
+yu.yaml.register_class(TestExecution)
+yu.yaml.register_class(TestListExecution)
+yu.yaml.register_class(TestEngine)

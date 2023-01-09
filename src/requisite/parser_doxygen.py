@@ -10,6 +10,7 @@ from pathlib import Path
 from dataclasses import dataclass
 import entries as en
 import expanders as ex
+import yaml_util as yu
 
 
 @dataclass
@@ -167,3 +168,5 @@ class ExtractTestsFromDoxygen(ex.Expander):
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         return extract_tests_from_functions(self.get_path(design.get_file_path()))
+
+yu.yaml.register_class(ExtractTestsFromDoxygen)
