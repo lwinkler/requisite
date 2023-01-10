@@ -7,7 +7,7 @@ from typing import cast, Any, Callable, TypeVar
 
 import entries as en
 
-yaml = YAML(typ="rt")
+yaml = YAML(typ="safe")
 yaml.sort_base_mapping_type_on_output = False
 yaml.width = 100
 # yaml.default_style = "|"

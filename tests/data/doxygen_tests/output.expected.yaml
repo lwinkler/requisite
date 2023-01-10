@@ -1,22 +1,14 @@
 !Design
 id: test
 children:
-- !Requirement
-  id: req-1a
-- !Requirement
-  id: req-2a
-- !Requirement
-  id: req-3a
-- !Requirement
-  id: req-4a
-- !Requirement
-  id: req-1b
-- !Requirement
-  id: req-2b
-- !Requirement
-  id: req-3b
-- !Requirement
-  id: req-4b
+- !Requirement {id: req-1a}
+- !Requirement {id: req-2a}
+- !Requirement {id: req-3a}
+- !Requirement {id: req-4a}
+- !Requirement {id: req-1b}
+- !Requirement {id: req-2b}
+- !Requirement {id: req-3b}
+- !Requirement {id: req-4b}
 - !Section
   text: Test section
   children:
@@ -24,36 +16,12 @@ children:
     id: my-doxy-test-list
     text: Tests documented with Doxygen (C++)
     children:
-    - !Test
-      id: test1-simplest-cpp-test1a
-      type: automatic
-      verify_id: req-1a
-    - !Test
-      id: test1-simplest-cpp-test1b
-      type: automatic
-      verify_id: req-1b
-    - !Test
-      id: test1-simplest-cpp-test2a
-      type: automatic
-      verify_id: req-2a
-    - !Test
-      id: test1-simplest-cpp-test2b
-      type: automatic
-      verify_id: req-2b
-    - !Test
-      id: subdir-test2-simplest-cpp-test3a
-      type: automatic
-      verify_id: req-3a
-    - !Test
-      id: subdir-test2-simplest-cpp-test3b
-      type: automatic
-      verify_id: req-3b
-    - !Test
-      id: subdir-test2-simplest-cpp-test4a
-      type: automatic
-      verify_id: req-4a
-    - !Test
-      id: subdir-test2-simplest-cpp-test4b
-      type: automatic
-      verify_id: req-4b
-file_path: data/doxygen_tests/input.yaml
+    - !Test {id: test1-simplest-cpp-test1a, type: automatic, verify_id: req-1a}
+    - !Test {id: test1-simplest-cpp-test1b, type: automatic, verify_id: req-1b}
+    - !Test {id: test1-simplest-cpp-test2a, type: automatic, verify_id: req-2a}
+    - !Test {id: test1-simplest-cpp-test2b, type: automatic, verify_id: req-2b}
+    - !Test {id: subdir-test2-simplest-cpp-test3a, type: automatic, verify_id: req-3a}
+    - !Test {id: subdir-test2-simplest-cpp-test3b, type: automatic, verify_id: req-3b}
+    - !Test {id: subdir-test2-simplest-cpp-test4a, type: automatic, verify_id: req-4a}
+    - !Test {id: subdir-test2-simplest-cpp-test4b, type: automatic, verify_id: req-4b}
+file_path: !Path input.yaml
