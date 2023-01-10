@@ -1,6 +1,7 @@
 """Unit test for YAML serialization"""
 
 import unittest
+import sys
 from pathlib import Path
 
 import entries as en
@@ -127,7 +128,8 @@ class TestYamlUtil(unittest.TestCase):
         yu.yaml.register_class(MyClass)
         
         test_object = MyClass()
-        yu.yaml.dump(test_object)
+        print("object is None", test_object is None)
+        yu.yaml.dump(test_object, sys.stdout)
 
     def test_spec_input_entries_entry(self) -> None:
         """Test"""
