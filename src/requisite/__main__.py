@@ -98,6 +98,8 @@ def create_release(
     # TODO else warn if not identical
     # TODO: Add generation/expansion date to design
     # TODO: Add host information to test list
+    # TODO: Write executions as separate files with timestamp, ... and keep an executions registry + date/author/host info
+    # TODO: Allow to edit registry entry for manual testing
 
     executions = te.run_all_test_lists(design)
     for execution in executions:

@@ -126,7 +126,7 @@ class TestYamlUtil(unittest.TestCase):
                 pass  # self.engine = 44
 
         yu.yaml.register_class(MyClass)
-        
+
         test_object = MyClass()
         print("object is None", test_object is None)
         yu.yaml.dump(test_object, sys.stdout)

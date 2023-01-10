@@ -162,11 +162,12 @@ class ExtractTestsFromDoxygen(ex.Expander):
         super().__init__(id1, text, children)
         self.path = path
 
-    def get_path(self, design_path) -> Path:
+    def get_path(self, design_path: Path) -> Path:
         """Return the path attribute. Since it is relative we need the design_path as well"""
         return design_path.parent / self.path
 
     def create_entries(self, design: en.Entry, parent: en.Entry) -> list[en.Entry]:
         return extract_tests_from_functions(self.get_path(design.get_file_path()))
+
 
 yu.yaml.register_class(ExtractTestsFromDoxygen)

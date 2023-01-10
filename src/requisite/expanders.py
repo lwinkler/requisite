@@ -43,7 +43,7 @@ class Include(Expander):
         super().__init__(id1, text, [])
         self.path = path
 
-    def get_path(self, design_path) -> Path:
+    def get_path(self, design_path: Path) -> Path:
         """Return the path attribute. Since it is relative we need the design_path as well"""
         return design_path.parent / self.path
 
@@ -77,6 +77,7 @@ class MultiplyByDefinition(Expander):
             last.children = copy.deepcopy(self.get_children())
 
         return ret
+
 
 yu.yaml.register_class(Expander)
 yu.yaml.register_class(Include)

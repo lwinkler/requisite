@@ -84,7 +84,7 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         self.path = path
         self.pattern = pattern
 
-    def get_path(self, design_path) -> Path:
+    def get_path(self, design_path: Path) -> Path:
         """Return the path attribute. Since it is relative we need the design_path as well"""
         return design_path.parent / self.path
 
@@ -93,5 +93,6 @@ class ExtractTestsFromPythonUnitTest(ex.Expander):
         return extract_python_unittest_tests(
             self.get_path(design.get_file_path()), self.pattern, all_ids
         )
+
 
 yu.yaml.register_class(ExtractTestsFromPythonUnitTest)

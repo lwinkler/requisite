@@ -23,7 +23,7 @@ class TestEnginePythonUnitTest(te.TestEngine):
         self.path = path
         self.modules = modules
 
-    def get_path(self, design_path) -> Path:
+    def get_path(self, design_path: Path) -> Path:
         """Return the path attribute. Since it is relative we need the design_path as well"""
         return design_path.parent / self.path
 
@@ -69,8 +69,9 @@ class TestEnginePythonUnitTest(te.TestEngine):
             te.TestResult.SUCCESS
             if completed_process.returncode == 0
             else te.TestResult.FAILED,
-            completed_process.stdout.decode("utf-8"),
-            completed_process.stderr.decode("utf-8"),
+            completed_process.stdout.decode("utf-8").replace("\r\n", "\n"),
+            completed_process.stderr.decode("utf-8").replace("\r\n", "\n"),
         )
+
 
 yu.yaml.register_class(TestEnginePythonUnitTest)

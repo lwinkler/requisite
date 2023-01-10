@@ -20,4 +20,5 @@ class TestEngineWizard(te.TestEngine):
         # TODO
         return te.TestResult.SKIPPED, "", ""
 
+
 yu.yaml.register_class(TestEngineWizard)

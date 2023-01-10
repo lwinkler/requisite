@@ -5,10 +5,8 @@ children:
   id: supported-code-annotations
   text: The different source code annotations formats supported by our parser (to extract information about tests)
   children:
-  - !Definition
-    id: doxygen-doc-format
-  - !Definition
-    id: python-unittest-format
+  - !Definition {id: doxygen-doc-format}
+  - !Definition {id: python-unittest-format}
 - !Requirement
   id: req-extract-tests
   text: Links between tests and statements can be extracted from the sources of the tests (if properly annotated)

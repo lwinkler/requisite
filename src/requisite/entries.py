@@ -25,7 +25,7 @@ class Entry(object):
         self.id = id1  # pylint: disable=C0103
         self.text = text
         self.children = children
-        self.file_path : Optional[Path] = None
+        self.file_path: Optional[Path] = None
 
     def get_id(self) -> str:
         """Return the id if applicable else None"""

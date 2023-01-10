@@ -3,22 +3,29 @@
 import io
 from pathlib import Path, WindowsPath
 from ruamel.yaml import YAML, yaml_object
-from typing import cast, TypeVar
+from typing import cast, Any, Callable, TypeVar
 
 import entries as en
 
-yaml = YAML(typ="safe")
+yaml = YAML(typ="rt")
+yaml.sort_base_mapping_type_on_output = False
+yaml.width = 100
+# yaml.default_style = "|"
 
 T = TypeVar("T")
 
 # register external types
 # path
-def constr_path(constructor, node):
+def constr_path(constructor: Any, node: Any) -> Path:
     return Path(node.value)
-def repr_path(representer, data):
-    return representer.represent_scalar(u'!Path', data.name)
+
+
+def repr_path(representer: Any, data: Any) -> Any:
+    return representer.represent_scalar("!Path", data.name)
+
+
 yaml.representer.add_representer(WindowsPath, repr_path)
-yaml.constructor.add_constructor(u'!Path', constr_path)
+yaml.constructor.add_constructor("!Path", constr_path)
 
 yaml.register_class(en.Entry)
 yaml.register_class(en.Section)
@@ -29,6 +36,7 @@ yaml.register_class(en.Specification)
 yaml.register_class(en.Test)
 yaml.register_class(en.TestList)
 yaml.register_class(en.Design)
+
 
 def read_object(_: type[T], path: Path) -> T:
     """Read a full design document in YAML format"""
@@ -61,9 +69,7 @@ def dump_entry(entry: en.Entry) -> bytes:
     buffer = io.BytesIO()
     yaml.dump(entry, buffer)
     return buffer.getvalue()
-    return cast(
-        str, yaml.dump(entry) # TODO , width=1000, sort_keys=False)
-    )  # , default_style="|"))
+    return cast(str, yaml.dump(entry))  # , default_style="|")) # TODO
 
 
 def write_entry(path: Path, design: en.Entry) -> None:
@@ -71,7 +77,7 @@ def write_entry(path: Path, design: en.Entry) -> None:
 
     design.simplify()
     yaml.dump(design, path)
-    return # TODO
+    return  # TODO
 
     with open(path, "w", encoding="utf-8") as fout:
         yaml.dump(design, fout)

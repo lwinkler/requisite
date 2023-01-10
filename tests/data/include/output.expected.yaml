@@ -1,17 +1,12 @@
 !Design
 id: test
 children:
-- !Entry
-  id: id1
-- !Entry
-  id: id2
+- !Entry {id: id1}
+- !Entry {id: id2}
 - !Entry
   id: id3
   children:
-  - !Entry
-    id: id3a
-  - !Entry
-    id: id3b
-- !Entry
-  id: id4
-file_path: data/include/input.yaml
+  - !Entry {id: id3a}
+  - !Entry {id: id3b}
+- !Entry {id: id4}
+file_path: !Path input.yaml

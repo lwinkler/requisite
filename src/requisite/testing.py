@@ -97,6 +97,7 @@ def run_all_test_lists(design: en.Design) -> list[TestListExecution]:
         )
     return test_list_executions
 
+
 yu.yaml.register_class(TestExecution)
 yu.yaml.register_class(TestListExecution)
 yu.yaml.register_class(TestEngine)
